@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="FileIO">
+      <UniqueIdentifier>{eed4ce04-2aee-4e05-8f94-383180ccc5a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rsc">
+      <UniqueIdentifier>{c39e9de5-fdab-409c-a8a8-41e2e5ff867c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fnc">
+      <UniqueIdentifier>{a6f8a2a5-80e9-4f90-8058-3bbcf602be95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lib">
+      <UniqueIdentifier>{2b93a4fd-56b3-4d53-85d6-563282e15193}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Default">
+      <UniqueIdentifier>{06bf94a5-ca01-4544-89d5-870a4fbd4784}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="GlobalIniImports.txt">
+      <Filter>Default</Filter>
+    </Text>
+  </ItemGroup>
+</Project>

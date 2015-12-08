@@ -21,10 +21,12 @@
   <ItemGroup>
     <ClInclude Include="KMem.h" />
     <ClInclude Include="KNX_SDK.h" />
+    <ClInclude Include="NodeCore.h" />
     <ClInclude Include="Utility.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="KMem.cpp" />
+    <ClCompile Include="NodeCore.cpp" />
     <ClCompile Include="Utility.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

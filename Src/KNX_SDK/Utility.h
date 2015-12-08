@@ -12,5 +12,8 @@ Defines convenient functions for common operations
 //FNV-1a algorithm
 __int64 FNV(string input);
 
+//split member/scope reference
+string nextScope(string&);
+
 
 #endif

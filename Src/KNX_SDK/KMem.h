@@ -83,7 +83,9 @@ struct _array :public Mem
 	vector <Mem*> elements;
 
 	_array(std::string, KMemory);
+
 	KMemory getTemplate();//return array type
+	bool hasElement(string);
 };
 
 struct _struct :public Mem
@@ -108,5 +110,26 @@ struct _struct :public Mem
 	Mem*getObject(std::string);
 };
 
+
+
+struct memCore
+{
+	vector <_short_integer> sInts;
+	vector <_integer> ints;
+	vector <_long_integer> lints;
+
+	vector <_double> dbls;
+
+	vector <_char> chars;
+	vector <_string> strings;
+
+	vector <_port> ports;
+	vector <_pipe> pipes;
+
+	vector <_struct> structs;
+
+	KMemory getItemType(std::string);
+	Mem*getObject(std::string);
+};
 
 #endif

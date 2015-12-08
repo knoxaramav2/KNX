@@ -16,10 +16,29 @@
     <Filter Include="Default">
       <UniqueIdentifier>{06bf94a5-ca01-4544-89d5-870a4fbd4784}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sys">
+      <UniqueIdentifier>{5377e7c2-74ec-41f8-9712-d7a4912c7c1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Node">
+      <UniqueIdentifier>{e82521d8-9750-46f9-8540-8ac17f642ca5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="GlobalIniImports.txt">
       <Filter>Default</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Launcher.cpp">
+      <Filter>Sys</Filter>
+    </ClCompile>
+    <ClCompile Include="Node.cpp">
+      <Filter>Node</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Node.h">
+      <Filter>Node</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

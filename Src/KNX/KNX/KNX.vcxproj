@@ -143,6 +143,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <Text Include="GlobalIniImports.txt" />
+    <Text Include="Primes.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Launcher.cpp" />

@@ -111,7 +111,6 @@ struct _struct :public Mem
 };
 
 
-
 struct memCore
 {
 	vector <_short_integer> sInts;

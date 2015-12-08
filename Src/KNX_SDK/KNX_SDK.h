@@ -1,6 +1,7 @@
 #ifndef KNX_SDK
 #define KNX_SDK
 
+#include "NodeCore.h"
 #include "Utility.h"
 #include "KMem.h"
 

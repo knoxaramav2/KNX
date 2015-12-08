@@ -27,6 +27,9 @@
     <Text Include="GlobalIniImports.txt">
       <Filter>Default</Filter>
     </Text>
+    <Text Include="Primes.txt">
+      <Filter>Default</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Launcher.cpp">

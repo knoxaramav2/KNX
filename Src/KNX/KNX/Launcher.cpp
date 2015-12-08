@@ -14,6 +14,7 @@ int main(int argc, char**argv)
 	//create root node
 	thread node0(nodeThread,nullptr, cmd);
 	node0.join();
+	getchar();
 
 	return 0;
 }

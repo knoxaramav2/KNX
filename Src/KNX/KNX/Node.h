@@ -18,7 +18,7 @@ class node : public nodeBase
 public:
 	node(node*);
 	~node();
-	void killChild(nodeBase*);
+	void removeChild(node*);//upwards deletion
 };
 
 

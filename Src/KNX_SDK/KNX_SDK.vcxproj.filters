@@ -30,11 +30,11 @@
     <ClInclude Include="Utility.h">
       <Filter>Utility</Filter>
     </ClInclude>
-    <ClInclude Include="NodeCore.h">
-      <Filter>Node</Filter>
-    </ClInclude>
     <ClInclude Include="DataTrns.h">
       <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeCore.h">
+      <Filter>Node</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

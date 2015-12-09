@@ -13,8 +13,7 @@ class Register;
 
 class node : public nodeBase
 {
-	memCore*global;
-	memCore local;
+	
 public:
 	node(node*);
 	~node();
@@ -30,6 +29,7 @@ class Register
 public:
 	node * registerNode(node*);
 	void deregisterNode(node*);
+	bool isEmpty();
 };
 
 //node loop

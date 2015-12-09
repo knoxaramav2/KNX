@@ -2,17 +2,33 @@
 #include "Error.h"
 
 #include <iostream>
+#include <string>
+
+using namespace std;
 
 //EXTERN
-//global node table
-Register masterRecord;
-unsigned int MAX_NODES = 25;
+//global databases and settings
+extern Register masterRecord;
+extern unsigned int MAX_NODES;
+extern string globalBuffer;
+extern systemState sysState;
 
 node::node(node*p)
 {
-	this->parent = (nodeBase*)p;
-	active = false;
+	if (p != nullptr)
+	{
+		this->parent = (nodeBase*)p;
+		global = p->parent->global;
+	}
+	else
+	{
+		parent = nullptr;
+		global = new memCore();
+	}
+	
+	active = true;
 	id = 0;
+	usrInput = false;
 }
 
 node::~node()
@@ -51,8 +67,9 @@ int nodeThread(node*parent, string cmd)
 
 	while (nd->active)
 	{
-		if (nd->usrInput)
+		if (nd->usrInput && sysState.I_hndle==nd)
 		{
+			printf("%d >> ",nd->id);
 			string input;
 			getline(cin, input);
 		}
@@ -93,6 +110,14 @@ node*Register::registerNode(node*t)
 
 	table.push_back(new node(t));
 	table[ln]->id = cId;
+	if (cId == 0)//is root
+	{
+		if (!sysState.requestInput(table[ln]))
+			printError(I_REQ_FAILED,"");
+		if (!sysState.assignDefault((nodeBase*)table[ln]))
+			printError(I_DEF_FAILED,"");
+		table[ln]->usrInput = true;
+	}	
 	if (table[ln]->parent != nullptr)
 		table[ln]->parent->children.push_back((nodeBase*)table[ln]);
 	return table[ln];
@@ -120,4 +145,9 @@ void Register::deregisterNode(node*t)
 			table.erase(table.begin()+x);
 			return;
 		}
+}
+
+bool Register::isEmpty()
+{
+	return table.size() == 0;
 }

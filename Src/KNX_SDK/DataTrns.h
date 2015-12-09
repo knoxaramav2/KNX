@@ -1,6 +1,10 @@
 #ifndef KNX_DATATR
 #define KNX_DATATR
 
+#include <vector>
+
+using namespace std;
+
 struct ByteChar
 {
 	char rawFlag : 1;
@@ -8,9 +12,9 @@ struct ByteChar
 	void*data;
 };
 
-struct KNX_API
+struct ByteCode
 {
-
+	vector <ByteChar> sequence;
 };
 
 #endif

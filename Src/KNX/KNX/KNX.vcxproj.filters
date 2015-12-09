@@ -22,6 +22,9 @@
     <Filter Include="Node">
       <UniqueIdentifier>{e82521d8-9750-46f9-8540-8ac17f642ca5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Lexile">
+      <UniqueIdentifier>{4ed26569-5b89-4128-9255-41f0e1f1d074}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="GlobalIniImports.txt">
@@ -38,10 +41,22 @@
     <ClCompile Include="Node.cpp">
       <Filter>Node</Filter>
     </ClCompile>
+    <ClCompile Include="Parser.cpp">
+      <Filter>Lexile</Filter>
+    </ClCompile>
+    <ClCompile Include="Error.cpp">
+      <Filter>Sys</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Node.h">
       <Filter>Node</Filter>
+    </ClInclude>
+    <ClInclude Include="Parser.h">
+      <Filter>Lexile</Filter>
+    </ClInclude>
+    <ClInclude Include="Error.h">
+      <Filter>Sys</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

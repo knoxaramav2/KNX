@@ -1,4 +1,7 @@
 #include "Node.h"
+#include "Error.h"
+
+#include <iostream>
 
 //EXTERN
 //global node table
@@ -43,8 +46,17 @@ int nodeThread(node*parent, string cmd)
 		return -1;
 	}
 	
+	printError(3000,"Hello world\n");
 	printf("Node [%u] created\n",nd->id);
 
+	while (nd->active)
+	{
+		if (nd->usrInput)
+		{
+			string input;
+			getline(cin, input);
+		}
+	}
 
 	printf("Node [%u] destroyed\n", nd->id);
 	masterRecord.deregisterNode(nd);

@@ -12,8 +12,8 @@ systemState::systemState()
 	def_hndle = GLOBAL_INPUT;
 
 	//set default option flags
-	prntErrors = false;
-	prntWarnings = false;
+	prntErrors = true;
+	prntWarnings = true;
 }
 
 bool systemState::requestInput(nodeBase*nb)

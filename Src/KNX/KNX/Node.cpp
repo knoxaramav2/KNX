@@ -1,5 +1,6 @@
 #include "Node.h"
 #include "Error.h"
+#include "Parser.h"
 
 #include <iostream>
 #include <string>
@@ -72,6 +73,8 @@ int nodeThread(node*parent, string cmd)
 			printf("%d >> ",nd->id);
 			string input;
 			getline(cin, input);
+
+			interpret(input,nd);
 		}
 	}
 

@@ -19,6 +19,9 @@
     <Filter Include="Data">
       <UniqueIdentifier>{ab565e07-6189-44c5-acc5-5e8c7f65426c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Debug">
+      <UniqueIdentifier>{495e80bd-145d-4cd4-8b4e-5c70ac62369a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KNX_SDK.h">
@@ -36,6 +39,9 @@
     <ClInclude Include="NodeCore.h">
       <Filter>Node</Filter>
     </ClInclude>
+    <ClInclude Include="Debug.h">
+      <Filter>Debug</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="KMem.cpp">
@@ -49,6 +55,9 @@
     </ClCompile>
     <ClCompile Include="ByteCode.cpp">
       <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug.cpp">
+      <Filter>Debug</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

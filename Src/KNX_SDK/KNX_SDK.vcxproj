@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DataTrns.h" />
+    <ClInclude Include="Debug.h" />
     <ClInclude Include="KMem.h" />
     <ClInclude Include="KNX_SDK.h" />
     <ClInclude Include="NodeCore.h" />
@@ -27,6 +28,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ByteCode.cpp" />
+    <ClCompile Include="Debug.cpp" />
     <ClCompile Include="KMem.cpp" />
     <ClCompile Include="NodeCore.cpp" />
     <ClCompile Include="Utility.cpp" />

@@ -1,14 +1,16 @@
 #ifndef KNX_DATATR
 #define KNX_DATATR
 
+#include "KMem.h"
+
 #include <vector>
 
 using namespace std;
 
 struct ByteChar
 {
-	char rawFlag : 1;
-	char dataType : 7;
+	unsigned char rawFlag : 1;
+	unsigned char dataType : 7;
 	void*data;
 };
 

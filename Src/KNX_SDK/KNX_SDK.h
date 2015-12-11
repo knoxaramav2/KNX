@@ -4,6 +4,7 @@
 #include "NodeCore.h"
 #include "Utility.h"
 #include "KMem.h"
+#include "Debug.h"
 
 /*
 This static library declares all required classes, methods and definitions

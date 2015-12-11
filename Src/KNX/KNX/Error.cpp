@@ -1,4 +1,5 @@
 #include "Error.h"
+#include <Utility.h>
 
 #include <NodeCore.h>
 
@@ -10,45 +11,6 @@ using namespace std;
 
 extern systemState sysState;
 
-#ifdef _WIN64
-#define BLACK	0
-#define BLUE	1
-#define GREEN	2
-#define RED		4
-#define YELLOW	14
-#define WHITE	15
-void printWrn(string str,unsigned cd)
-{
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),YELLOW);
-	if (cd > 0)
-		printf(str.c_str(), cd);
-	else
-		printf(str.c_str());
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
-}
-
-void printErr(string str, unsigned cd)
-{
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), RED);
-	if (cd > 0)
-		printf(str.c_str(), cd);
-	else
-		printf(str.c_str());
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
-}
-#endif
-#ifdef __linux__//may add support for linux
-void printWrn(string str)
-{
-
-}
-
-void printErr(string str)
-{
-
-}
-#endif
-
 void printError(unsigned tp, string input)
 {
 	if (tp == 0)
@@ -58,11 +20,17 @@ void printError(unsigned tp, string input)
 		if (!sysState.prntWarnings)
 			return;
 		else
-			printWrn("Warning <%d>\n", tp);
+		{
+			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), YELLOW);
+			printf("Warning <%d> ", tp);
+		}
 	else if (!sysState.prntErrors)
 		return;
-	else
-		printErr("Error <%d>\n", tp);
+	else if (tp < ERR_MAX)
+	{
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), RED);
+		printf("Error <%d> ", tp);
+	}
 
 	switch (tp)
 	{
@@ -72,14 +40,22 @@ void printError(unsigned tp, string input)
 	case TYPE_CAST:printf("Implicit type conversion :%s\n",input.c_str()); break;
 
 		//error
-	case I_REQ_FAILED:printf("Input stream priority request denied");break;
+	case I_REQ_FAILED:printf("Input stream priority request denied"); break;
 	case I_DEF_FAILED:printf("Input stream default request denied"); break;
 
-	case UNDEF_SYMB:printf(""); break;
-	case ILLEGAL_CAST:printf(""); break;
+	case NODE_GEN_FAIL:printf("Node failed to initialize"); break;
+	case NODE_DEC_FAIL:printf("Node %s failed to deconstruct", input.c_str());
+
+	case UNDEF_SYMB:printf("Symbol %s undefined", input.c_str()); break;
+	case ILLEGAL_CAST:printf("Illegal type cast %s", input.c_str()); break;//use formate "of type1 to type2 : line"
+	case EMPTY_CHAR:printf("Empty character: <%s>",input.c_str()); break;
+	case EXCESS_CHAR:printf("Excessive input in character <%s>",input.c_str()); break;
+	case RESOLVE_FAIL:printf("Symbol could not be resolved <%s>",input.c_str()); break;//symbol:line
+		//MISC
+	case MISC_ERR_WRN:printf("%s",input.c_str()); break;
 	default:
 		break;
 	}
-
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
 	printf("\n");
 }

@@ -1,5 +1,10 @@
 #include "Utility.h"
 
+#include <Windows.h>
+#include <string>
+
+using namespace std;
+
 //FNV-1a algorithm
 __int64 FNV(string input)
 {
@@ -34,3 +39,50 @@ string nextScope(string&input)
 	input = "";
 	return loScope;
 }
+
+short getNumberType(string&input)
+{
+	bool parity = false;
+	bool decimal = false;
+	unsigned len = (unsigned)input.size();
+	for (unsigned x; x < len; ++x)
+		if (input[x] == '.')
+		{
+			if (decimal)
+				return -1;
+			decimal = true;
+		}
+		else if (input[x] == '-')
+		{
+			if (x == 0)
+				parity = true;
+			else
+				return -1;
+		}
+		else if (input[x]<'0' || input[x]>'9')
+			return -1;
+	
+		if (decimal)
+			return 2;
+		if (parity)
+			return 1;
+		return 0;
+}
+
+#ifdef _WIN64
+void printCLRMessage(string str, unsigned cd)
+{
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), YELLOW);
+	if (cd > 0)
+		printf(str.c_str(), cd);
+	else
+		printf(str.c_str());
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
+}
+#endif
+#ifdef __linux__//may add support for linux
+void printCLRMessage(string str, unsigned cd)
+{
+
+}
+#endif

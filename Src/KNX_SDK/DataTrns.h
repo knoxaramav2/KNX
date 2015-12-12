@@ -9,9 +9,11 @@ using namespace std;
 
 struct ByteChar
 {
+	string raw;
 	unsigned char rawFlag : 1;
 	unsigned char dataType : 7;
 	void*data;
+	size_t hash;
 };
 
 struct ByteCode

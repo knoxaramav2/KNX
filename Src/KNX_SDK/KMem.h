@@ -8,7 +8,8 @@
 using namespace std;
 
 //int16,int32,int64,double,char,std::string,array,port,pipe,struct
-enum KMemory{_unknown_=-1,_sint_, _int_, _lint_, _dbl_,_char_,_string_,_arr_,_port_,_pipe_,_struct_};
+enum KMemory{_unknown_,_sint_, _int_, _lint_, _dbl_,_char_,_string_,_arr_,_port_,_pipe_,_struct_,
+	/*Operators*/ _add_, _mult_, _div_, _mod_, _sub_, _root_, _pow_};
 
 //Memory object super class
 struct Mem

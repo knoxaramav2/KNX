@@ -2,7 +2,9 @@
 #define KNX_DEBUG
 
 #include "KMem.h"
+#include "DataTrns.h"
 
-void printMem(void*data,unsigned char data_type,bool raw, size_t hash);
+void printMem(ByteCode&);
+void printMem(ByteChar&);
 
 #endif

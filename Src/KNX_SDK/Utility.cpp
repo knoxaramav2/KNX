@@ -45,7 +45,7 @@ short getNumberType(string&input)
 	bool parity = false;
 	bool decimal = false;
 	unsigned len = (unsigned)input.size();
-	for (unsigned x; x < len; ++x)
+	for (unsigned x = 0; x < len; ++x)
 		if (input[x] == '.')
 		{
 			if (decimal)

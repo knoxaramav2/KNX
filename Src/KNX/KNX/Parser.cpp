@@ -1,26 +1,49 @@
 #include "Parser.h"
 
+#include <Debug.h>
+
+extern Register masterRecord;
+extern unsigned int MAX_NODES;
+extern string globalBuffer;
+extern systemState sysState;
+
 
 void resolveSymbol(string raw, node*loc, ByteCode&seq)
 {
 	ByteChar bc;
 	bc.data = nullptr;
-	bc.dataType = 0;
+	bc.dataType = KMemory::_unknown_;
 	bc.rawFlag = true;
+	bc.hash = FNV(raw);
 
 	switch (getNumberType(raw))
 	{
 	case 2://double
-
+	{
+		bc.data = (void*)new double(atof(raw.c_str()));
+		bc.dataType = KMemory::_dbl_;
+		bc.rawFlag = true;
+	}
 		break;
-	case 1://unsigned
-
+	case 1://signed
+	{
+		bc.data = (void*)new int(atoi(raw.c_str()));
+		bc.dataType = KMemory::_sint_;
+		bc.rawFlag = true;
+	}
 		break;
-	case 0://signed
-
+	case 0://unsigned
+	{
+		bc.data = (void*)new unsigned((unsigned)stol(raw.c_str()));
+		bc.dataType = KMemory::_int_;
+		bc.rawFlag = true;
+	}
 		break;
 	}
 
+
+	//if nothing else, undefined explicit symbol
+	bc.raw = raw;
 	seq.sequence.push_back(bc);
 }
 
@@ -44,11 +67,13 @@ void interpret(string raw, node*loc)
 					resolveSymbol(string(raw.begin() + lIndex, raw.end()), loc, byteSequence);
 					break;
 				case rMode::_strlit:
+				{
 					ByteChar bc;
 					bc.rawFlag = true;
 					bc.dataType = KMemory::_string_;
 					bc.data = new string(raw.begin() + lIndex, raw.begin() + loop);
 					byteSequence.sequence.push_back(bc);
+				}
 					break;
 				case rMode::_comment:
 					break;
@@ -79,7 +104,7 @@ void interpret(string raw, node*loc)
 				ByteChar bc;
 				bc.rawFlag = true;
 				bc.dataType = KMemory::_string_;
-				bc.data = new string(raw.begin()+lIndex,raw.begin()+loop);
+				bc.data = static_cast<void*>(new string(raw.begin()+lIndex, raw.begin()+loop));
 				byteSequence.sequence.push_back(bc);
 				lIndex = loop + 1;
 			}
@@ -118,10 +143,14 @@ void interpret(string raw, node*loc)
 			{
 				//text operators
 			case '\"':
+				if (lIndex<loop)
+					resolveSymbol(string(raw.begin() + lIndex, raw.end()), loc, byteSequence);
 				mode = rMode::_strlit;
 				lIndex = loop + 1;
 				break;
 			case '\'':
+				if (lIndex<loop)
+					resolveSymbol(string(raw.begin() + lIndex, raw.end()), loc, byteSequence);
 				mode = rMode::_charlit;
 				lIndex = loop + 1;
 				break;
@@ -133,46 +162,46 @@ void interpret(string raw, node*loc)
 				lIndex = loop + 1;
 				break;
 				//arithematic operators
-			case '+':
-				if (lIndex<loop)
+			case '+':{
+				if (lIndex < loop)
 					resolveSymbol(string(raw.begin() + lIndex, raw.end()), loc, byteSequence);
-				mode = rMode::_comment;
+				ByteChar bc;
+				bc.raw = '+';
+				bc.dataType = KMemory::_add_;
+				bc.rawFlag = true;
 				lIndex = loop + 1;
-				break;
+				break; }
 			case '-':
 				if (lIndex<loop)
 					resolveSymbol(string(raw.begin() + lIndex, raw.end()), loc, byteSequence);
-				mode = rMode::_comment;
+				if (loop + 1 < ln)
+					if (raw[loop + 1] >= '0' && raw[loop + 1] <= '9')
+						continue;
 				lIndex = loop + 1;
 				break;
 			case '/':
 				if (lIndex<loop)
 					resolveSymbol(string(raw.begin() + lIndex, raw.end()), loc, byteSequence);
-				mode = rMode::_comment;
 				lIndex = loop + 1;
 				break;
 			case '^':
 				if (lIndex<loop)
 					resolveSymbol(string(raw.begin() + lIndex, raw.end()), loc, byteSequence);
-				mode = rMode::_comment;
 				lIndex = loop + 1;
 				break;
 			case '%':
 				if (lIndex<loop)
 					resolveSymbol(string(raw.begin() + lIndex, raw.end()), loc, byteSequence);
-				mode = rMode::_comment;
 				lIndex = loop + 1;
 				break;
 			case '*':
 				if (lIndex<loop)
 					resolveSymbol(string(raw.begin() + lIndex, raw.end()), loc, byteSequence);
-				mode = rMode::_comment;
 				lIndex = loop + 1;
 				break;
 			case (char)-5://root
 				if (lIndex<loop)
 					resolveSymbol(string(raw.begin() + lIndex, raw.end()), loc, byteSequence);
-				mode = rMode::_comment;
 				lIndex = loop + 1;
 				break;
 				//escape character
@@ -186,6 +215,6 @@ void interpret(string raw, node*loc)
 		}
 	}
 
-	for (ByteChar bc : byteSequence.sequence)
-		printCLRMessage(to_string((int)bc.dataType) + ' ' + to_string((int)bc.rawFlag)+'\n',GREEN);
+	if (sysState.prntDebug)
+		printMem(byteSequence);
 }

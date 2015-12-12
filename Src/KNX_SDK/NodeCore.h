@@ -41,6 +41,7 @@ struct systemState
 	//option flags
 	unsigned prntErrors : 1;
 	unsigned prntWarnings : 1;
+	unsigned prntDebug : 1;
 };
 
 #endif

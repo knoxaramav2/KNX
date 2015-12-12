@@ -14,6 +14,7 @@ systemState::systemState()
 	//set default option flags
 	prntErrors = true;
 	prntWarnings = true;
+	prntDebug = true;
 }
 
 bool systemState::requestInput(nodeBase*nb)

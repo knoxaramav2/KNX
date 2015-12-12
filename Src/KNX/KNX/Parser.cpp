@@ -10,41 +10,24 @@ extern systemState sysState;
 
 void resolveSymbol(string raw, node*loc, ByteCode&seq)
 {
-	ByteChar bc;
-	bc.data = nullptr;
-	bc.dataType = KMemory::_unknown_;
-	bc.rawFlag = true;
-	bc.hash = FNV(raw);
-
 	switch (getNumberType(raw))
 	{
 	case 2://double
 	{
-		bc.data = (void*)new double(atof(raw.c_str()));
-		bc.dataType = KMemory::_dbl_;
-		bc.rawFlag = true;
+		seq.sequence.push_back(*(new ByteChar(raw, KMemory::_dbl_, true, new double(atof(raw.c_str())))));
+		return;
 	}
-		break;
 	case 1://signed
 	{
-		bc.data = (void*)new int(atoi(raw.c_str()));
-		bc.dataType = KMemory::_sint_;
-		bc.rawFlag = true;
+		seq.sequence.push_back(*(new ByteChar(raw, KMemory::_sint_, true, new int(atoi(raw.c_str())))));
+		return;
 	}
-		break;
 	case 0://unsigned
 	{
-		bc.data = (void*)new unsigned((unsigned)stol(raw.c_str()));
-		bc.dataType = KMemory::_int_;
-		bc.rawFlag = true;
+		seq.sequence.push_back(*(new ByteChar(raw, KMemory::_int_, true, new unsigned((unsigned)stol(raw.c_str())) )));
+		return;
 	}
-		break;
 	}
-
-
-	//if nothing else, undefined explicit symbol
-	bc.raw = raw;
-	seq.sequence.push_back(bc);
 }
 
 void interpret(string raw, node*loc)
@@ -68,11 +51,7 @@ void interpret(string raw, node*loc)
 					break;
 				case rMode::_strlit:
 				{
-					ByteChar bc;
-					bc.rawFlag = true;
-					bc.dataType = KMemory::_string_;
-					bc.data = new string(raw.begin() + lIndex, raw.begin() + loop);
-					byteSequence.sequence.push_back(bc);
+					byteSequence.sequence.push_back(*(new ByteChar(string(raw.begin() + lIndex, raw.begin() + loop), KMemory::_string_, true, (void*)&string(raw.begin() + lIndex, raw.begin() + loop))));
 				}
 					break;
 				case rMode::_comment:
@@ -83,13 +62,7 @@ void interpret(string raw, node*loc)
 					else if (loop - lIndex>1)
 						printError(EXCESS_CHAR, to_string(lIndex) + " : " + string(raw.begin() + lIndex, raw.begin() + loop));
 					else
-					{
-						ByteChar bc;
-						bc.rawFlag = true;
-						bc.dataType = KMemory::_char_;
-						bc.data = new string(raw.begin() + lIndex, raw.begin() + loop);
-						byteSequence.sequence.push_back(bc);
-					}
+						byteSequence.sequence.push_back(*(new ByteChar(string(raw.begin() + lIndex, raw.begin() + loop), KMemory::_char_, true, new char (raw[loop-1]))));
 					mode = rMode::_normal;
 					break;
 			}
@@ -100,12 +73,8 @@ void interpret(string raw, node*loc)
 		{
 			if (raw[loop] == '\"')
 			{
+				byteSequence.sequence.push_back(*(new ByteChar(string(raw.begin() + lIndex, raw.begin() + loop), KMemory::_string_, true, new string(raw.begin() + lIndex, raw.begin() + loop))));
 				mode = rMode::_normal;
-				ByteChar bc;
-				bc.rawFlag = true;
-				bc.dataType = KMemory::_string_;
-				bc.data = static_cast<void*>(new string(raw.begin()+lIndex, raw.begin()+loop));
-				byteSequence.sequence.push_back(bc);
 				lIndex = loop + 1;
 			}
 		}
@@ -118,13 +87,7 @@ void interpret(string raw, node*loc)
 				else if (loop-lIndex>1)
 					printError(EXCESS_CHAR, to_string(loop) + " : " + string(raw.begin() + lIndex, raw.begin() + loop));
 				else
-				{
-					ByteChar bc;
-					bc.data = new string(raw.begin() + lIndex, raw.begin() + loop);
-					bc.dataType = KMemory::_char_;
-					bc.rawFlag = true;
-					byteSequence.sequence.push_back(bc);
-				}
+					byteSequence.sequence.push_back(*(new ByteChar(string(raw.begin() + lIndex, raw.begin() + loop), KMemory::_char_, true, new char(raw[loop - 1]))));
 				mode = rMode::_normal;
 				lIndex = loop + 1;
 			}
@@ -165,11 +128,8 @@ void interpret(string raw, node*loc)
 			case '+':{
 				if (lIndex < loop)
 					resolveSymbol(string(raw.begin() + lIndex, raw.end()), loc, byteSequence);
-				ByteChar bc;
-				bc.raw = '+';
-				bc.dataType = KMemory::_add_;
-				bc.rawFlag = true;
 				lIndex = loop + 1;
+				byteSequence.sequence.push_back(*(new ByteChar("+",KMemory::_add_,true,nullptr)));
 				break; }
 			case '-':
 				if (lIndex<loop)
@@ -217,4 +177,5 @@ void interpret(string raw, node*loc)
 
 	if (sysState.prntDebug)
 		printMem(byteSequence);
+	printf("");
 }

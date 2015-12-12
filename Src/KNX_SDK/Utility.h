@@ -15,7 +15,7 @@ __int64 FNV(string input);
 //split member/scope reference
 string nextScope(string&);
 
-//-1 not valid number, 0 int_16, 1 int_32, 2 int_64, 3 double
+//-1 not valid number, 0  unsigned, 1 signed, 2 double
 short getNumberType(string&);
 
 //---------------OUTPUTS----------------//

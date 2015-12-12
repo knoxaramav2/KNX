@@ -21,13 +21,13 @@ void printObj(ByteChar&bc)
 		printf("UNSIGNED INTEGER : %u\n", *static_cast<unsigned*>(bc.data));
 		break;
 	case KMemory::_lint_:
-		printf("LONG INTEGER : %llu\n", *static_cast<size_t*>(bc.data));		break;
+		printf("LONG INTEGER : %llu\n", *static_cast<size_t*>(bc.data));break;
 	case KMemory::_dbl_:
-		printf("DOUBLE : %f\n", *static_cast<double*>(bc.data));		break;
+		printf("DOUBLE : %f\n", *static_cast<double*>(bc.data));break;
 	case KMemory::_char_:
-		printf("CHAR: %c\n", *static_cast<char*>(bc.data));		break;
+		printf("CHAR: %c\n", *static_cast<char*>(bc.data));	break;
 	case KMemory::_string_:
-		printf("STRING : %s\n", static_cast<string*>(bc.data)->c_str());break;//TODO: free string pointer
+		printf("STRING : %s\n", static_cast<string*>(bc.data)->c_str());break;
 	case KMemory::_arr_:
 		break;
 	case KMemory::_port_:
@@ -35,6 +35,10 @@ void printObj(ByteChar&bc)
 	case KMemory::_pipe_:
 		break;
 	case KMemory::_struct_:
+		break;
+
+	case KMemory::_add_:
+		printf("ADDITION\n");
 		break;
 	}
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
@@ -45,5 +49,4 @@ void printMem(ByteCode&bc)
 	unsigned len = (unsigned) bc.sequence.size();
 	for (unsigned x = 0; x < len; ++x)
 		printObj(bc.sequence[x]);
-
 }

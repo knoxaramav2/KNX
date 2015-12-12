@@ -9,6 +9,10 @@ using namespace std;
 
 struct ByteChar
 {
+	ByteChar();
+	ByteChar(string, unsigned, bool, void*);
+	~ByteChar();
+
 	string raw;
 	unsigned char rawFlag : 1;
 	unsigned char dataType : 7;

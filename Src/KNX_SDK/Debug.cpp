@@ -34,6 +34,24 @@ void printObj(ByteChar*bc)
 	case KMemory::_add_:
 		printf("ADDITION\n");
 		break;
+	case KMemory::_sub_:
+		printf("SUBTRACTION\n");
+		break;
+	case KMemory::_mult_:
+		printf("MULTIPLICATION\n");
+		break;
+	case KMemory::_div_:
+		printf("DIVISION\n");
+		break;
+	case KMemory::_pow_:
+		printf("POWER\n");
+		break;
+	case KMemory::_root_:
+		printf("ROOT\n");
+		break;
+	case KMemory::_mod_:
+		printf("MODULO\n");
+		break;
 	}
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), WHITE);
 }

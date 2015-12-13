@@ -2,14 +2,22 @@
 #define KMEM
 
 #include "Utility.h"
+#include "DataTrns.h"
 
 #include <string>
 #include <vector>
 using namespace std;
 
 //int16,int32,int64,double,char,std::string,array,port,pipe,struct
-enum KMemory{_unknown_,_sint_, _int_, _lint_, _dbl_,_char_,_string_,_arr_,_port_,_pipe_,_struct_,
-	/*Operators*/ _add_, _mult_, _div_, _mod_, _sub_, _root_, _pow_};
+enum KMemory{
+	_unknown_, _bool_, _sint_, _int_, _lint_, _dbl_, _char_, _string_, _arr_, _port_, _pipe_, _struct_, _func_, _file_,
+	/*Math ops*/ _add_, _mult_, _div_, _mod_, _sub_, _root_, _pow_,
+	/*Fnc Ops*/ _objRef_, _addrRef_, _flag_, _argOp_, _argCl_, _bodOp_, _bodCl_, _member_, _list_,_private_,_public_,_secure_,_heritage_,
+	/*Logic Ops*/_and_, _or_, _not_, _nand_, _nor_, _xor_, _xnor_,
+	/*Cmpare Ops*/_equ_, _gtr_, _lss_, _equGtr_, _equLss_, _compare_, _notcompare_,
+	/*Internal Fncs*/_fif_, _felse_, _finteger_, _fshort_, _flong_, _fmethod_, _fexit_,_fdouble_, _fchar_, _fstring_, _farr_,
+	_fport_, _fpipe_, _fstruct_, _ffunc_, _ffile_, _del_, _return_, _xnode_, _friend_, _killChild_, _terminate_, _setMemPolicy_, _send_
+};
 
 //Memory object super class
 struct Mem
@@ -21,6 +29,12 @@ struct Mem
 };
 
 //Integers
+
+struct _boolean :public Mem
+{
+	bool value;
+	_boolean(std::string, bool value);
+};
 
 struct _short_integer :public Mem
 {
@@ -87,6 +101,24 @@ struct _array :public Mem
 
 	KMemory getTemplate();//return array type
 	bool hasElement(string);
+};
+
+struct _function:public Mem
+{
+	//title, return type
+	_function(std::string, KMemory);
+
+	KMemory retType;
+
+	ByteChar*execute();
+
+	//pre-compiled code to execute
+	vector <ByteCode> code;
+};
+
+struct _file :public Mem
+{
+	_file(std::string);
 };
 
 struct _struct :public Mem

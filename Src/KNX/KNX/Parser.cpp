@@ -23,25 +23,26 @@ void resolveSymbol(string::iterator start, string::iterator end, node*loc, ByteC
 	{
 		bc->dataType = KMemory::_int_;
 		bc->data = (void*)static_cast<int*>(new int(atoi(raw.c_str())));
-		seq.sequence.push_back(bc);
+		seq.add(bc);
 	}
 	else if (nType == 2)
 	{
 		bc->dataType = KMemory::_dbl_;
 		bc->data = (void*)static_cast<double*>(new double(atof(raw.c_str())));
-		seq.sequence.push_back(bc);
+		seq.add(bc);
 	}
 	goto end;
 	//symbol check
 symbol:
-	
+	bc->dataType = KMemory::_unknown_;
+	seq.add(bc);
 	goto end;
 end:
 //	delete bc;
 	bc = nullptr;
 }
 
-void interpret(string raw, node*loc)
+ByteCode tokenize(string & raw, node*loc)
 {
 	ByteCode byteSequence;
 	enum rMode{_normal,_strlit,_comment,_charlit};
@@ -151,26 +152,26 @@ void interpret(string raw, node*loc)
 			{
 				//misc
 			case ' ':
-				if (lIndex<loop)
-					resolveSymbol(raw.begin()+lIndex, raw.begin()+loop, loc, byteSequence);
+				if (lIndex < loop)
+					resolveSymbol(raw.begin() + lIndex, raw.begin() + loop, loc, byteSequence);
 				lIndex = loop + 1;
 				break;
 				//text operators
 			case '\"':
-				if (lIndex<loop)
+				if (lIndex < loop)
 					resolveSymbol(raw.begin() + lIndex, raw.begin() + loop, loc, byteSequence);
 				mode = rMode::_strlit;
 				lIndex = loop + 1;
 				break;
 			case '\'':
-				if (lIndex<loop)
+				if (lIndex < loop)
 					resolveSymbol(raw.begin() + lIndex, raw.begin() + loop, loc, byteSequence);
 				mode = rMode::_charlit;
 				lIndex = loop + 1;
 				break;
 				//comment
 			case '#':
-				if (lIndex<loop)
+				if (lIndex < loop)
 					resolveSymbol(raw.begin() + lIndex, raw.begin() + loop, loc, byteSequence);
 				mode = rMode::_comment;
 				lIndex = loop + 1;
@@ -185,6 +186,7 @@ void interpret(string raw, node*loc)
 				bc->raw = "+";
 				bc->hash = FNV("+");
 				bc->dataType = KMemory::_add_;
+				byteSequence.add(bc);
 				bc->data = nullptr;
 				break; }
 			case '-':{
@@ -194,39 +196,101 @@ void interpret(string raw, node*loc)
 				bc->rawFlag = true;
 				bc->raw = "+";
 				bc->hash = FNV("+");
-				bc->dataType = KMemory::_add_;
+				bc->dataType = KMemory::_sub_;
+				byteSequence.add(bc);
 				bc->data = nullptr;
 				lIndex = loop + 1;
 				break; }
 			case '/':
-				if (lIndex<loop)
+			{
+				if (lIndex < loop)
 					resolveSymbol(raw.begin() + lIndex, raw.begin() + loop, loc, byteSequence);
+				ByteChar*bc = new ByteChar;
+				bc->rawFlag = true;
+				bc->raw = "/";
+				bc->hash = FNV("/");
+				bc->dataType = KMemory::_div_;
+				byteSequence.add(bc);
+				bc->data = nullptr;
 				lIndex = loop + 1;
 				break;
+			}
 			case '^':
-				if (lIndex<loop)
+			{
+				if (lIndex < loop)
 					resolveSymbol(raw.begin() + lIndex, raw.begin() + loop, loc, byteSequence);
+				ByteChar*bc = new ByteChar;
+				bc->rawFlag = true;
+				bc->raw = "^";
+				bc->hash = FNV("^");
+				bc->dataType = KMemory::_pow_;
+				byteSequence.add(bc);
+				bc->data = nullptr;
 				lIndex = loop + 1;
 				break;
+			}
 			case '%':
-				if (lIndex<loop)
+			{
+				if (lIndex < loop)
 					resolveSymbol(raw.begin() + lIndex, raw.begin() + loop, loc, byteSequence);
+				ByteChar*bc = new ByteChar;
+				bc->rawFlag = true;
+				bc->raw = "%";
+				bc->hash = FNV("%");
+				bc->dataType = KMemory::_mod_;
+				byteSequence.add(bc);
+				bc->data = nullptr;
 				lIndex = loop + 1;
 				break;
+			}
 			case '*':
-				if (lIndex<loop)
+			{
+				if (lIndex < loop)
 					resolveSymbol(raw.begin() + lIndex, raw.begin() + loop, loc, byteSequence);
+				ByteChar*bc = new ByteChar;
+				bc->rawFlag = true;
+				bc->raw = "*";
+				bc->hash = FNV("*");
+				bc->dataType = KMemory::_mult_;
+				byteSequence.add(bc);
+				bc->data = nullptr;
 				lIndex = loop + 1;
 				break;
+			}
 			case (char)-5://root
-				if (lIndex<loop)
+			{
+				if (lIndex < loop)
 					resolveSymbol(raw.begin() + lIndex, raw.begin() + loop, loc, byteSequence);
+				ByteChar*bc = new ByteChar;
+				bc->rawFlag = true;
+				bc->raw = (char)-5;
+				bc->hash = FNV("" + (char)-5);
+				bc->dataType = KMemory::_root_;
+				byteSequence.add(bc);
+				bc->data = nullptr;
 				lIndex = loop + 1;
 				break;
+			}
 				//escape character
 			case '\\':
 				++loop;
 				break;
+				//Lexical operators
+			case '(':
+			{
+				if (lIndex < loop)
+					resolveSymbol(raw.begin() + lIndex, raw.begin() + loop, loc, byteSequence);
+				ByteChar*bc = new ByteChar;
+				bc->rawFlag = true;
+				bc->raw = "(";
+				bc->hash = FNV("(");
+				bc->dataType = KMemory::_;
+				byteSequence.add(bc);
+				bc->data = nullptr;
+				lIndex = loop + 1;
+				break;
+			}
+				//Logical operators
 			default:
 
 				break;
@@ -237,5 +301,10 @@ void interpret(string raw, node*loc)
 	if (sysState.prntDebug)
 		printMem(byteSequence);
 
-	printf("");
+	return byteSequence;
+}
+
+void interpret(string raw, node*loc)
+{
+	ByteCode bc = tokenize(raw, loc);
 }

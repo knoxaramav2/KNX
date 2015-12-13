@@ -3,6 +3,14 @@
 #include <string>
 using namespace std;
 
+_boolean::_boolean(string ttl, bool v)
+{
+	this->mType = KMemory::_bool_;
+	this->value = v;
+	this->hash = FNV(ttl);
+	available = true;
+}
+
 _short_integer::_short_integer(string ttl, short v)
 {
 	this->mType = KMemory::_sint_;

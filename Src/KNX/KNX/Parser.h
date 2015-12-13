@@ -15,5 +15,6 @@ extern systemState sysState;
 using namespace std;
 
 void interpret(string, node*);
+void tokenize(string&, node*);
 
 #endif

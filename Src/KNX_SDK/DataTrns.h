@@ -10,19 +10,21 @@ using namespace std;
 struct ByteChar
 {
 	ByteChar();
-	ByteChar(string, unsigned, bool, void*);
+	ByteChar(const ByteChar&);//copy constructor
 	~ByteChar();
 
 	string raw;
 	unsigned char rawFlag : 1;
 	unsigned char dataType : 7;
-	void*data;
+	void*data;//only assign with 'new' operator
 	size_t hash;
 };
 
 struct ByteCode
 {
-	vector <ByteChar> sequence;
+	~ByteCode();
+	vector <ByteChar*> sequence;
+	void add(ByteChar*);
 };
 
 #endif

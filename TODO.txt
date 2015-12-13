@@ -2,3 +2,10 @@ Implement complex data types (array, port, pipe, struct)
 Complete debug printout (printMem)
 Implement standard functions (int, delete...)
 Begin adding standard library dll's
+Add support for:
+	short int
+	long int
+	array
+	port
+	pipe
+	struct

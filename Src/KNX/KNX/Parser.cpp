@@ -8,26 +8,37 @@ extern string globalBuffer;
 extern systemState sysState;
 
 
-void resolveSymbol(string raw, node*loc, ByteCode&seq)
+void resolveSymbol(string::iterator start, string::iterator end, node*loc, ByteCode&seq)
 {
-	switch (getNumberType(raw))
+	string raw(start,end);
+	ByteChar*bc = new ByteChar();
+	bc->raw = raw;
+	bc->hash = FNV(raw);
+	bc->rawFlag = true;
+
+	short nType = getNumberType(raw);
+	if (nType == -1)
+		goto symbol;
+	else if (nType < 2)
 	{
-	case 2://double
+		bc->dataType = KMemory::_int_;
+		bc->data = (void*)static_cast<int*>(new int(atoi(raw.c_str())));
+		seq.sequence.push_back(bc);
+	}
+	else if (nType == 2)
 	{
-		seq.sequence.push_back(*(new ByteChar(raw, KMemory::_dbl_, true, new double(atof(raw.c_str())))));
-		return;
+		bc->dataType = KMemory::_dbl_;
+		bc->data = (void*)static_cast<double*>(new double(atof(raw.c_str())));
+		seq.sequence.push_back(bc);
 	}
-	case 1://signed
-	{
-		seq.sequence.push_back(*(new ByteChar(raw, KMemory::_sint_, true, new int(atoi(raw.c_str())))));
-		return;
-	}
-	case 0://unsigned
-	{
-		seq.sequence.push_back(*(new ByteChar(raw, KMemory::_int_, true, new unsigned((unsigned)stol(raw.c_str())) )));
-		return;
-	}
-	}
+	goto end;
+	//symbol check
+symbol:
+	
+	goto end;
+end:
+//	delete bc;
+	bc = nullptr;
 }
 
 void interpret(string raw, node*loc)
@@ -41,17 +52,24 @@ void interpret(string raw, node*loc)
 	unsigned lIndex = 0;
 	for (unsigned loop = 0; loop <= ln; ++loop)
 	{
-		if (loop == ln)//end point
+		if (loop == ln)//end point------------------------------
 		{
 			if (lIndex!=loop)
 				switch (mode)
 			{
 				case rMode::_normal:
-					resolveSymbol(string(raw.begin() + lIndex, raw.end()), loc, byteSequence);
+					resolveSymbol(raw.begin() + lIndex, raw.end(), loc, byteSequence);
 					break;
 				case rMode::_strlit:
 				{
-					byteSequence.sequence.push_back(*(new ByteChar(string(raw.begin() + lIndex, raw.begin() + loop), KMemory::_string_, true, (void*)&string(raw.begin() + lIndex, raw.begin() + loop))));
+					ByteChar*bc = new ByteChar();
+					bc->raw = string(raw.begin() + lIndex, raw.begin() + loop);
+					bc->hash = FNV(bc->raw);
+					bc->dataType = KMemory::_string_;
+					bc->rawFlag = true;
+					bc->data = (void*)static_cast<string*>(new string(raw.begin()+lIndex,raw.begin()+loop));
+					byteSequence.add(bc);
+					bc = nullptr;
 				}
 					break;
 				case rMode::_comment:
@@ -62,18 +80,35 @@ void interpret(string raw, node*loc)
 					else if (loop - lIndex>1)
 						printError(EXCESS_CHAR, to_string(lIndex) + " : " + string(raw.begin() + lIndex, raw.begin() + loop));
 					else
-						byteSequence.sequence.push_back(*(new ByteChar(string(raw.begin() + lIndex, raw.begin() + loop), KMemory::_char_, true, new char (raw[loop-1]))));
-					mode = rMode::_normal;
+					{
+						ByteChar*bc = new ByteChar();
+						bc->raw = raw[loop - 1];
+						bc->hash = FNV(bc->raw);
+						bc->dataType = KMemory::_char_;
+						bc->rawFlag = true;
+						bc->data = (void*)static_cast<char*>(new char(raw[loop-1]));
+						byteSequence.add(bc);
+						bc = nullptr;
+						mode = rMode::_normal;
+					}
+					
 					break;
 			}
 			break;
 		}
-
+		//mode switches------------------------------
 		if (mode == rMode::_strlit)
 		{
 			if (raw[loop] == '\"')
 			{
-				byteSequence.sequence.push_back(*(new ByteChar(string(raw.begin() + lIndex, raw.begin() + loop), KMemory::_string_, true, new string(raw.begin() + lIndex, raw.begin() + loop))));
+				ByteChar*bc = new ByteChar();
+				bc->raw = string(raw.begin() + lIndex, raw.begin() + loop);
+				bc->hash = FNV(bc->raw);
+				bc->dataType = KMemory::_string_;
+				bc->rawFlag = true;
+				bc->data = (void*)static_cast<string*>(new string(raw.begin() + lIndex, raw.begin() + loop));
+				byteSequence.add(bc);
+				bc = nullptr;
 				mode = rMode::_normal;
 				lIndex = loop + 1;
 			}
@@ -87,9 +122,19 @@ void interpret(string raw, node*loc)
 				else if (loop-lIndex>1)
 					printError(EXCESS_CHAR, to_string(loop) + " : " + string(raw.begin() + lIndex, raw.begin() + loop));
 				else
-					byteSequence.sequence.push_back(*(new ByteChar(string(raw.begin() + lIndex, raw.begin() + loop), KMemory::_char_, true, new char(raw[loop - 1]))));
-				mode = rMode::_normal;
-				lIndex = loop + 1;
+				{
+					ByteChar*bc = new ByteChar();
+					bc->raw = raw[loop - 1];
+					bc->hash = FNV(bc->raw);
+					bc->dataType = KMemory::_char_;
+					bc->rawFlag = true;
+					bc->data = (void*)static_cast<char*>(new char(raw[loop - 1]));
+					byteSequence.add(bc);
+					bc = nullptr;
+					mode = rMode::_normal;
+					lIndex = loop + 1;
+				}				
+				
 			}
 		}
 		else if (mode == rMode::_comment)
@@ -101,67 +146,81 @@ void interpret(string raw, node*loc)
 			}
 		}
 		else
-		{
+		{//character scanner------------------------------
 			switch (raw[loop])
 			{
+				//misc
+			case ' ':
+				if (lIndex<loop)
+					resolveSymbol(raw.begin()+lIndex, raw.begin()+loop, loc, byteSequence);
+				lIndex = loop + 1;
+				break;
 				//text operators
 			case '\"':
 				if (lIndex<loop)
-					resolveSymbol(string(raw.begin() + lIndex, raw.end()), loc, byteSequence);
+					resolveSymbol(raw.begin() + lIndex, raw.begin() + loop, loc, byteSequence);
 				mode = rMode::_strlit;
 				lIndex = loop + 1;
 				break;
 			case '\'':
 				if (lIndex<loop)
-					resolveSymbol(string(raw.begin() + lIndex, raw.end()), loc, byteSequence);
+					resolveSymbol(raw.begin() + lIndex, raw.begin() + loop, loc, byteSequence);
 				mode = rMode::_charlit;
 				lIndex = loop + 1;
 				break;
 				//comment
 			case '#':
 				if (lIndex<loop)
-					resolveSymbol(string(raw.begin() + lIndex, raw.end()), loc, byteSequence);
+					resolveSymbol(raw.begin() + lIndex, raw.begin() + loop, loc, byteSequence);
 				mode = rMode::_comment;
 				lIndex = loop + 1;
 				break;
 				//arithematic operators
 			case '+':{
 				if (lIndex < loop)
-					resolveSymbol(string(raw.begin() + lIndex, raw.end()), loc, byteSequence);
+					resolveSymbol(raw.begin() + lIndex, raw.begin() + loop, loc, byteSequence);
 				lIndex = loop + 1;
-				byteSequence.sequence.push_back(*(new ByteChar("+",KMemory::_add_,true,nullptr)));
+				ByteChar*bc = new ByteChar;
+				bc->rawFlag = true;
+				bc->raw = "+";
+				bc->hash = FNV("+");
+				bc->dataType = KMemory::_add_;
+				bc->data = nullptr;
 				break; }
-			case '-':
-				if (lIndex<loop)
-					resolveSymbol(string(raw.begin() + lIndex, raw.end()), loc, byteSequence);
-				if (loop + 1 < ln)
-					if (raw[loop + 1] >= '0' && raw[loop + 1] <= '9')
-						continue;
+			case '-':{
+				if (lIndex < loop)
+					resolveSymbol(raw.begin() + lIndex, raw.begin() + loop, loc, byteSequence);
+				ByteChar*bc = new ByteChar;
+				bc->rawFlag = true;
+				bc->raw = "+";
+				bc->hash = FNV("+");
+				bc->dataType = KMemory::_add_;
+				bc->data = nullptr;
 				lIndex = loop + 1;
-				break;
+				break; }
 			case '/':
 				if (lIndex<loop)
-					resolveSymbol(string(raw.begin() + lIndex, raw.end()), loc, byteSequence);
+					resolveSymbol(raw.begin() + lIndex, raw.begin() + loop, loc, byteSequence);
 				lIndex = loop + 1;
 				break;
 			case '^':
 				if (lIndex<loop)
-					resolveSymbol(string(raw.begin() + lIndex, raw.end()), loc, byteSequence);
+					resolveSymbol(raw.begin() + lIndex, raw.begin() + loop, loc, byteSequence);
 				lIndex = loop + 1;
 				break;
 			case '%':
 				if (lIndex<loop)
-					resolveSymbol(string(raw.begin() + lIndex, raw.end()), loc, byteSequence);
+					resolveSymbol(raw.begin() + lIndex, raw.begin() + loop, loc, byteSequence);
 				lIndex = loop + 1;
 				break;
 			case '*':
 				if (lIndex<loop)
-					resolveSymbol(string(raw.begin() + lIndex, raw.end()), loc, byteSequence);
+					resolveSymbol(raw.begin() + lIndex, raw.begin() + loop, loc, byteSequence);
 				lIndex = loop + 1;
 				break;
 			case (char)-5://root
 				if (lIndex<loop)
-					resolveSymbol(string(raw.begin() + lIndex, raw.end()), loc, byteSequence);
+					resolveSymbol(raw.begin() + lIndex, raw.begin() + loop, loc, byteSequence);
 				lIndex = loop + 1;
 				break;
 				//escape character
@@ -174,8 +233,9 @@ void interpret(string raw, node*loc)
 			}
 		}
 	}
-
+	
 	if (sysState.prntDebug)
 		printMem(byteSequence);
+
 	printf("");
 }

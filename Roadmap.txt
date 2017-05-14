@@ -1,0 +1,38 @@
+[ ] UML
+[ ] General Docs
+[ ] Makefiles
+[ ] DevTool
+[ ] KDK skeleton
+[ ] RTE skeleton
+[ ] ModuleManager Skeleton
+[ ] DataManager Skeleton
+[ ] Parser Skeleton
+[ ] Executor Skeleton
+[ ] KDK - Structs
+[ ] KDK - Interfaces
+[ ] RTE - Config
+[ ] RTE - Cmd parser/ options
+[ ] RTE - Initialize components/ interfaces
+[ ] RTE - Node Registration
+[ ] RTE - Runnable Node
+[ ] Parser - Tokenization
+[ ] Parser - Multi-level buffering
+[ ] Parser - Context Reordering
+[ ] DataManager - Type Registration
+[ ] DataManager - Method Registration
+[ ] ModuleManager - Import Std. Modules
+[ ] ModuleManager - Import Ext. Modules
+[ ] ModuleManager - Reload Modules
+[ ] ModuleManager - Unload Modules
+[ ] Executor - Math
+[ ] Executor - Run keywords
+[ ] Executor - Run ext. methods
+
+---------Std. Modules-----------
+IO (basic)
+Math
+Network
+Threads
+GUI
+USB
+

@@ -1,0 +1,15 @@
+load("prompts")
+int("fnum") = prompt("Position of sequence to calculate to: ", int)
+
+func(int, "fibonacci", pos) = {
+arr("values", 2, 0, 1)
+
+from (0 to pos){
+	int("sum") = arr[0]+arr[1]
+	(<<arr)[1] = sum
+	}
+	
+	return (arr)
+}
+
+print("Value at position $fnum of series is $fibonacci(fnum)")

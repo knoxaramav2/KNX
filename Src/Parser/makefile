@@ -1,14 +1,14 @@
-#Compiles KNX Development Kit
+#Compiles Parser
 
 CC = gcc
 BITVRS=64
 CFLAGS = -std=c11 -Wall -Iheaders
 LFLAGS = -lm -Iheaders
-VERSION = -DKDKVersion=\"0.0.1\"
-OUT = libKDK.so
+VERSION = -DPRSVersion=\"0.0.1\"
+OUT = libPRS.so
 CLEANEXT = o a
 DBGFLAGS=
-SRC=compinfo.c
+SRC=
 EXPORT_PTH=../../bin/
 
 ifeq ($(shell uname), Linux)

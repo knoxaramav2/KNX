@@ -1,9 +1,15 @@
-[ ] UML
-[ ] General Docs
-[ ] Makefiles
+legend______
+	not started
+-	started
++	well in progress
+*	finished / stable
+
+[-] UML
+[-] General Docs
+[+] Makefiles
 [ ] DevTool
-[ ] KDK skeleton
-[ ] RTE skeleton
+[-] KDK skeleton
+[-] RTE skeleton
 [ ] ModuleManager Skeleton
 [ ] DataManager Skeleton
 [ ] Parser Skeleton

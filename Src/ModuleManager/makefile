@@ -1,14 +1,14 @@
-#Compiles KNX Development Kit
+#Compiles Module Manager
 
 CC = gcc
 BITVRS=64
 CFLAGS = -std=c11 -Wall -Iheaders
 LFLAGS = -lm -Iheaders
-VERSION = -DKDKVersion=\"0.0.1\"
-OUT = libKDK.so
+VERSION = -DMDMVersion=\"0.0.1\"
+OUT = libMDM.so
 CLEANEXT = o a
 DBGFLAGS=
-SRC=compinfo.c
+SRC=reg.c
 EXPORT_PTH=../../bin/
 
 ifeq ($(shell uname), Linux)

@@ -1,14 +1,14 @@
-#Compiles KNX Development Kit
+#Compiles Data Manager
 
 CC = gcc
 BITVRS=64
 CFLAGS = -std=c11 -Wall -Iheaders
 LFLAGS = -lm -Iheaders
-VERSION = -DKDKVersion=\"0.0.1\"
-OUT = libKDK.so
+VERSION = -DDTMVersion=\"0.0.1\"
+OUT = libDTM.so
 CLEANEXT = o a
 DBGFLAGS=
-SRC=compinfo.c
+SRC=
 EXPORT_PTH=../../bin/
 
 ifeq ($(shell uname), Linux)

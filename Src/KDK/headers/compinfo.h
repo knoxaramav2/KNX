@@ -1,3 +1,6 @@
+#ifndef KDK_COMPINFO
+#define KDK_COMPINFO
+
 //VERSION--------------------------------
 typedef struct version
 {
@@ -12,4 +15,11 @@ typedef struct comp_handle
 {
 version comp_version;
 
+void * handle;
+
 } comp_handle;
+
+//REGISTRATION---------------------------
+comp_handle (*register_module)(void(*)());
+
+#endif

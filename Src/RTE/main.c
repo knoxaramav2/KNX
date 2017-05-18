@@ -4,9 +4,25 @@ starting point for KNX interpreter
 
 #include <stdio.h>
 
-int main(int argc, char ** argv){
+#include "globals.h"
+#include "startup.h"
 
-printf("%s\r\n", argv[0]);
+comp_handle _info;
 
-return 0;
+int main(int argc, char ** argv)
+{
+
+int rCode = 0;
+
+if ((rCode = initComponents()))
+    return rCode;
+if ((rCode = parseCmd()))
+    return rCode;
+if ((rCode = startRoot()))
+    return rCode;
+if ((rCode = shutdown()))
+    return rCode;
+
+
+return rCode;
 }

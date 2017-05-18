@@ -2,8 +2,8 @@
 
 CC = gcc
 BITVRS=64
-CFLAGS = -std=c11 -Wall -Iheaders
-LFLAGS = -lm -Iheaders
+CFLAGS = -std=c11 -Wall -Iheaders -I../KDK/headers
+LFLAGS = -lm -L$(BINPATH) -l:libKDK.so -Wl,-rpath=$(BINPATH)
 VERSION = -DMDMVersion=\"0.0.1\"
 OUT = libMDM.so
 CLEANEXT = o a

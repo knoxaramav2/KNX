@@ -1,11 +1,11 @@
-load("prompts")
-int("fnum") = prompt("Position of sequence to calculate to: ", int)
+load ("prompts")
+int ("fnum") = prompt("Position of sequence to calculate to: ", int)
 
-func(int, "fibonacci", pos) = {
+func (int, "fibonacci", pos) = {
 arr("values", 2, 0, 1)
 
 from (0 to pos){
-	int("sum") = arr[0]+arr[1]
+	int ("sum") = arr [0]+ arr [1]
 	(<<arr)[1] = sum
 	}
 	
@@ -13,3 +13,9 @@ from (0 to pos){
 }
 
 print("Value at position $fnum of series is $fibonacci(fnum)")
+
+arr ("multi")
+
+for (0 to 5)
+	arr.add(arr())
+	

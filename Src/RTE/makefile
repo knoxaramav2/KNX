@@ -28,7 +28,7 @@ else
 endif
 
 all:
-	$(CC) $(SRC) $(OSMODE) $(CFLAGS) $(KLIB) $(VERSION) $(PLATFORM) $(LFLAGS) -o $(RUNPATH)
+	$(CC) $(SRC) $(OSMODE) $(CFLAGS) $(VERSION) $(PLATFORM) $(LFLAGS) $(KLIB) -o $(RUNPATH)
 
 .PHONY: clean
 clean:

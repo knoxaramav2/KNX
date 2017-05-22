@@ -4,7 +4,7 @@ SUBDIRS = Src/KDK/ Src/ModuleManager/ Src/DataManager/ Src/Executor/ Src/Parser/
 BITVRS=32
 BINPATH=$(shell pwd)/bin
 
-KLIB=-I../../../KNX_Libraries/headers -L../../../KNX_Libraries/_bin/$(BITVRS) -lKNX_Library
+KLIB=-I ../../../KNX_Libraries/headers -L ../../../KNX_Libraries/_bin/$(BITVRS) -lKNX_Library
 
 export BITVRS
 export BINPATH

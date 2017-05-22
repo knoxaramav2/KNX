@@ -24,7 +24,7 @@ else
 endif
 
 all:
-	$(CC) $(CFLAGS) $(LFLAGS) $(KLIB) $(VERSION) $(SRC) -shared -o $(EXPORT_PTH)$(OUT) $(OSMODE) $(DBGFLAGS)
+	$(CC) $(CFLAGS) $(LFLAGS) $(VERSION) $(SRC) -shared -o $(EXPORT_PTH)$(OUT) $(OSMODE) $(KLIB) $(DBGFLAGS)
 
 .PHONY: clean
 clean:

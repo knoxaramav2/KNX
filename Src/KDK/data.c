@@ -7,6 +7,8 @@
 #include <windows.h>
 #endif
 
+#include "KNX_File.h"
+
 #include "dat_tables.h"
 
 DatTable datTable;
@@ -16,13 +18,12 @@ void initDatTable()
     #ifdef __LINUX
     readlink("/proc/self/exe", &datTable.exeLocation, 256);
     #else
-    HMODULE hmod = GetModuleHandleW(NULL);
-    WCHAR wpath[256];
     GetModuleFileName(NULL, datTable.exeLocation, 256);
-    printf("|| %s\r\n", datTable.exeLocation);
-    //wctomb(datTable.exeLocation, *wpath);
     #endif
-     
+
+    char * tmp = getPath(datTable.exeLocation);
+
+    strncpy(datTable.exeLocation, tmp, strlen(tmp)+1);
 }
 
 DatTable getDatTable()

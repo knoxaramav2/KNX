@@ -8,7 +8,7 @@ VERSION = -DKDKVersion=\"0.0.1\"
 OUT = libKDK.so
 CLEANEXT = o a
 DBGFLAGS=
-SRC=compinfo.c
+SRC=compinfo.c config.c data.c
 EXPORT_PTH=../../bin/
 
 ifeq ($(shell uname), Linux)

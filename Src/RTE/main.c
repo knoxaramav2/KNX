@@ -16,7 +16,7 @@ int rCode = 0;
 
 if ((rCode = initComponents()))
     return rCode;
-if ((rCode = parseCmd()))
+if ((rCode = parseCmd(argc, argv)))
     return rCode;
 if ((rCode = startRoot()))
     return rCode;

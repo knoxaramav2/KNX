@@ -1,25 +1,27 @@
+#include "../ModuleManager/headers/modmanage.h"
+#include "../KDK/headers/dat_tables.h"
+#include "../KDK/headers/config.h"
+
 #include "startup.h"
-#include "handles.h"
 
 #include <stdlib.h>
 #include <dlfcn.h>
 
-comp_reg _comp_reg;
-
 int initComponents()
 {
-    initCompReg();
+    initDatTable();
 
-    loadComponent("libMDM.so");
-    loadComponent("libDTM.so");
-    loadComponent("libPRS.so");
-    loadComponent("libEXC.so");
+    register_module("libMDM.so");
+    register_module("libDTM.so");
+    register_module("libPRS.so");
+    register_module("libEXC.so");
 
     return 0;
 }
 
-int parseCmd()
+int parseCmd(int argc, char ** argv)
 {
+    loadDefaultConfig();
 
     return 0;
 }
@@ -33,9 +35,7 @@ int startRoot()
 int shutdown()
 {
 
-    for(int i = 0; i < _comp_reg.count; ++i){
-        dlclose(_comp_reg.handles[i]._handle);
-    }
+    
 
     return 0;
 }

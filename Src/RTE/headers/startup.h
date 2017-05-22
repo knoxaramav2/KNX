@@ -2,7 +2,7 @@
 #define RTE_CMD
 
 int initComponents();
-int parseCmd();
+int parseCmd(int, char **);
 int startRoot();
 int shutdown();
 

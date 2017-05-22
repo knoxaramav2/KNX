@@ -16,10 +16,11 @@ typedef struct comp_handle
 version comp_version;
 
 void * handle;
+char * name;
 
 } comp_handle;
 
 //REGISTRATION---------------------------
-comp_handle (*register_module)(void(*)());
+//typedef comp_handle (*register_module)(void *);
 
 #endif

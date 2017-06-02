@@ -2,13 +2,13 @@
 
 CC = gcc
 BITVRS=64
-CFLAGS = -std=c11 -Wall -Iheaders
+CFLAGS = -std=c11 -Wall -Iheaders -I../KDK/headers
 LFLAGS = -lm -Iheaders
 VERSION = -DPRSVersion=\"0.0.1\"
 OUT = libPRS.so
 CLEANEXT = o a
 DBGFLAGS=
-SRC=
+SRC=parser.c
 EXPORT_PTH=../../bin/
 
 ifeq ($(shell uname), Linux)

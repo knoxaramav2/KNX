@@ -30,6 +30,9 @@ int parseCmd(int argc, char ** argv)
 int startRoot()
 {
     node * root = createNode();
+
+    
+
     return 0;
 }
 

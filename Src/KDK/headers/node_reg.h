@@ -6,9 +6,10 @@
 typedef struct nodereg
 {
     unsigned long * idTable;
+    int * usedIdIndices;
 } nodereg;
 
-void initNodeReg();
+nodereg * getNodeReg();
 void resizeNodeRegTable();
 
 #endif

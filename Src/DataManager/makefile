@@ -3,12 +3,12 @@
 CC = gcc
 BITVRS=64
 CFLAGS = -std=c11 -Wall -Iheaders -I../KDK/headers
-LFLAGS = -lm -Iheaders
+LFLAGS = -lm -Iheaders -L$(BINPATH) -l:libKDK.so
 VERSION = -DDTMVersion=\"0.0.1\"
 OUT = libDTM.so
 CLEANEXT = o a
 DBGFLAGS=
-SRC= datman.c
+SRC= datman.c prime.c
 EXPORT_PTH=../../bin/
 
 ifeq ($(shell uname), Linux)

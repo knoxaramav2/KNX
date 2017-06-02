@@ -27,6 +27,8 @@ Config * loadDefaultConfig()
     size_t size = 0;
     ssize_t read = 0;
 
+    
+
     if (!defcon) return _config;
 
     while((read = getline(&buf, &size, defcon)) != -1){

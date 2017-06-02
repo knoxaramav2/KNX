@@ -1,11 +1,12 @@
-#include "../ModuleManager/headers/modmanage.h"
-#include "../KDK/headers/dat_tables.h"
-#include "../KDK/headers/config.h"
-
-#include "startup.h"
-
 #include <stdlib.h>
 #include <dlfcn.h>
+
+#include "../ModuleManager/headers/modmanage.h"
+#include "dat_tables.h"
+#include "config.h"
+#include "node.h"
+
+#include "startup.h"
 
 int initComponents()
 {
@@ -28,7 +29,7 @@ int parseCmd(int argc, char ** argv)
 
 int startRoot()
 {
-
+    node * root = createNode();
     return 0;
 }
 

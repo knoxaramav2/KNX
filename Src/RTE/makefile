@@ -8,7 +8,7 @@ OUT = KNX
 CLEANEXT = o a
 BITVRS=64
 DBGFLAG=
-SRC=main.c setup.c
+SRC=main.c setup.c node.c
 
 ifeq ($(shell uname), Linux)
 	FixPath = $1

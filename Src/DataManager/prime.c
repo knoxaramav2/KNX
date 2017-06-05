@@ -15,16 +15,13 @@ unsigned long * primeCipher(int range)
 
     //ret[0] = 1;//for root node master permission
     //ret[1] = 2;
- 
-    /*int n, i = 3, count, c;
- 
-    n = 10;
 
-    if ( n >= 1 )
-    {
-        printf("First %d prime numbers are :\n",n);
-        printf("2\n");
-    }
+    ret[0] = 1;
+    ret[1] = 2;
+ 
+    int n, i = 3, count, c;
+ 
+    n = config->maxNodes;
 
     for ( count = 2 ; count <= n ;  )
     {
@@ -35,11 +32,11 @@ unsigned long * primeCipher(int range)
         }
         if ( c == i )
         {
-            printf("%d\n",i);
+            ret[count] = c;
             count++;
         }
         i++;
-    }*/
+    }
 
     return ret;
 }

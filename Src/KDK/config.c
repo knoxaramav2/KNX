@@ -9,13 +9,33 @@
 
 #include "config.h"
 
-Config * _config;
+Config * _config = 0;
 char * defTarget = "\\default\\def_config.txt";
+
+//hardcoded config -- overwritten by loadDefaultConfig
+Config * generateConfig()
+{
+_config = malloc(sizeof(Config));
+
+_config->debug = false;
+_config->verbose = false;
+_config->suppresswarn = false;
+_config->werr = false;
+_config->nolog = false;
+
+_config->maxMem = 1024;
+_config->maxNodes = 100;
+_config->maxThreads = 100;
+_config->maxCores=0;
+}
 
 Config * loadDefaultConfig()
 {
     printf("Read config\r\n");
-    _config = malloc(sizeof(Config));
+
+    if (!_config)
+        generateConfig();
+
     DatTable dat = getDatTable();
 
     char * defstr = malloc(strlen(dat.exeLocation) + strlen(defTarget) + 1);

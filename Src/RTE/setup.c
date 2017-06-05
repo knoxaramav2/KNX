@@ -10,8 +10,6 @@
 
 int initComponents()
 {
-    initDatTable();
-
     register_module("libMDM.so");
     register_module("libDTM.so");
     register_module("libPRS.so");

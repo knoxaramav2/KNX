@@ -24,6 +24,8 @@ void initDatTable()
     char * tmp = getPath(datTable.exeLocation);
 
     strncpy(datTable.exeLocation, tmp, strlen(tmp)+1);
+
+    printf("Exe at %s\r\n", datTable.exeLocation);
 }
 
 DatTable getDatTable()

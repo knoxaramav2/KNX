@@ -27,6 +27,8 @@ _config->maxMem = 1024;
 _config->maxNodes = 100;
 _config->maxThreads = 100;
 _config->maxCores=0;
+
+return _config;
 }
 
 Config * loadDefaultConfig()

@@ -2,13 +2,15 @@
 
 CC = gcc
 BITVRS=64
+DEBUG=false
 CFLAGS = -std=c11 -Wall -Iheaders
 LFLAGS = -lm -Iheaders
+DFLAGS = -DDEBUG=$(DEBUG)#build debug arg
 VERSION = -DKDKVersion=\"0.0.1\"
 OUT = libKDK.so
 CLEANEXT = o a
-DBGFLAGS=
-SRC=compinfo.c config.c data.c
+DBGFLAGS= -d#command line debug arg
+SRC=kdk.c compinfo.c config.c data.c debug.c
 EXPORT_PTH=../../bin/
 
 ifeq ($(shell uname), Linux)
@@ -24,7 +26,7 @@ else
 endif
 
 all:
-	$(CC) $(CFLAGS) $(LFLAGS) $(VERSION) $(SRC) -shared -o $(EXPORT_PTH)$(OUT) $(OSMODE) $(KLIB) $(DBGFLAGS)
+	$(CC) $(CFLAGS) $(DFLAGS) $(LFLAGS) $(VERSION) $(SRC) -shared -o $(EXPORT_PTH)$(OUT) $(OSMODE) $(KLIB)
 
 .PHONY: clean
 clean:

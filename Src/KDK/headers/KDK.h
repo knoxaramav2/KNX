@@ -10,5 +10,10 @@ Includes are resources in this library
 #include "compinfo.h"
 #include "dat_tables.h"
 #include "node.h"
+#include "debug.h"
+
+//required for some features to work.
+//important features, the best features
+void init_sdk();
 
 #endif

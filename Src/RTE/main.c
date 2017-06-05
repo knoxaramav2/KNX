@@ -4,6 +4,7 @@ starting point for KNX interpreter
 
 #include <stdio.h>
 
+#include "KDK.h"
 #include "globals.h"
 #include "startup.h"
 
@@ -11,6 +12,8 @@ comp_handle _info;
 
 int main(int argc, char ** argv)
 {
+
+init_sdk();
 
 int rCode = 0;
 

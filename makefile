@@ -1,14 +1,16 @@
 #compiles entire KNX project
 
 SUBDIRS = Src/KDK/ Src/ModuleManager/ Src/DataManager/ Src/Executor/ Src/Parser/ Src/RTE/
-BITVRS=32
+BITVRS=64
 BINPATH=$(shell pwd)/bin
+DEBUG=false
 
 KLIB=-I ../../../KNX_Libraries/headers -L ../../../KNX_Libraries/_bin/$(BITVRS) -lKNX_Library
 
 export BITVRS
 export BINPATH
 export KLIB
+export DBG
 
 subdirs:
 	for dir in $(SUBDIRS); do \

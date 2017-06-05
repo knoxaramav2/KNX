@@ -11,20 +11,16 @@ static void startup() __attribute__((constructor));
 static void shutdown() __attribute__((destructor));
 
 nodereg * node_reg;
-
+Config * config;
 
 //Constructor/Destructor
 void startup()
 {
     
-    Config * config = getConfig();
+    config = getConfig();
     
-    return;
     node_reg = malloc(sizeof(nodereg));
     node_reg->usedIdIndices = malloc(sizeof(int *) * config->maxNodes);
-
-    printf("%d<<\r\n", config->maxNodes);
-    return;
 
     //
     for (unsigned i = 0; i < config->maxNodes; ++i){

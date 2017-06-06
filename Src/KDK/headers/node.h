@@ -25,7 +25,6 @@ node_status status;
 } node;
 
 node * createNode();
-int registerNode(node *);
 int destroyNode(node *);
 
 #endif

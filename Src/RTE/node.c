@@ -1,3 +1,5 @@
+//RTE
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -11,13 +13,6 @@ node * createNode()
     ret->status = ns_active;
 
     return ret;
-}
-
-int registerNode(node * n)
-{
-    
-
-    return 0;
 }
 
 int destroyNode(node * n)

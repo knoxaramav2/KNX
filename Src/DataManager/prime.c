@@ -9,19 +9,17 @@
 
 unsigned long * primeCipher(int range)
 {
-    Config * config = getConfig();
-
-    unsigned long * ret = malloc(sizeof(unsigned long *) * config->maxNodes);
-
-    //ret[0] = 1;//for root node master permission
-    //ret[1] = 2;
+    unsigned long * ret = malloc(sizeof(unsigned long *) * range);
 
     ret[0] = 1;
     ret[1] = 2;
+
+    if (range <= 2)
+        return ret;
  
     int n, i = 3, count, c;
  
-    n = config->maxNodes;
+    n = range;
 
     for ( count = 2 ; count <= n ;  )
     {

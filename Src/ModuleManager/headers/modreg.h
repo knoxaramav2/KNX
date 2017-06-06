@@ -9,7 +9,7 @@ typedef struct mod_reg
 {
 
 int count;
-comp_handle * handles;
+comp_handle ** handles;
 
 } mod_reg;
 
@@ -17,5 +17,7 @@ comp_handle * handles;
 extern mod_reg _modreg;
 void register_module (char *);
 void release_module (char *);
+
+void * getModuleHandle(char *);
 
 #endif

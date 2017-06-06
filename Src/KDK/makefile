@@ -3,7 +3,7 @@
 CC = gcc
 BITVRS=64
 DEBUG=false
-CFLAGS = -std=c11 -Wall -Iheaders
+CFLAGS = -std=c11 -Wall -Iheaders -g
 LFLAGS = -lm -Iheaders
 DFLAGS = -DDEBUG=$(DEBUG)#build debug arg
 VERSION = -DKDKVersion=\"0.0.1\"
@@ -26,7 +26,7 @@ else
 endif
 
 all:
-	$(CC) $(CFLAGS) $(DFLAGS) $(LFLAGS) $(VERSION) $(SRC) -shared -o $(EXPORT_PTH)$(OUT) $(OSMODE) $(KLIB)
+	$(CC) $(CFLAGS) $(DFLAGS) $(LFLAGS) $(VERSION) $(SRC) -shared -o $(EXPORT_PTH)$(OUT) $(OSMODE) $(PLATFORM) $(KLIB)
 
 .PHONY: clean
 clean:

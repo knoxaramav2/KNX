@@ -1,7 +1,11 @@
 #include <stdlib.h>
 #include <dlfcn.h>
 
+#include <stdio.h>
+
+#include "node_reg.h"
 #include "../ModuleManager/headers/modmanage.h"
+
 #include "dat_tables.h"
 #include "config.h"
 #include "node.h"
@@ -29,7 +33,9 @@ int startRoot()
 {
     node * root = createNode();
 
-    
+    void * handle = getModuleHandle("libDTM.so");
+    printf("handle >> %p\r\n", handle);
+    //registerNode(root);
 
     return 0;
 }

@@ -23,6 +23,7 @@ typedef struct Config
 
 extern Config * _config;
 
+Config * generateConfig();
 Config * loadDefaultConfig();
 Config * getConfig();
 

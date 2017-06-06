@@ -21,7 +21,7 @@ void startup()
 void shutdown()
 {
     for(int i = 0; i < _modreg.count; ++i){
-        dlclose(_modreg.handles[i].handle);
+        dlclose(_modreg.handles[i]->handle);
     }
 
     printf("Module Manager Unloaded\r\n");
@@ -32,14 +32,26 @@ void register_module(char * libpath)
     void * handle;
     handle = dlopen(libpath, RTLD_LAZY);
 
-    _modreg.handles = realloc(_modreg.handles, (_modreg.count+1) * sizeof(_modreg));
-    _modreg.handles[_modreg.count].handle = handle;
-    _modreg.handles[_modreg.count].name = malloc(strlen(libpath)+1);
+    _modreg.handles = realloc(_modreg.handles, (_modreg.count+1) * sizeof(comp_handle*));
+    _modreg.handles[_modreg.count] = malloc(sizeof(comp_handle));
+    _modreg.handles[_modreg.count]->handle = handle;
+    _modreg.handles[_modreg.count]->name = malloc(strlen(libpath)+1);
     strncpy(
-        _modreg.handles[_modreg.count].name,
+        _modreg.handles[_modreg.count]->name,
         libpath,
         strlen(libpath)+1
     );
     
     ++_modreg.count;
+}
+
+void * getModuleHandle(char * name)
+{
+    for(int i = 0; i < _modreg.count; ++i)
+    {
+        if (strncmp(name, _modreg.handles[i]->name, 256) == 0)
+            return _modreg.handles[i]->handle;
+    }
+
+    return NULL;
 }

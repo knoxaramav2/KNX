@@ -2,7 +2,7 @@
 
 CC = gcc
 BITVRS=64
-CFLAGS = -std=c11 -Wall -Iheaders -I../KDK/headers
+CFLAGS = -std=c11 -Wall -Iheaders -I../KDK/headers -g
 LFLAGS = -lm -L$(BINPATH) -l:libKDK.so -Wl,-rpath=$(BINPATH)
 VERSION = -DMDMVersion=\"0.0.1\"
 OUT = libMDM.so

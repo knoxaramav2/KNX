@@ -1,5 +1,8 @@
 //Datamanager
 
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "datamanager.h"
 #include "node.h"
 
@@ -12,12 +15,30 @@ nodereg * getNodeReg()
 
 void resizeNodeRegTable()
 {
-
+//TODO
 }
 
-int registerNode(node * regnode)
+int registerNode(node * regnode, node * parent)
 {
-    //if ()
+    //search for valid id slot
+    for (unsigned i = 0; i < config->maxNodes; ++i)
+    {
+        if (node_reg->nodeTable[i] == NULL){
+            node_reg->nodeTable[i] = regnode;
+            regnode->id_index = i;
 
-    return 0;
+            //couple to parent
+            regnode->parent = parent;
+            if (parent != NULL){
+                parent->children = realloc(parent->children, parent->numChild+1);
+                parent->children[parent->numChild] = regnode;
+                ++parent->numChild;
+            }
+
+            return 0;
+        }
+    }
+
+    printf("Failed to register node\r\n");
+    return -1;
 }

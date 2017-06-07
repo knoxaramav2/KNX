@@ -16,6 +16,11 @@ ns_terminated
 
 typedef struct node{
 
+struct node * parent;
+struct node ** children;
+
+int numChild;
+
 //meta
 pthread_t _handle;
 int id_index;
@@ -26,5 +31,7 @@ node_status status;
 
 node * createNode();
 int destroyNode(node *);
+
+void * _nodeProc(node *);
 
 #endif

@@ -9,7 +9,7 @@
 typedef struct nodereg
 {
     unsigned long * idTable;
-    int * usedIdIndices;
+    bool * usedIdIndices;//TODO remove
     node ** nodeTable;
 } nodereg;
 
@@ -17,6 +17,8 @@ extern nodereg * node_reg;
 
 nodereg * getNodeReg();
 void resizeNodeRegTable();
-int registerNode(node*);
+int registerNode(node*, node*);
+
+
 
 #endif

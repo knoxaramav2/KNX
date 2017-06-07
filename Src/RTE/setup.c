@@ -33,9 +33,12 @@ int startRoot()
 {
     node * root = createNode();
 
+    int (*registerNode)(node*);
+    
     void * handle = getModuleHandle("libDTM.so");
-    printf("handle >> %p\r\n", handle);
-    //registerNode(root);
+    registerNode = dlsym(handle, "registerNode");
+    registerNode(root);
+    
 
     return 0;
 }

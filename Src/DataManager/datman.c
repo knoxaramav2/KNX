@@ -11,7 +11,7 @@ static void startup() __attribute__((constructor));
 static void shutdown() __attribute__((destructor));
 
 nodereg * node_reg = 0;
-Config * config;
+//Config * config;
 
 //Constructor/Destructor
 void startup()
@@ -23,10 +23,10 @@ void startup()
     node_reg->nodeTable = malloc(sizeof(node *) * config->maxNodes);
 
     for (unsigned i = 0; i < config->maxNodes; ++i){
-        node_reg->usedIdIndices[i]=-1;
+        //node_reg->usedIdIndices[i]=false;
+        node_reg->nodeTable[i] = NULL;
     }
 
-    node_reg = malloc(sizeof(nodereg));
     node_reg->idTable = primeCipher(config->maxNodes);
 
     getNodeReg();

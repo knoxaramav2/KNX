@@ -32,6 +32,6 @@ node_status status;
 node * createNode();
 int destroyNode(node *);
 
-void * _nodeProc(node *);
+void * _nodeProc(void *);
 
 #endif

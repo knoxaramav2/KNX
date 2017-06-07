@@ -38,7 +38,9 @@ int startRoot()
     void * handle = getModuleHandle("libDTM.so");
     registerNode = dlsym(handle, "registerNode");
     registerNode(root);
-    
+
+    pthread_create(&root->_handle, NULL, _nodeProc, root);
+    printf("%d\r\n", pthread_join(root->_handle, NULL));
 
     return 0;
 }

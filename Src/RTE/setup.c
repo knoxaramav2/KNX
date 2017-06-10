@@ -9,8 +9,11 @@
 #include "dat_tables.h"
 #include "config.h"
 #include "node.h"
+#include "globals.h"
 
 #include "startup.h"
+
+Config * _config = 0;
 
 int initComponents()
 {
@@ -24,7 +27,7 @@ int initComponents()
 
 int parseCmd(int argc, char ** argv)
 {
-    loadDefaultConfig();
+    _config = loadDefaultConfig();
 
     return 0;
 }
@@ -32,12 +35,7 @@ int parseCmd(int argc, char ** argv)
 int startRoot()
 {
     node * root = createNode();
-
-    int (*registerNode)(node*);
-    
-    void * handle = getModuleHandle("libDTM.so");
-    registerNode = dlsym(handle, "registerNode");
-    registerNode(root);
+    registerNode(root, NULL);
 
     pthread_create(&root->_handle, NULL, _nodeProc, root);
     printf("%d\r\n", pthread_join(root->_handle, NULL));

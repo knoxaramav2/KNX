@@ -3,6 +3,8 @@
 
 #include <pthread.h>
 
+#include "mem.h"
+
 /*
 implemented in RTE/node.c
 */
@@ -20,6 +22,8 @@ struct node * parent;
 struct node ** children;
 
 int numChild;
+
+memTree * global, * local;
 
 //meta
 pthread_t _handle;

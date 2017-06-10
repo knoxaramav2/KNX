@@ -2,6 +2,7 @@
 #define DATMAN
 
 #include "node_reg.h"
+#include "mem.h"
 
 Config * config;
 

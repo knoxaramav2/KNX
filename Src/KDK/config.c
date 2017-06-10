@@ -119,6 +119,8 @@ Config * loadDefaultConfig()
 
     fclose(defcon);
 
+    printf("Loaded config data\r\n");
+
     return _config;
 }
 

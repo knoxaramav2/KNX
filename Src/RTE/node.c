@@ -6,6 +6,8 @@
 #include <string.h>
 #include <signal.h>
 
+#include "KNX_Hash.h"
+
 #include "node.h"
 #include "globals.h"
 
@@ -55,8 +57,8 @@ bool startline = true;
 
 fflush(stdout);
 
-while(self->status != ns_terminated && interrupt){
-
+do
+{
     if (startline){
         printf("|%d|\t", self->id_index);
         startline=false;
@@ -69,16 +71,17 @@ while(self->status != ns_terminated && interrupt){
         buffer[bindex] = 0;
         bindex=0;
 
-        printf("%s\r\n", buffer);
-        fflush(stdout);
-        printf("||%d\r\n", strcmp(buffer, "quit") == 0);
-        if (_config->debug && strcmp(buffer, "quit") == 0) return NULL;
+        printf("%llu\r\n", FNV_1a_32(buffer));
+        //printf("%d\r\n", strcmp(buffer, "quit\n"));
+        int res = strcmp(buffer, "quit");
+        printf("%d\r\n", res);
+        if (res == 0) 
+            return NULL;
 
-        //TODO
     }
 
     buffer[bindex++] = c;
-}
+} while(self->status != ns_terminated && interrupt);
 
 return NULL;
 }

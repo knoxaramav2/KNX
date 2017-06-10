@@ -23,7 +23,9 @@ run:
 
 .PHONY: dbg
 dbg:
-	bin/KNX -d -v
+	bin/KNX -d -v --nolog --test=hello
+
+build: subdirs run
 
 .PHONY: clean
 clean:

@@ -89,7 +89,7 @@ int parseStr(char * arg)
     switch(hash)
     {
         case 14210939209047507578ULL: //nolog
-        _config->nolog=true;
+        _config->nolog = true;
         break;
         case 14829159093148863043ULL://maxmem
         _config->maxMem = strcmp(keyval[1], "true") == 0;

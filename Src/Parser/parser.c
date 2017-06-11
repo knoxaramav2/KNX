@@ -11,9 +11,6 @@ static void shutdown() __attribute__((destructor));
 
 void startup()
 {
-
-
-
     printf("Parser Loaded\r\n");
 }
 

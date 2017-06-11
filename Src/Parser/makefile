@@ -8,7 +8,7 @@ VERSION = -DPRSVersion=\"0.0.1\"
 OUT = libPRS.so
 CLEANEXT = o a
 DBGFLAGS=
-SRC=parser.c
+SRC=parser.c lexical.c
 EXPORT_PTH=../../bin/
 
 ifeq ($(shell uname), Linux)

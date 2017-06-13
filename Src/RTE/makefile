@@ -1,7 +1,7 @@
 #compiles RTE component
 
 CC = gcc
-CFLAGS = -std=c11 -Wall -I../KDK/headers -Iheaders -I../../../KNX_Libraries/headers -DNULL=0 -Dtrue=1 -Dfalse=0 -g
+CFLAGS = -std=c11 -Wall -I../KDK/headers -Iheaders -I../../../KNX_Libraries/headers $(COMMON) -g
 LFLAGS = -lm -ldl -lpthread -L$(BINPATH) \
 -l:libKDK.so -l:libMDM.so -l:libDTM.so -l:libPRS.so \
 -Wl,-rpath=$(BINPATH)

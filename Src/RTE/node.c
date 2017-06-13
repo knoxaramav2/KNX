@@ -11,6 +11,8 @@
 #include "node.h"
 #include "globals.h"
 
+#include "../Parser/headers/parser.h"
+
 static volatile int interrupt = 1;
 
 void intrFlag(int d)
@@ -71,15 +73,14 @@ do
         buffer[bindex] = 0;
         bindex=0;
 
-        printf("%llu\r\n", FNV_1a_32(buffer));
-        //printf("%d\r\n", strcmp(buffer, "quit\n"));
-        int res = strcmp(buffer, "quit");
-        printf("%d\r\n", res);
-        if (res == 0) 
+        if (strcmp(buffer, "quit") == 0) 
             return NULL;
+
+        tokenize(self, buffer);
 
     }
 
+    if (c==0xa) continue;
     buffer[bindex++] = c;
 } while(self->status != ns_terminated && interrupt);
 

@@ -3,6 +3,7 @@
 
 #include <pthread.h>
 
+#include "token.h"
 #include "mem.h"
 
 /*
@@ -24,6 +25,8 @@ struct node ** children;
 int numChild;
 
 memTree * global, * local;
+
+tBuffer buffer;
 
 //meta
 pthread_t _handle;

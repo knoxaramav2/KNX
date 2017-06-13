@@ -34,12 +34,14 @@ node * createNode()
     ret->local = createMemTree();
     ret->global = NULL;//TODO look up root node
 
+    ret->buffer = createTBuffer();
+
     return ret;
 }
 
 int destroyNode(node * n)
 {
-
+    
 
     return 0;
 }

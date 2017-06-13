@@ -5,20 +5,7 @@
 
 #include "lexeme.h"
 
-/*
-holds information
-*/
-
-typedef struct token{
-
-char * raw;
-lexeme type;
-void * info;
-
-struct token * left;
-struct token * right;
-
-} token;
+typedef struct token token;
 
 typedef struct tBuffer
 {
@@ -34,13 +21,26 @@ unsigned tCount;
 
 } tBuffer;
 
+typedef struct token{
+
+char * raw;
+lexeme type;
+void * info;
+
+tBuffer buffer;
+
+struct token * left;
+struct token * right;
+
+} token;
+
 token * createToken(char *, lexeme, void *);
 void coupleTokens(token *, token *, token *);
 void destroyToken(token *, bool);
 
 tBuffer createTBuffer();
 void clearTBuffer(tBuffer *);
-void appendTBuffer(tBuffer *, token *);
+void appendTBuffer(tBuffer *, token *, bool);
 
 
 #endif

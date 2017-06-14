@@ -60,6 +60,9 @@ typedef enum lexeme
     lx_SET_AND,         //&=
     lx_SET_OR,          //|=
     lx_SET_NOT,         //~=
+    lx_SET_INC,         //++
+    lx_SET_DEC,         //--
+    lx_SET_TERN,        //x ? (cond, true_val, false_val)
 
     //logic
     lx_LOG_AND,         //&
@@ -69,7 +72,6 @@ typedef enum lexeme
     lx_LOG_NOR,         //!|
     lx_LOG_XOR,         //||
     lx_LOG_XNOR,        //|!
-    lx_LOG_TERN,        //x ?= (cond, true_val, false_val)
 
     //comparison
     lx_CMP_EQU,         //==

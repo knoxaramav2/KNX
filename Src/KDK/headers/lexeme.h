@@ -31,26 +31,25 @@ typedef enum lexeme
     lx_WSTRING,
 
     //DATA STRUCTURES
-    lx_ARRAY,   //strong typed
-    lx_LIST.    //loose typed
-    lx_CLASS,   //data encapsulation
+    lx_ARRAY,       //strong typed
+    lx_LIST,        //loose typed
+    lx_CLASS,       //data encapsulation
 
     //MISC
     lx_BYTE,
     lx_FUNCTION,
     lx_VOID,
-    lx_LIST,
 
     //OPERATORS
     lx_OPERATOR,
     //math
-    lx_ADD,
-    lx_SUB,
-    lx_MULT,
-    lx_DIV,
-    lx_MOD,
-    lx_POW,
-    lx_ROOT,
+    lx_ADD,             //x+y
+    lx_SUB,             //x-y
+    lx_MULT,            //x*y
+    lx_DIV,             //x/y
+    lx_MOD,             //x%y
+    lx_POW,             //x^y
+    lx_ROOT,            //
 
     //setters
     lx_SET,             //=
@@ -104,7 +103,7 @@ typedef enum lexeme
     lx_BIT_OR,          //^|
     lx_BIT_NOT,         //^!
     lx_BIT_LEFT,        //^<
-    lx_BIT_RIGHT        //^>
+    lx_BIT_RIGHT,        //^>
 
     //KEYWORDS
     //primitives

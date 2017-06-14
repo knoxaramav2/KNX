@@ -31,6 +31,7 @@ tBuffer buffer;
 
 struct token * left;
 struct token * right;
+struct token * sibling;
 
 } token;
 

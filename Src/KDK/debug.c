@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdio.h>
 
+#include "token.h"
 #include "dat_tables.h"
 #include "config.h"
 #include "debug.h"
@@ -49,4 +50,39 @@ void dflush()
     //DatTable = getDatTable();
     
     //FILE * dlog = fopen("", "a");
+}
+
+
+//lexical
+
+
+void printBufferStream(tBuffer * buf)
+{
+    printf(">>%d\r\n", _config->debug);
+    //if (!_config->debug)
+    //    return;
+
+    printf("eCount :%3d\r\n", buf->eCount);
+    printf("oCount :%3d\r\n", buf->oCount);
+    
+    token * top = buf->head;
+
+    while (top){
+        printf("{%s|%u}", top->raw, top->type);
+
+        token * sib = top->sibling;
+
+        while(sib){
+            printf("<%s|%u>", sib->raw, sib->type);
+            sib = sib->sibling;
+        }
+
+        top = top->right;
+
+        printf("\r\n");
+    }
+
+
+    printf("\r\n");
+    fflush(stdout);
 }

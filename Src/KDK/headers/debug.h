@@ -16,4 +16,8 @@ void dlog(char *);
 //flush log buffer
 void dflush();
 
+//lexical tools
+//struct tBuffer tBuffer;
+void printBufferStream(tBuffer *);
+
 #endif

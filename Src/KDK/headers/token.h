@@ -7,8 +7,15 @@
 
 typedef struct token token;
 
+#define QBIT_S  1
+#define QBIT_D  2
+
 typedef struct tBuffer
 {
+//encapsulation buffer
+char enStack [128];
+unsigned eCount;
+unsigned char qState;
 
 //operator stack
 lexeme opStack [128];
@@ -18,6 +25,8 @@ unsigned oCount;
 token * head;
 token * tokens;
 unsigned tCount;
+
+bool yieldLine;
 
 } tBuffer;
 

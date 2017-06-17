@@ -100,6 +100,16 @@ typedef enum lexeme
     lx_CNT_BREAK,       //break
     lx_CNT_CONTINUE,    //continue
 
+    //encapsulates
+    lx_ENC_OBRACK,      //[
+    lx_ENC_CBRACK,      //]
+    lx_ENC_OBRACE,      //{
+    lx_ENC_CBRACE,      //}
+    lx_ENC_OPARAN,      //(
+    lx_ENC_CPARAN,      //)
+    lx_ENC_DQUOTE,      //"
+    lx_ENC_SQUOTE,      //'
+
     //bitwise
     lx_BIT_AND,         //^&
     lx_BIT_OR,          //^|

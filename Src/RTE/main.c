@@ -13,6 +13,7 @@ comp_handle _info;
 int main(int argc, char ** argv)
 {
 
+printf("%d>>>\r\n", argc);
 init_sdk();
 
 int rCode = 0;

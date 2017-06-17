@@ -3,7 +3,7 @@
 CC = gcc
 BITVRS=64
 CFLAGS = -std=c11 -Wall -Iheaders -I../KDK/headers $(COMMON) -g
-LFLAGS = -lm -Iheaders
+LFLAGS = -lm -Iheaders -L$(BINPATH) -l:libKDK.so
 VERSION = -DPRSVersion=\"0.0.1\"
 OUT = libPRS.so
 CLEANEXT = o a

@@ -3,6 +3,7 @@
 #include <stdbool.h>
 
 #include "parser.h"
+#include "debug.h"
 
 #define isNum(x) (x>='0' && x<='9')
 #define isAlpha(x) ((x>='a' && x<='z') || (x>='A' && x<='Z'))
@@ -11,8 +12,19 @@
 #define isWhiteSpace(x) (x==' ' || x=='\t' || x==0)
 #define isOCap(x) (x=='(' || x=='[' || x=='{')
 #define isECap(x) (x==')' || x==']' || x=='}')
+#define isQuote(x) (x=='\'' || x=='\"')
 
-size_t pushOperator(char * str, size_t max)
+char getEscapeChar(char c){
+
+    return c;
+}
+
+lexeme resolveSymbol(char * sym){
+
+    return lx_NA;
+}
+
+size_t pushOperator(tBuffer * buf, char * str, size_t max)
 {
     //printf("{%s}", str);
 
@@ -99,6 +111,28 @@ size_t pushOperator(char * str, size_t max)
         case '$':
             result = lx_GEN_LAMBDA;
         break;
+
+        //encapsulation
+        case '(':
+        case '{':
+        case '[':
+
+        break;
+        
+        case ')':
+        case '}':
+        case ']':
+
+        break;
+
+        //start quote states
+        case '\'':
+        buf->qState = QBIT_S;
+        break;
+        case '\"':
+        buf->qState = QBIT_D;
+        break;
+
         
         default:
         return 0;
@@ -109,9 +143,12 @@ size_t pushOperator(char * str, size_t max)
     return ret;
 } 
 
-void pushOperand(char * str, size_t max)
+void pushOperand(tBuffer * buf, char * str, size_t max, lexeme explicit)
 {
-    printf("[%s]", str);
+    if (explicit == lx_NA)
+        explicit = resolveSymbol(str);
+
+    printf("[%s, %d]", str, explicit);
 }
 
 //TODO implement modified shunting yard as in docs
@@ -126,25 +163,56 @@ int tokenize(node * node, char * raw)
     for (size_t x=0; x <= len; ++x)
     {
         char c = raw[x];
-        //printf("%d\r\n", (int)c);
+
+        //literal read mode
+        if (node->buffer.qState){
+            if ((c=='\'' && node->buffer.qState == QBIT_S) ||
+                (c=='\"' && node->buffer.qState == QBIT_D)){
+
+                    buffer[index]=0;
+                    pushOperand(
+                        &node->buffer, 
+                        buffer, index, 
+                        node->buffer.qState == QBIT_S && index == 1 ? lx_CHAR : lx_STRING);
+                    node->buffer.qState = 0;
+                    index = 0;
+                    ++x;
+            }
+
+            if (c=='\\'){
+                c == getEscapeChar(c);
+                ++index;
+            }
+
+            buffer[index++] = c;
+            
+            continue;
+        }
+
         if (isText(c)){
             buffer[index++] = c;
         } else {
             if (index > 0){
                 buffer[index] = 0;
-                pushOperand(buffer, index);
+                pushOperand(&node->buffer, buffer, index, lx_NA);
                 index = 0;
             }
 
             if (!isWhiteSpace(c)){
-                x += pushOperator(raw + x, len - x);
+                x += pushOperator(&node->buffer, raw + x, len - x);
             }
         }
     }
 
+    //TODO add quotes and encapsulates
+
+    printBufferStream(&node->buffer);
+
     printf("\r\n");
 
-    return node->buffer.tCount == 0 ?
+    return  node->buffer.oCount == 0 && 
+            node->buffer.qState == 0 &&
+            !node->buffer.yieldLine ?
         TK_COMPLETE :
         TK_PENDING;
 }

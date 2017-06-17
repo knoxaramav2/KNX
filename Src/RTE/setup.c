@@ -30,6 +30,7 @@ int initComponents()
 int parseMulti(char * arg)
 {
     size_t len = strlen(arg);
+    printf("mark\r\n");
 
     for (size_t i = 1; i < len; ++i)
     {
@@ -46,6 +47,8 @@ int parseMulti(char * arg)
             return 2;
         }
     }
+
+    printf("$%d\r\n", _config->debug);
 
     return 0;
 }
@@ -120,6 +123,8 @@ int parseCmd(int argc, char ** argv)
     _config = loadDefaultConfig();
 
     int ret = 0;
+
+    printf("$%d\r\n", argc);
 
     for (int i = 1; i < argc; ++i)
     {

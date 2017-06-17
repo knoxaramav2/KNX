@@ -7,8 +7,11 @@ tBuffer createTBuffer()
 {
     tBuffer ret;
 
-    memset(ret.opStack, 0, sizeof ret.opStack);
+    //memset(ret.opStack, 0, sizeof ret.opStack);
+    ret.eCount = 0;
     ret.oCount = 0;
+
+    ret.qState = 0;
 
     ret.head = NULL;
     ret.tokens = NULL;

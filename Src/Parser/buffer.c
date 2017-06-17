@@ -10,31 +10,33 @@ tBuffer createTBuffer()
     //memset(ret.opStack, 0, sizeof ret.opStack);
     ret.eCount = 0;
     ret.oCount = 0;
-
+    ret.tCount = 0;
     ret.qState = 0;
 
     ret.head = NULL;
     ret.tokens = NULL;
-    ret.tCount = 0;
+    ret.sibling = NULL;
 
     return ret;
 }
 
 void clearTBuffer(tBuffer * bf)
 {
-    for (int i = bf->oCount; i>= i; --i)
-    {
-        bf->opStack[i] = 0;
-    }
+    bf->oCount = 0;
+    bf->eCount = 0;
+    bf->tCount = 0;
+    bf->qState = 0;
 
-    token * tmp = bf->head;
+    token * tmp = bf->tokens;
     while (tmp != NULL){
         token * t = tmp->right;
-        destroyToken(t, tmp);
+        destroyToken(tmp, true);
         tmp = t;
     }
 
     bf->head = NULL;
+    bf->tokens = NULL;
+    bf->sibling = NULL;
 }
 
 void appendTBuffer(tBuffer * bf, token * tk, bool link)

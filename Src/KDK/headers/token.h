@@ -22,8 +22,9 @@ lexeme opStack [128];
 unsigned oCount;
 
 //output stack
-token * head;
 token * tokens;
+token * head;
+token * sibling;
 unsigned tCount;
 
 bool yieldLine;

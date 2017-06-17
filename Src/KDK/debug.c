@@ -64,8 +64,9 @@ void printBufferStream(tBuffer * buf)
 
     printf("eCount :%3d\r\n", buf->eCount);
     printf("oCount :%3d\r\n", buf->oCount);
+    printf("tCount :%3d\r\n", buf->tCount);
     
-    token * top = buf->head;
+    token * top = buf->tokens;
 
     while (top){
         printf("{%s|%u}", top->raw, top->type);

@@ -1,12 +1,16 @@
 #include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
 
 #include "token.h"
 
 token * createToken(char * raw, lexeme type, void * data)
 {
     token * ret = malloc(sizeof(token));
+    
+    ret->raw = malloc(strlen(raw)+1);
+    ret->raw = strncpy(ret->raw, raw, strlen(raw)+1);
 
-    ret->raw = raw;
     ret->type = type;
     ret->info = data;
 

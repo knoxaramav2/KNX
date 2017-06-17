@@ -11,6 +11,8 @@
 typedef enum lexeme
 {
     lx_NA,
+    lx_NA_OPERAND,
+    lx_NA_OPERATOR,
 
     //primitive types
 
@@ -82,6 +84,7 @@ typedef enum lexeme
     lx_CMP_LSS_EQU,     //<=
 
     //general
+    lx_GEN_LISTITEM,    //,
     lx_GEN_MEMBERREF,   //.
     lx_GEN_INDEX,       //:
     lx_GEN_LAMBDA,      //$(arg, arg, ...){expression}

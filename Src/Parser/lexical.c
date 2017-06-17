@@ -19,16 +19,25 @@ char getEscapeChar(char c){
     return c;
 }
 
-lexeme resolveSymbol(char * sym){
+void * resolveSymbol(char * sym, lexeme * lx){
 
-    return lx_NA;
+
+
+    *lx = lx_NA_OPERAND;
+    return NULL;
+}
+
+lexeme popOpStack(tBuffer * buf){
+    return buf->oCount > 0 ? 
+        buf->opStack[--buf->oCount] :
+        lx_NA;
 }
 
 size_t pushOperator(tBuffer * buf, char * str, size_t max)
 {
     //printf("{%s}", str);
 
-    lexeme result = lx_NA;
+    lexeme result = lx_NA_OPERATOR;
     size_t ret = 0;
 
     char c0 = str[0];
@@ -111,6 +120,12 @@ size_t pushOperator(tBuffer * buf, char * str, size_t max)
         case '$':
             result = lx_GEN_LAMBDA;
         break;
+        case '.':
+            result = lx_GEN_MEMBERREF;
+        break;
+        case ',':
+            result = lx_GEN_LISTITEM;
+        break;
 
         //encapsulation
         case '(':
@@ -125,17 +140,22 @@ size_t pushOperator(tBuffer * buf, char * str, size_t max)
 
         break;
 
-        //start quote states
+        //control operators
         case '\'':
         buf->qState = QBIT_S;
+        return 0;
         break;
         case '\"':
         buf->qState = QBIT_D;
-        break;
-
-        
-        default:
         return 0;
+        break;
+        case '\\':
+        if (max == 1){
+            buf->yieldLine = true;
+            return 0;
+        }
+        
+        break;
     }
 
     printf("{%u}", result);
@@ -145,8 +165,32 @@ size_t pushOperator(tBuffer * buf, char * str, size_t max)
 
 void pushOperand(tBuffer * buf, char * str, size_t max, lexeme explicit)
 {
+    void * data = NULL;
     if (explicit == lx_NA)
-        explicit = resolveSymbol(str);
+        data = resolveSymbol(str, &explicit);
+
+    token * t = createToken(str, explicit, data);
+
+    //if first item pushed
+    if (buf->tCount == 0){
+        buf->tokens = t;
+        buf->head = t;
+        buf->sibling = t;
+
+        ++buf->tCount;
+    }
+    //append sibling if last operator on stack is ,
+    else if (buf->oCount > 0 && buf->opStack[buf->oCount-1] == lx_GEN_LISTITEM){
+        popOpStack(buf);
+        buf->sibling->sibling = t;
+        t->left = buf->sibling;
+        buf->sibling = t;
+    } else {
+        coupleTokens(NULL, buf->head, t);
+        buf->head = t;
+        buf->sibling = t;
+        ++buf->tCount;
+    }
 
     printf("[%s, %d]", str, explicit);
 }

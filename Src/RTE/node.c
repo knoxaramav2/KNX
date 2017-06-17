@@ -10,6 +10,7 @@
 
 #include "node.h"
 #include "globals.h"
+#include "token.h"
 
 #include "../Parser/headers/parser.h"
 
@@ -79,6 +80,8 @@ do
             return NULL;
 
         tokenize(self, buffer);
+        
+        clearTBuffer(&self->buffer);
 
     }
 

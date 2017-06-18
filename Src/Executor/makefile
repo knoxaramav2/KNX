@@ -2,8 +2,8 @@
 
 CC = gcc
 BITVRS=64
-CFLAGS = -std=c11 -Wall -Iheaders
-LFLAGS = -lm -Iheaders
+CFLAGS = -std=c11 -Wall -Iheaders -I../KDK/headers $(COMMON) -g
+LFLAGS = -lm -Iheaders -L$(BINPATH) -l:libKDK.so -l:libDTM -l:libMDM
 VERSION = -DEXCVersion=\"0.0.1\"
 OUT = libEXC.so
 CLEANEXT = o a

@@ -7,10 +7,12 @@
 token * createToken(char * raw, lexeme type, void * data)
 {
     token * ret = malloc(sizeof(token));
-    
-    ret->raw = malloc(strlen(raw)+1);
-    ret->raw = strncpy(ret->raw, raw, strlen(raw)+1);
 
+    if (raw){
+        ret->raw = malloc(strlen(raw)+1);
+        ret->raw = strncpy(ret->raw, raw, strlen(raw)+1);
+    }
+    
     ret->type = type;
     ret->info = data;
 
@@ -20,11 +22,11 @@ token * createToken(char * raw, lexeme type, void * data)
     return ret;
 }
 
-void destroyToken(token * target, bool freeData)
+void destroyToken(token * target)
 {
     free(target->raw);
-    if (freeData)
-        free(target->info);
+    //if (freeData)
+    //    free(target->info);
     
     if (target->left && target->right)
     {

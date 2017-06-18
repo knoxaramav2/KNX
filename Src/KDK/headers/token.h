@@ -12,9 +12,7 @@ typedef struct token token;
 
 typedef struct tBuffer
 {
-//encapsulation buffer
-char enStack [128];
-unsigned eCount;
+    
 unsigned char qState;
 
 //operator stack
@@ -24,7 +22,6 @@ unsigned oCount;
 //output stack
 token * tokens;
 token * head;
-token * sibling;
 unsigned tCount;
 
 bool yieldLine;
@@ -41,13 +38,12 @@ tBuffer buffer;
 
 struct token * left;
 struct token * right;
-struct token * sibling;
 
 } token;
 
 token * createToken(char *, lexeme, void *);
 void coupleTokens(token *, token *, token *);
-void destroyToken(token *, bool);
+void destroyToken(token *);
 
 tBuffer createTBuffer();
 void clearTBuffer(tBuffer *);

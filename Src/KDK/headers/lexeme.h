@@ -62,8 +62,10 @@ typedef enum lexeme
     lx_SET_AND,         //&=
     lx_SET_OR,          //|=
     lx_SET_NOT,         //~=
-    lx_SET_INC,         //++
-    lx_SET_DEC,         //--
+    lx_SET_POST_INC,    //x++
+    lx_SET_POST_DEC,    //x--
+    lx_SET_PRE_INC,     //++x
+    lx_SET_PRE_DEC,     //--x
     lx_SET_TERN,        //x ? (cond, true_val, false_val)
 
     //logic
@@ -105,10 +107,10 @@ typedef enum lexeme
 
     //encapsulates
     lx_ENC_OBRACK,      //[
-    lx_ENC_CBRACK,      //]
     lx_ENC_OBRACE,      //{
+    lx_ENC_OPARAN,      //(    
+    lx_ENC_CBRACK,      //]
     lx_ENC_CBRACE,      //}
-    lx_ENC_OPARAN,      //(
     lx_ENC_CPARAN,      //)
     lx_ENC_DQUOTE,      //"
     lx_ENC_SQUOTE,      //'

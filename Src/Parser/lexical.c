@@ -14,6 +14,8 @@
 #define isECap(x) (x==')' || x==']' || x=='}')
 #define isQuote(x) (x=='\'' || x=='\"')
 
+#define isMOCap(x) (x>= lx_ENC_OBRACK && x <= lx_ENC_OPARAN)
+
 char getEscapeChar(char c){
 
     return c;
@@ -33,6 +35,17 @@ lexeme popOpStack(tBuffer * buf){
         lx_NA;
 }
 
+//returns first open on stack
+char collapseEncap(tBuffer * buf)
+{
+    
+    char c = 0;
+
+    //collapse opStack to first open
+
+    return isOCap(c) ? c : 0;
+}
+
 size_t pushOperator(tBuffer * buf, char * str, size_t max)
 {
     //printf("{%s}", str);
@@ -47,12 +60,12 @@ size_t pushOperator(tBuffer * buf, char * str, size_t max)
     switch (c0){
 
         case '+':
-            if (c1=='+') {result=lx_SET_INC; ret=1;}
+            if (c1=='+') {result=lx_SET_POST_INC; ret=1;}
             else if (c1=='='){result=lx_SET_ADD; ret=1;}
             else result = lx_ADD;
         break;
         case '-':
-            if (c1=='-') {result=lx_SET_DEC; ret=1;}
+            if (c1=='-') {result=lx_SET_POST_DEC; ret=1;}
             else if (c1=='='){result=lx_SET_SUB; ret=1;}
             else result = lx_SUB;
         break;
@@ -129,15 +142,21 @@ size_t pushOperator(tBuffer * buf, char * str, size_t max)
 
         //encapsulation
         case '(':
-        case '{':
-        case '[':
-
+            result = lx_ENC_OPARAN;
         break;
-        
+        case '{':
+            result = lx_ENC_OBRACE;
+        case '[':
+            result = lx_ENC_OBRACK;
+        break;
         case ')':
+            result = lx_ENC_CPARAN;
+        break;
         case '}':
+            result = lx_ENC_CBRACE;
+        break;
         case ']':
-
+            result = lx_ENC_CBRACK;
         break;
 
         //control operators
@@ -154,9 +173,17 @@ size_t pushOperator(tBuffer * buf, char * str, size_t max)
             buf->yieldLine = true;
             return 0;
         }
-        
+        break;
+
+        case 0:
+        printf("Zero\r\n");
         break;
     }
+
+    buf->opStack[buf->oCount++] = result;
+    
+    token * t = createToken(NULL, result, NULL);
+    appendTBuffer(buf, t, false);
 
     printf("{%u}", result);
 
@@ -170,27 +197,7 @@ void pushOperand(tBuffer * buf, char * str, size_t max, lexeme explicit)
         data = resolveSymbol(str, &explicit);
 
     token * t = createToken(str, explicit, data);
-
-    //if first item pushed
-    if (buf->tCount == 0){
-        buf->tokens = t;
-        buf->head = t;
-        buf->sibling = t;
-
-        ++buf->tCount;
-    }
-    //append sibling if last operator on stack is ,
-    else if (buf->oCount > 0 && buf->opStack[buf->oCount-1] == lx_GEN_LISTITEM){
-        popOpStack(buf);
-        buf->sibling->sibling = t;
-        t->left = buf->sibling;
-        buf->sibling = t;
-    } else {
-        coupleTokens(NULL, buf->head, t);
-        buf->head = t;
-        buf->sibling = t;
-        ++buf->tCount;
-    }
+    appendTBuffer(buf, t, false);
 
     printf("[%s, %d]", str, explicit);
 }
@@ -199,6 +206,7 @@ void pushOperand(tBuffer * buf, char * str, size_t max, lexeme explicit)
 int tokenize(node * node, char * raw)
 {
     printf("Input: %s from node %d\r\n", raw, node->id_index);
+    fflush(stdout);
 
     size_t len = strlen(raw);
     char buffer[1024] = {0};

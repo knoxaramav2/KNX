@@ -82,7 +82,6 @@ do
         tokenize(self, buffer);
         
         clearTBuffer(&self->buffer);
-
     }
 
     if (c==0xa) continue;

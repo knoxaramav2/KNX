@@ -62,25 +62,14 @@ void printBufferStream(tBuffer * buf)
     //if (!_config->debug)
     //    return;
 
-    printf("eCount :%3d\r\n", buf->eCount);
     printf("oCount :%3d\r\n", buf->oCount);
     printf("tCount :%3d\r\n", buf->tCount);
     
     token * top = buf->tokens;
 
     while (top){
-        printf("{%s|%u}", top->raw, top->type);
-
-        token * sib = top->sibling;
-
-        while(sib){
-            printf("<%s|%u>", sib->raw, sib->type);
-            sib = sib->sibling;
-        }
-
+        printf("|%s, %u|", top->raw, top->type);
         top = top->right;
-
-        printf("\r\n");
     }
 
 

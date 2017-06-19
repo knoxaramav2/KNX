@@ -7,10 +7,12 @@ tBuffer createTBuffer()
 {
     tBuffer ret;
 
-    //memset(ret.opStack, 0, sizeof ret.opStack);
     ret.oCount = 0;
     ret.tCount = 0;
     ret.qState = 0;
+    ret.yieldLine = 0;
+    ret.commentMode = 0;
+    ret.index = 0;
 
     ret.head = NULL;
     ret.tokens = NULL;
@@ -23,6 +25,9 @@ void clearTBuffer(tBuffer * bf)
     bf->oCount = 0;
     bf->tCount = 0;
     bf->qState = 0;
+    bf->yieldLine = 0;
+    bf->commentMode = bf->commentMode == CB_COMMENT? CB_COMMENT : CNO_COMMENT;
+    bf->index = 0;
 
     token * tmp = bf->tokens;
     while (tmp != NULL){

@@ -7,8 +7,12 @@
 
 typedef struct token token;
 
-#define QBIT_S  1
-#define QBIT_D  2
+#define QBIT_S      1
+#define QBIT_D      2
+
+#define CNO_COMMENT 0
+#define CS_COMMENT  1
+#define CB_COMMENT  2
 
 typedef struct tBuffer
 {
@@ -24,7 +28,12 @@ token * tokens;
 token * head;
 unsigned tCount;
 
+//lexer buffer
+char buffer[1024];
+size_t index;
+
 bool yieldLine;
+short commentMode;
 
 } tBuffer;
 

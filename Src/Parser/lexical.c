@@ -175,6 +175,17 @@ size_t pushOperator(tBuffer * buf, char * str, size_t max)
         }
         break;
 
+        //comments
+        case '#':
+            if (c1=='*'){
+                buf->commentMode = CB_COMMENT;
+                return 1;
+            }else{
+                buf->commentMode = CS_COMMENT;
+                return 0;
+            }
+        break;
+
         case 0:
         printf("Zero\r\n");
         break;
@@ -209,8 +220,8 @@ int tokenize(node * node, char * raw)
     fflush(stdout);
 
     size_t len = strlen(raw);
-    char buffer[1024] = {0};
-    size_t index = 0;
+    char * buffer = node->buffer.buffer;
+    size_t index = node->buffer.index;
 
     for (size_t x=0; x <= len; ++x)
     {
@@ -220,7 +231,6 @@ int tokenize(node * node, char * raw)
         if (node->buffer.qState){
             if ((c=='\'' && node->buffer.qState == QBIT_S) ||
                 (c=='\"' && node->buffer.qState == QBIT_D)){
-
                     buffer[index]=0;
                     pushOperand(
                         &node->buffer, 
@@ -241,6 +251,19 @@ int tokenize(node * node, char * raw)
             continue;
         }
 
+        if (node->buffer.commentMode){
+            if (node->buffer.commentMode == CS_COMMENT){
+                if (c=='#'){
+                    node->buffer.commentMode = CNO_COMMENT;
+                }
+            } else if (x < len && c=='*' && raw[x+1] == '#') {
+                node->buffer.commentMode = CNO_COMMENT;
+                ++x;
+            }
+
+            continue;
+        }
+
         if (isText(c)){
             buffer[index++] = c;
         } else {
@@ -255,6 +278,8 @@ int tokenize(node * node, char * raw)
             }
         }
     }
+
+    node->buffer.index = index;
 
     //TODO add quotes and encapsulates
 

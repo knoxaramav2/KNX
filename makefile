@@ -1,6 +1,6 @@
 #compiles entire KNX project
 
-SUBDIRS = Src/KDK/ Src/ModuleManager/ Src/DataManager/ Src/Executor/ Src/Parser/ Src/RTE/
+SUBDIRS = Src/KDK/ Src/ModuleManager/ Src/DataManager/ Src/Parser/ Src/Executor/ Src/RTE/
 BITVRS=64
 BINPATH=$(shell pwd)/bin
 DEBUG=false

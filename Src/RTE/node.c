@@ -11,6 +11,7 @@
 #include "node.h"
 #include "globals.h"
 #include "token.h"
+#include "../Executor/headers/executor.h"
 
 #include "../Parser/headers/parser.h"
 
@@ -80,6 +81,8 @@ do
             return NULL;
 
         tokenize(self, buffer);
+
+        execute(self);
         
         clearTBuffer(&self->buffer);
     }

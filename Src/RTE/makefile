@@ -3,7 +3,7 @@
 CC = gcc
 CFLAGS = -std=c11 -Wall -I../KDK/headers -Iheaders -I../../../KNX_Libraries/headers $(COMMON) -g
 LFLAGS = -lm -ldl -lpthread -L$(BINPATH) \
--l:libKDK.so -l:libMDM.so -l:libDTM.so -l:libPRS.so \
+-l:libKDK.so -l:libMDM.so -l:libDTM.so -l:libPRS.so -l:libEXC.so\
 -Wl,-rpath=$(BINPATH)
 VERSION=-DRTEVERSION=\"0.0.1\"
 OUT = KNX

@@ -14,6 +14,7 @@ typedef enum lexeme
     lx_NA,
     lx_NA_OPERAND,
     lx_NA_OPERATOR,
+    lx_NA_SYM,
 
     //primitive types
 
@@ -124,7 +125,7 @@ typedef enum lexeme
     lx_KW_WSTRING,      //wstring(name, *val)
     lx_KW_ARRAY,        //arr(name, type)
     lx_KW_LIST,         //list(name, {type(name, ...), type(name, ...)})
-    lw_KW_CLASS,        //class(name, *constr({expression}), *destr(expression), type(name, ...))
+    lx_KW_CLASS,        //class(name, *constr({expression}), *destr(expression), type(name, ...))
     lx_KW_BYTE,         //byte(name, length)
     lx_KW_FUNCTION,     //proc(name, type name1, type name2, ..., {expression})
     lx_KW_VOID,         //void 

@@ -2,6 +2,8 @@
 #include <string.h>
 #include <stdbool.h>
 
+#include "KNX_Hash.h"
+
 #include "parser.h"
 #include "debug.h"
 
@@ -21,12 +23,56 @@ char getEscapeChar(char c){
     return c;
 }
 
-void * resolveSymbol(char * sym, lexeme * lx){
+token * resolveSymbol(char * sym){
 
+    lexeme lex = lx_NA;
 
+    unsigned long long hash = FNV_1a_32(sym);
 
-    *lx = lx_NA_OPERAND;
-    return NULL;
+    switch(hash){
+
+        case 2902189215581572LLU: lex = lx_KW_INT; break;//int
+        case 339556138201278380LLU: lex = lx_KW_UINT; break;//uint
+        case 313436435282222236LLU: lex = lx_KW_LINT; break;//lint
+        case 333751759433611532LLU: lex = lx_KW_SINT; break;//sint
+        case 2155467746076386996LLU: lex = lx_KW_USINT; break;//usint
+        case 246621463160055696LLU: lex = lx_KW_CHAR; break;//char
+        case 10407967113323926400LLU: lex = lx_KW_UCHAR; break;//uchar
+        case 10901210006236253888LLU: lex = lx_KW_WCHAR; break;//wchar
+        case 8203415641640515025LLU: lex = lx_KW_STRING; break;//string
+        case 16975719106092910113LLU: lex = lx_KW_WSTRING; break;//wstring
+        case 13602979746211663506LLU: lex = lx_KW_ARRAY; break;//arr
+        case 327683545976869276LLU: lex = lx_KW_LIST; break;//list
+        case 11263903348313536949LLU: lex = lx_KW_CLASS; break;//class
+        case 300937673386998447LLU: lex = lx_KW_BYTE; break;//byte
+        case 303925260367076040LLU: lex = lx_KW_FUNCTION; break;//proc
+        case 297906538444820100LLU: lex = lx_KW_VOID; break;//void
+
+        case 23199318181086LLU: lex = lx_CNT_IF; break;//if
+        case 274441695294207238LLU: lex = lx_CNT_ELSE; break;//else
+        case 253058162427981432LLU: lex = lx_CNT_ELIF; break;//elif
+        case 24044111249349LLU: lex = lx_CNT_DO; break;//do
+        case 12257646299530473087LLU: lex = lx_CNT_WHILE; break;//while
+        case 2795849259767220LLU: lex = lx_CNT_FOR; break;//for
+
+        case 9665038429183275952LLU: lex = lx_CNT_SWITCH; break;//switch
+        case 241608324446159497LLU: lex = lx_CNT_CASE; break;//case
+        case 6921684308587554939LLU: lex = lx_CNT_BREAK; break;//break
+        case 13840090565086158820LLU: lex = lx_CNT_CONTINUE; break;//continue
+
+        case 1698529464417901130LLU: lex = lx_KW_TYPEOF; break;//typeof
+        case 10505907191231071951LLU: lex = lx_KW_DELETE; break;//delete
+        case 277490748868856452LLU: lex = lx_KW_CAST; break;//cast
+        case 17446148261328024908LLU: lex = lx_KW_IMPORT; break;//import
+        case 1303734914311023094LLU: lex = lx_KW_RELEASE; break;//release
+        
+        default:
+        lex = lx_NA_SYM;
+    }
+
+    token * ret = createToken(lex == lx_NA_SYM ? sym : NULL, lex, NULL);
+
+    return ret;
 }
 
 lexeme popOpStack(tBuffer * buf){
@@ -203,11 +249,11 @@ size_t pushOperator(tBuffer * buf, char * str, size_t max)
 
 void pushOperand(tBuffer * buf, char * str, size_t max, lexeme explicit)
 {
-    void * data = NULL;
+    token * t = NULL;
     if (explicit == lx_NA)
-        data = resolveSymbol(str, &explicit);
+        t = resolveSymbol(str);
 
-    token * t = createToken(str, explicit, data);
+    //token * t = createToken(str, explicit, data);
     appendTBuffer(buf, t, false);
 
     printf("[%s, %d]", str, explicit);

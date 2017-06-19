@@ -10,6 +10,9 @@ starting point for KNX interpreter
 
 comp_handle _info;
 
+#define SYS_DEBUG
+
+
 int main(int argc, char ** argv)
 {
 

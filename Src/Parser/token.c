@@ -11,6 +11,8 @@ token * createToken(char * raw, lexeme type, void * data)
     if (raw){
         ret->raw = malloc(strlen(raw)+1);
         ret->raw = strncpy(ret->raw, raw, strlen(raw)+1);
+    } else {
+        ret->raw = NULL;
     }
     
     ret->type = type;
@@ -24,7 +26,8 @@ token * createToken(char * raw, lexeme type, void * data)
 
 void destroyToken(token * target)
 {
-    free(target->raw);
+    if (target->raw)
+        free(target->raw);
     //if (freeData)
     //    free(target->info);
     

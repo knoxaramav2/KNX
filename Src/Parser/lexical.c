@@ -65,6 +65,7 @@ token * resolveSymbol(char * sym){
         case 277490748868856452LLU: lex = lx_KW_CAST; break;//cast
         case 17446148261328024908LLU: lex = lx_KW_IMPORT; break;//import
         case 1303734914311023094LLU: lex = lx_KW_RELEASE; break;//release
+        case 348816759751995988LLU: lex = lx_KW_QUIT; break;//quit
         
         default:
         lex = lx_NA_SYM;
@@ -103,15 +104,30 @@ size_t pushOperator(tBuffer * buf, char * str, size_t max)
     char c1 = max >= 2 ? str[1] : 0;
     char c2 = max >= 3 ? str[2] : 0;
 
-    switch (c0){
+    bool rToL = false;
 
+    switch (c0){
         case '+':
-            if (c1=='+') {result=lx_SET_POST_INC; ret=1;}
+            if (c1=='+') {
+                if (buf->head && !isKeyword(buf->head->type) && !isOperator(buf->head->type)){
+                    result=lx_SET_POST_INC; ret=1;
+                    rToL = true;
+                }else{
+                    result=lx_SET_PRE_INC; ret=1;
+                }
+            }
             else if (c1=='='){result=lx_SET_ADD; ret=1;}
             else result = lx_ADD;
         break;
         case '-':
-            if (c1=='-') {result=lx_SET_POST_DEC; ret=1;}
+            if (c1=='-') {
+                if (buf->head && !isKeyword(buf->head->type) && !isOperator(buf->head->type)){
+                    result=lx_SET_POST_DEC; ret=1;
+                    rToL = true;
+                }else{
+                    result=lx_SET_PRE_DEC; ret=1;
+                }
+            }
             else if (c1=='='){result=lx_SET_SUB; ret=1;}
             else result = lx_SUB;
         break;
@@ -240,7 +256,7 @@ size_t pushOperator(tBuffer * buf, char * str, size_t max)
     buf->opStack[buf->oCount++] = result;
     
     token * t = createToken(NULL, result, NULL);
-    appendTBuffer(buf, t, false);
+    appendTBuffer(buf, t, rToL);
 
     printf("{%u}", result);
 

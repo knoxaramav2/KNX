@@ -5,4 +5,6 @@
 
 int execute(node *);
 
+int runKeyword(node *, lexeme, token *);
+
 #endif

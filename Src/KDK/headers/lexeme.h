@@ -6,15 +6,25 @@
     Some ranges are left open for plugin support
 */
 
+#define isType(x) (x> lx_NUMERIC && x<lx_OPERATOR)
 #define isOperator(x) (x>lx_OPERATOR && x<lx_KEYWORD)
 #define isKeyword(x) (x>lx_KEYWORD && x<lx_STD_PLUGIN)
+#define isSetter(x) (x>lx_SET && x<lx_LOG)
+#define isLogic(x) (x>lx_LOG && x<lx_CMP)
+#define isGeneral(x) (x>lx_GEN && x<lx_ENC)
+#define isEncap(x) (x>lx_ENC && x<lx_BIT)
+#define isBitwise(x) (x>lx_BIT && x<lx_KEYWORD)
+#define isKwDeclare(x) (x>lx_KW_PRIM && x<lx_CNT)
+#define isKwUtil(x) (x>lx_KW_UTIL && x<lx_STD_PLUGIN)
+
+#define isCommand(x) (isOperator(x) || isKeyword(x))
 
 typedef enum lexeme
 {
     lx_NA,
     lx_NA_OPERAND,
-    lx_NA_OPERATOR,
     lx_NA_SYM,
+    lx_NA_OPERATOR,
 
     //primitive types
 
@@ -47,6 +57,7 @@ typedef enum lexeme
     //OPERATORS
     lx_OPERATOR,
     //math
+    lx_MATH,
     lx_ADD,             //x+y
     lx_SUB,             //x-y
     lx_MULT,            //x*y
@@ -71,6 +82,7 @@ typedef enum lexeme
     lx_SET_TERN,        //x ? (cond, true_val, false_val)
 
     //logic
+    lx_LOG,
     lx_LOG_AND,         //&
     lx_LOG_OR,          //|
     lx_LOG_NOT,         //!
@@ -80,6 +92,7 @@ typedef enum lexeme
     lx_LOG_XNOR,        //|!
 
     //comparison
+    lx_CMP,
     lx_CMP_EQU,         //==
     lx_CMP_NEQU,        //!=
     lx_CMP_GTR,         //>
@@ -88,12 +101,14 @@ typedef enum lexeme
     lx_CMP_LSS_EQU,     //<=
 
     //general
+    lx_GEN,
     lx_GEN_LISTITEM,    //,
     lx_GEN_MEMBERREF,   //.
     lx_GEN_INDEX,       //:
     lx_GEN_LAMBDA,      //$(arg, arg, ...){expression}
 
     //encapsulates
+    lx_ENC,
     lx_ENC_OBRACK,      //[
     lx_ENC_OBRACE,      //{
     lx_ENC_OPARAN,      //(    
@@ -104,6 +119,7 @@ typedef enum lexeme
     lx_ENC_SQUOTE,      //'
 
     //bitwise
+    lx_BIT,
     lx_BIT_AND,         //^&
     lx_BIT_OR,          //^|
     lx_BIT_NOT,         //^!
@@ -113,6 +129,7 @@ typedef enum lexeme
     //KEYWORDS
     lx_KEYWORD,
     //primitives
+    lx_KW_PRIM,
     lx_KW_INT,          //int(name, *val)
     lx_KW_UINT,         //uint(name, *val)    
     lx_KW_LINT,         //lint(name, *val)
@@ -131,6 +148,7 @@ typedef enum lexeme
     lx_KW_VOID,         //void 
 
     //control
+    lx_CNT,
     lx_CNT_IF,          //if (cond){expression}
     lx_CNT_ELSE,        //else {expression}
     lx_CNT_ELIF,        //elif (cond){expression}
@@ -145,11 +163,13 @@ typedef enum lexeme
     lx_CNT_CONTINUE,    //continue
 
     //utility
+    lx_KW_UTIL,
     lx_KW_TYPEOF,       //typeof(obj)
     lx_KW_DELETE,       //delete(obj)
     lx_KW_CAST,         //cast(obj, type)
     lx_KW_IMPORT,       //import(library)
     lx_KW_RELEASE,      //release(library)
+    lx_KW_QUIT,         //quit
     
     //REGISTER OFFSETS
     lx_STD_PLUGIN = 200,

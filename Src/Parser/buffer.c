@@ -40,12 +40,25 @@ void clearTBuffer(tBuffer * bf)
     bf->tokens = NULL;
 }
 
-void appendTBuffer(tBuffer * bf, token * tk, bool link)
+void appendTBuffer(tBuffer * bf, token * tk, bool swapLeft)
 {
+
     if (bf->head == NULL){
 
         bf->head = tk;
         bf->tokens = tk;
+
+        return;
+    }
+
+    if (swapLeft){
+        tk->right = bf->head;
+        tk->left = bf->head->left;
+        if (tk->left) tk->left->right = tk;
+        bf->head->left = tk;
+
+        if (bf->head == bf->tokens)
+            bf->tokens = tk;
 
         return;
     }

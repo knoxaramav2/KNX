@@ -80,7 +80,7 @@ do
         if (strcmp(buffer, "quit") == 0) 
             return NULL;
 
-        printf("%llu\r\n", FNV_1a_32(buffer));
+        //printf("%llu\r\n", FNV_1a_32(buffer));
         //continue;
 
         tokenize(self, buffer);

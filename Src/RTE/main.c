@@ -8,13 +8,14 @@ starting point for KNX interpreter
 #include "globals.h"
 #include "startup.h"
 
+#include "lexeme.h"
+
 comp_handle _info;
 
 #define SYS_DEBUG
 
 int main(int argc, char ** argv)
 {
-
 init_sdk();
 
 int rCode = 0;

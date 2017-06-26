@@ -20,18 +20,10 @@
 //use with ctxType (context type) of union 
 #define isLeftUnary(x) (x>)
 
-#define isUnary(x)
+#define isUnary(x) (isKeyword(x) || isGeneral(x) || x==lx_LOG_NOT)
 
 #define isCommand(x) (isOperator(x) || isKeyword(x))
 
-//TODO work out union rules. heh.
-
-//size of unsigned integer
-/*union lexCode {
-    unsigned short ctxType;//least significant 2 bytes
-    unsigned short lexType;//most significant 2 bytes
-} lexCode;
-*/
 typedef enum lexeme
 {
     lx_NA,
@@ -41,7 +33,7 @@ typedef enum lexeme
 
     //primitive types
     //NUMERICS
-    lx_NUMERIC = 256,
+    lx_NUMERIC = 257,
     lx_INT,
     lx_UINT,
     lx_LINT,
@@ -117,7 +109,7 @@ typedef enum lexeme
     lx_GEN_LISTITEM,    //,
     lx_GEN_MEMBERREF,   //.
     lx_GEN_INDEX,       //:
-    lx_GEN_LAMBDA,      //$(arg, arg, ...){expression}
+    lx_GEN_LAMBDA,      //$(arg, arg, {expression})
 
     //encapsulates
     lx_ENC,
@@ -184,12 +176,48 @@ typedef enum lexeme
     lx_KW_QUIT,         //quit
     
     //REGISTER OFFSETS
-    lx_STD_PLUGIN = 200,
-    lx_EXT_PLUGIN = 500,
+    lx_STD_PLUGIN = 500,
+    lx_EXT_PLUGIN = 800,
 
     //TYPE OFFSETS
-    lx_TYPE_REG=800
+    lx_TYPE_REG=1100
 
 } lexeme;
+
+/*
+CONTEXT ORDERING
+
+1st level------
+    Grouping: () {} []
+
+    Appended to stack and remains until closing
+    operator detected.
+
+    All operators are popped until opening
+2nd level------
+    Priority operators
+        ig. * / ^ %, ect.
+
+        These will be popped prior to pushing
+        an operator within this or the 3rd level
+3rd level------
+    Petty operators
+        ig. + - = 
+
+        ignored when pushing further operators
+
+
+
+
+*/
+
+#define LEVEL_THREE 16384
+#define LEVEL_TWO   32768
+#define LEVEL_ONE   49152
+
+#define SETLVL(x, o) (x |= o)//for fist: SETLVL(type, LEVEL_THREE & LEVEL_TWO)
+#define CHKLVL(x) (3 - \
+    (((x) & (1<<15)) == LEVEL_TWO) \
+     + (((x) & (1<<14)) == LEVEL_ONE))
 
 #endif

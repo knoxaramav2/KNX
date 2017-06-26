@@ -28,8 +28,6 @@ void destroyToken(token * target)
 {
     if (target->raw)
         free(target->raw);
-    //if (freeData)
-    //    free(target->info);
     
     if (target->left && target->right)
     {

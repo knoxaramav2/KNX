@@ -14,6 +14,17 @@ typedef struct token token;
 #define CS_COMMENT  1
 #define CB_COMMENT  2
 
+/*
+typedef union tkn_id{
+
+    struct{
+        unsigned short context;
+        unsigned short type;
+    };
+
+    unsigned x;
+}tkn_id;*/
+
 typedef struct tBuffer
 {
     
@@ -39,8 +50,9 @@ short commentMode;
 
 typedef struct token{
 
-char * raw;
+char * raw;//necessary?
 lexeme type;
+//tkn_id id;
 void * info;
 
 tBuffer buffer;

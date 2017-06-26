@@ -117,7 +117,7 @@ size_t pushOperator(tBuffer * buf, char * str, size_t max)
                 }
             }
             else if (c1=='='){result=lx_SET_ADD; ret=1;}
-            else result = lx_ADD;
+            else result = lx_ADD | LEVEL_TWO;
         break;
         case '-':
             if (c1=='-') {
@@ -270,6 +270,8 @@ void pushOperand(tBuffer * buf, char * str, size_t max, lexeme explicit)
     token * t = NULL;
     if (explicit == lx_NA)
         t = resolveSymbol(str);
+    else
+        t = createToken(str, explicit, NULL);
 
     //token * t = createToken(str, explicit, data);
     appendTBuffer(buf, t, false);
@@ -302,7 +304,7 @@ int tokenize(node * node, char * raw)
                         node->buffer.qState == QBIT_S && index == 1 ? lx_CHAR : lx_STRING);
                     node->buffer.qState = 0;
                     index = 0;
-                    ++x;
+                    continue;
             }
 
             if (c=='\\'){

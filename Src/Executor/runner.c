@@ -3,7 +3,7 @@
 
 token * interpretLevel(node *n, token * t, lexeme enCap){
 
-    token * i = n;
+    //token * i = n;
 
     //scan for opcodes
     /*

@@ -211,13 +211,11 @@ CONTEXT ORDERING
 
 */
 
-#define LEVEL_THREE 16384
-#define LEVEL_TWO   32768
-#define LEVEL_ONE   49152
+#define LEVEL_THREE 0b00000000000000000000000000000000
+#define LEVEL_TWO   0b10000000000000000000000000000000
+#define LEVEL_ONE   0b01000000000000000000000000000000
 
-#define SETLVL(x, o) (x |= o)//for fist: SETLVL(type, LEVEL_THREE & LEVEL_TWO)
-#define CHKLVL(x) (3 - \
-    (((x) & (1<<15)) == LEVEL_TWO) \
-     + (((x) & (1<<14)) == LEVEL_ONE))
+#define SETLVL(x, o) (x |= o)//for fist: SETLVL(type, LEVEL_THREE | LEVEL_TWO)
+#define CHKLVL(x) (3 - ((x & (1 << 31)) == LEVEL_TWO) - ((x & (1 << 30)) == LEVEL_ONE))
 
 #endif

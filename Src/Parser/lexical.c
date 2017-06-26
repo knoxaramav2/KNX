@@ -106,23 +106,25 @@ size_t pushOperator(tBuffer * buf, char * str, size_t max)
 
     bool rToL = false;
 
+    //printf("<<%d %c%c %d %d\r\n", c0, c1, getType(buf->head->type), !isKeyword(buf->head->type), !isOperator(buf->head->type));
+
     switch (c0){
         case '+':
             if (c1=='+') {
                 if (buf->head && !isKeyword(buf->head->type) && !isOperator(buf->head->type)){
-                    result=lx_SET_POST_INC; ret=1;
+                    result=lx_SET_POST_INC | LEVEL_TWO; ret=1;
                     rToL = true;
                 }else{
                     result=lx_SET_PRE_INC; ret=1;
                 }
             }
             else if (c1=='='){result=lx_SET_ADD; ret=1;}
-            else result = lx_ADD | LEVEL_TWO;
+            else result = lx_ADD;
         break;
         case '-':
             if (c1=='-') {
                 if (buf->head && !isKeyword(buf->head->type) && !isOperator(buf->head->type)){
-                    result=lx_SET_POST_DEC; ret=1;
+                    result=lx_SET_POST_DEC | LEVEL_TWO; ret=1;
                     rToL = true;
                 }else{
                     result=lx_SET_PRE_DEC; ret=1;
@@ -133,11 +135,11 @@ size_t pushOperator(tBuffer * buf, char * str, size_t max)
         break;
         case '*':
             if (c1=='=') {result=lx_SET_MULT; ret=1;}
-            else result = lx_MULT;
+            else result = lx_MULT | LEVEL_TWO;
         break;
         case '/':
             if (c1=='=') {result=lx_SET_DIV; ret=1;}
-            else result = lx_DIV;
+            else result = lx_DIV | LEVEL_TWO;
         break;
         case '%':
             result = lx_MOD;
@@ -169,7 +171,7 @@ size_t pushOperator(tBuffer * buf, char * str, size_t max)
             if (c1=='=') {result=lx_CMP_NEQU; ret=1;}
             else if (c1=='|') {result=lx_LOG_NOR; ret=1;}
             else if (c1=='&') {result=lx_LOG_NAND; ret=1;}
-            else result = lx_LOG_NOT;
+            else result = lx_LOG_NOT | LEVEL_TWO;
         break;
         case '?':
             result = lx_SET_TERN;
@@ -254,6 +256,16 @@ size_t pushOperator(tBuffer * buf, char * str, size_t max)
         printf("Zero\r\n");
         break;
     }
+
+/*//TODO REMOVE
+    printf("\r\n%u %u %u\r\n", LEVEL_THREE, lx_ADD, LEVEL_THREE | lx_ADD);
+
+    printf("||%u %u\r\n", (result & (1 << 31)), (result & (1 << 30)));
+
+    printf("!!%u\r\n", result); fflush(stdout);
+    printf("!!%hu\r\n", result >> 15);fflush(stdout);
+    printf("!!%hu\r\n", result);fflush(stdout);
+    */
 
     buf->opStack[buf->oCount++] = result;
     

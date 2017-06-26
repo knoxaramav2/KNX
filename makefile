@@ -27,8 +27,6 @@ run:
 dbg:
 	bin/KNX -d -v --nolog --test=hello
 
-build: subdirs run
-
 .PHONY: clean
 clean:
 	for dir in $(SUBDIRS); do \
@@ -36,3 +34,5 @@ clean:
 	done
 	 rm -f $@ bin/KNX
 	 rm -f $@ bin/*.so
+
+build: clean subdirs run

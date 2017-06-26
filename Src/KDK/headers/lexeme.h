@@ -17,19 +17,31 @@
 #define isKwDeclare(x) (x>lx_KW_PRIM && x<lx_CNT)
 #define isKwUtil(x) (x>lx_KW_UTIL && x<lx_STD_PLUGIN)
 
+//use with ctxType (context type) of union 
+#define isLeftUnary(x) (x>)
+
+#define isUnary(x)
+
 #define isCommand(x) (isOperator(x) || isKeyword(x))
 
+//TODO work out union rules. heh.
+
+//size of unsigned integer
+/*union lexCode {
+    unsigned short ctxType;//least significant 2 bytes
+    unsigned short lexType;//most significant 2 bytes
+} lexCode;
+*/
 typedef enum lexeme
 {
     lx_NA,
     lx_NA_OPERAND,
     lx_NA_SYM,
-    lx_NA_OPERATOR,
+    lx_NA_OPERATOR = 256,
 
     //primitive types
-
     //NUMERICS
-    lx_NUMERIC,
+    lx_NUMERIC = 256,
     lx_INT,
     lx_UINT,
     lx_LINT,
@@ -46,7 +58,7 @@ typedef enum lexeme
 
     //DATA STRUCTURES
     lx_ARRAY,       //strong typed
-    lx_LIST,        //loose typed
+    lx_LIST,        //loose typed (used internally for argument lists as well)
     lx_CLASS,       //data encapsulation
 
     //MISC

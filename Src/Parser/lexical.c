@@ -102,7 +102,7 @@ size_t pushOperator(tBuffer * buf, char * str, size_t max)
 
     char c0 = str[0];
     char c1 = max >= 2 ? str[1] : 0;
-    char c2 = max >= 3 ? str[2] : 0;
+    //char c2 = max >= 3 ? str[2] : 0;
 
     bool rToL = false;
 
@@ -234,6 +234,8 @@ size_t pushOperator(tBuffer * buf, char * str, size_t max)
         if (max == 1){
             buf->yieldLine = true;
             return 0;
+        } else {
+            //TODO throw warning/error
         }
         break;
 
@@ -304,7 +306,7 @@ int tokenize(node * node, char * raw)
             }
 
             if (c=='\\'){
-                c == getEscapeChar(c);
+                c = getEscapeChar(raw[x+1]);
                 ++index;
             }
 

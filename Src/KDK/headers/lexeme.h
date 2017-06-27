@@ -6,6 +6,9 @@
     Some ranges are left open for plugin support
 */
 
+#define LEFT_MASK   0b11111111111111110000000000000000
+#define RIGHT_MASK  0b00000000000000001111111111111111
+
 #define isType(x) (x> lx_NUMERIC && x<lx_OPERATOR)
 #define isOperator(x) (x>lx_OPERATOR && x<lx_KEYWORD)
 #define isKeyword(x) (x>lx_KEYWORD && x<lx_STD_PLUGIN)
@@ -215,6 +218,7 @@ CONTEXT ORDERING
 #define LEVEL_TWO   0b00000000000000100000000000000000
 #define LEVEL_ONE   0b00000000000000010000000000000000
 
+#define CHKTYPE(x) ((x << 16) >> 16)
 #define CHKLVL(x) (x >> 16)
 
 #endif

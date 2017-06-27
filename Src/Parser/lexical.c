@@ -102,13 +102,14 @@ void pushOpToStack(tBuffer * buf, lexeme lx){
 //returns first open on stack
 void collapseEncap(tBuffer * buf, lexeme stopper)
 {
-    lexeme res = popOpStack(buf);
+    lexeme res = CHKTYPE(popOpStack(buf));
 
-    while (!isECap(res) && res != lx_NA){
+    printf("$$%d %d %d %d %d %d %d\r\n", res, !isECap(res), lx_ENC, lx_BIT, res>lx_ENC, res<lx_BIT, (res>lx_ENC && res<lx_BIT));
+
+    while (!isEncap(res) && res != lx_NA){
         token * t = createToken(NULL, res, NULL);
         appendTBuffer(buf, t, false);
-        res = popOpStack(buf);
-        printf(">>");fflush(stdout);
+        res = CHKTYPE(popOpStack(buf));
     }
 
     if (res == lx_NA && res != stopper){
@@ -231,14 +232,14 @@ size_t pushOperator(tBuffer * buf, char * str, size_t max)
 
         //encapsulation
         case '(':
-            result = lx_ENC_OPARAN;
+            result = lx_ENC_OPARAN | LEVEL_ONE;
             ++buf->eCount;
         break;
         case '{':
-            result = lx_ENC_OBRACE;
+            result = lx_ENC_OBRACE | LEVEL_ONE;
             ++buf->eCount;
         case '[':
-            result = lx_ENC_OBRACK;
+            result = lx_ENC_OBRACK | LEVEL_ONE;
             ++buf->eCount;
         break;
         case ')':
@@ -291,28 +292,13 @@ size_t pushOperator(tBuffer * buf, char * str, size_t max)
         break;
     }
 
-/*//TODO REMOVE
-    printf("\r\n%u %u %u\r\n", LEVEL_THREE, lx_ADD, LEVEL_THREE | lx_ADD);
-
-    printf("||%u %u\r\n", (result & (1 << 31)), (result & (1 << 30)));
-
-    printf("!!%u\r\n", result); fflush(stdout);
-    printf("!!%hu\r\n", result >> 15);fflush(stdout);
-    printf("!!%hu\r\n", result);fflush(stdout);
-    */
-
-            printf("Level :%u\r\n", result);
-        if (CHKLVL(result) == 0)
-            result |= LEVEL_THREE;
-        printf("Level :%u\r\n", result);
+    if (CHKLVL(result) == 0)
+        result |= LEVEL_THREE;
 
     //buf->opStack[buf->oCount++] = result;
     printf("Pushed %d (%c)\r\n", result, c0);
     pushOpToStack(buf, result);
-    printf("Verifying %d\r\n", buf->opStack[buf->oCount-1]);
-    
-    //token * t = createToken(NULL, result, NULL);
-    //appendTBuffer(buf, t, rToL);
+    printf("Verifying %d %d %d\r\n", buf->opStack[buf->oCount-1], CHKLVL(result), result&RIGHT_MASK);
 
     printf("{%u}", result);
 

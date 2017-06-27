@@ -44,6 +44,14 @@ void destroyToken(token * target)
     free(target);
 }
 
+void destroyTokenStrand(token * t){
+    while (t != NULL){
+        token * r = t->right;
+        destroyToken(r);
+        t=r;
+    }
+}
+
 void coupleTokens(token * left, token * center, token * right)
 {
     if (left)

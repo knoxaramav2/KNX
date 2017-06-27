@@ -111,7 +111,8 @@ void collapseEncap(tBuffer * buf, lexeme stopper)
     while (!isEncap(res) && res != lx_NA){
         token * t = createToken(NULL, type, NULL);
         appendTBuffer(buf, t, false);
-        res = CHKTYPE(popOpStack(buf));
+        type = popOpStack(buf);
+        res = CHKTYPE(type);
     }
 
     if (res == lx_NA && res != stopper){

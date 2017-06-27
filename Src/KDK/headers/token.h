@@ -67,6 +67,7 @@ struct token * right;
 token * createToken(char *, lexeme, void *);
 void coupleTokens(token *, token *, token *);
 void destroyToken(token *);
+void destroyTokenStrand(token *);
 
 tBuffer createTBuffer();
 void clearTBuffer(tBuffer *);

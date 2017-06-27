@@ -57,6 +57,7 @@ token * splice(token * crawler, token * lval, token * rval)
 
 token * execute(node * n){
 
+return NULL;
     token * opCrawler = n->buffer.tokens;
 
     opCrawler = nextCom(opCrawler);

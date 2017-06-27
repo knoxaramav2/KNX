@@ -33,6 +33,7 @@ unsigned char qState;
 //operator stack
 lexeme opStack [128];
 unsigned oCount;
+int eCount;//encapsulation level
 
 //output stack
 token * tokens;

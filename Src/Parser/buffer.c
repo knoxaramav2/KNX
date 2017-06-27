@@ -8,6 +8,7 @@ tBuffer createTBuffer()
     tBuffer ret;
 
     ret.oCount = 0;
+    ret.eCount = 0;
     ret.tCount = 0;
     ret.qState = 0;
     ret.yieldLine = 0;

@@ -54,7 +54,8 @@ void dflush()
 
 
 //lexical
-
+#define LEFT_MASK   0b11111111111111110000000000000000
+#define RIGHT_MASK  0b00000000000000001111111111111111
 
 void printBufferStream(tBuffer * buf)
 {
@@ -68,7 +69,11 @@ void printBufferStream(tBuffer * buf)
     token * top = buf->tokens;
 
     while (top){
-        printf("|%s, %u, lvl? %d, bin? %d|\r\n", top->raw, top->type, CHKLVL(top->type), !isUnary(top->type));
+        printf("|%s, [%u %u], lvl? %d, bin? %d|\r\n", 
+        top->raw, 
+        top->type & LEFT_MASK, 
+        top->type & RIGHT_MASK,
+        CHKLVL(top->type), !isUnary(top->type));
         top = top->right;
     }
 

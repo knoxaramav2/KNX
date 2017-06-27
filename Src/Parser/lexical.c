@@ -82,21 +82,44 @@ lexeme popOpStack(tBuffer * buf){
         lx_NA;
 }
 
+void pushOpToStack(tBuffer * buf, lexeme lx){
+    if (buf->oCount == 0){
+        buf->opStack[buf->oCount++] = lx;
+        return;
+    }
+
+    int order = CHKLVL(lx);
+    int lorder = CHKLVL(buf->opStack[buf->oCount==0]);
+
+    if (lorder <= order){
+        token * t = createToken(NULL, popOpStack(buf), NULL);
+        appendTBuffer(buf, t, false);
+    }
+
+    buf->opStack[buf->oCount++] = lx;
+}
+
 //returns first open on stack
-char collapseEncap(tBuffer * buf)
+void collapseEncap(tBuffer * buf, lexeme stopper)
 {
-    
-    char c = 0;
+    lexeme res = popOpStack(buf);
 
-    //collapse opStack to first open
+    while (!isECap(res) && res != lx_NA){
+        token * t = createToken(NULL, res, NULL);
+        appendTBuffer(buf, t, false);
+        res = popOpStack(buf);
+        printf(">>");fflush(stdout);
+    }
 
-    return isOCap(c) ? c : 0;
+    if (res == lx_NA && res != stopper){
+        //TODO unbound error
+    } else if (res != stopper){
+        //TODO unexpected operator
+    }
 }
 
 size_t pushOperator(tBuffer * buf, char * str, size_t max)
 {
-    //printf("{%s}", str);
-
     lexeme result = lx_NA_OPERATOR;
     size_t ret = 0;
 
@@ -104,9 +127,11 @@ size_t pushOperator(tBuffer * buf, char * str, size_t max)
     char c1 = max >= 2 ? str[1] : 0;
     //char c2 = max >= 3 ? str[2] : 0;
 
-    bool rToL = false;
+    printf("\r\n$%s >> %c %c\r\n", str, c0, c1);
 
     //printf("<<%d %c%c %d %d\r\n", c0, c1, getType(buf->head->type), !isKeyword(buf->head->type), !isOperator(buf->head->type));
+
+    bool rToL = false;
 
     switch (c0){
         case '+':
@@ -207,22 +232,30 @@ size_t pushOperator(tBuffer * buf, char * str, size_t max)
         //encapsulation
         case '(':
             result = lx_ENC_OPARAN;
+            ++buf->eCount;
         break;
         case '{':
             result = lx_ENC_OBRACE;
+            ++buf->eCount;
         case '[':
             result = lx_ENC_OBRACK;
+            ++buf->eCount;
         break;
         case ')':
             result = lx_ENC_CPARAN;
-        break;
+            --buf->eCount;
+            collapseEncap(buf, result);
+            return 0;
         case '}':
             result = lx_ENC_CBRACE;
-        break;
+            --buf->eCount;
+            collapseEncap(buf, result);
+            return 0;
         case ']':
             result = lx_ENC_CBRACK;
-        break;
-
+            --buf->eCount;
+            collapseEncap(buf, result);
+            return 0;
         //control operators
         case '\'':
         buf->qState = QBIT_S;
@@ -253,7 +286,8 @@ size_t pushOperator(tBuffer * buf, char * str, size_t max)
         break;
 
         case 0:
-        printf("Zero\r\n");
+            if (!buf->yieldLine)
+                collapseEncap(buf, 0);
         break;
     }
 
@@ -267,10 +301,18 @@ size_t pushOperator(tBuffer * buf, char * str, size_t max)
     printf("!!%hu\r\n", result);fflush(stdout);
     */
 
-    buf->opStack[buf->oCount++] = result;
+            printf("Level :%u\r\n", result);
+        if (CHKLVL(result) == 0)
+            result |= LEVEL_THREE;
+        printf("Level :%u\r\n", result);
+
+    //buf->opStack[buf->oCount++] = result;
+    printf("Pushed %d (%c)\r\n", result, c0);
+    pushOpToStack(buf, result);
+    printf("Verifying %d\r\n", buf->opStack[buf->oCount-1]);
     
-    token * t = createToken(NULL, result, NULL);
-    appendTBuffer(buf, t, rToL);
+    //token * t = createToken(NULL, result, NULL);
+    //appendTBuffer(buf, t, rToL);
 
     printf("{%u}", result);
 
@@ -357,9 +399,10 @@ int tokenize(node * node, char * raw)
         }
     }
 
-    node->buffer.index = index;
+    if (&node->buffer.oCount > 0)
+        collapseEncap(&node->buffer, lx_NA);
 
-    //TODO add quotes and encapsulates
+    node->buffer.index = index;
 
     printBufferStream(&node->buffer);
 

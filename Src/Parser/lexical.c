@@ -90,9 +90,10 @@ void pushOpToStack(tBuffer * buf, lexeme lx){
     }
 
     int order = CHKLVL(lx);
-    int lorder = CHKLVL(buf->opStack[buf->oCount==0]);
+    int lorder = buf->oCount == 0 ? 5 : CHKLVL(buf->opStack[buf->oCount-1]);
+    lexeme type = CHKTYPE(lx);
 
-    if (lorder <= order){
+    if (lorder <= order && lorder != 1){
         token * t = createToken(NULL, popOpStack(buf), NULL);
         appendTBuffer(buf, t, false);
     }
@@ -105,8 +106,6 @@ void collapseEncap(tBuffer * buf, lexeme stopper)
 {
     lexeme type = popOpStack(buf);
     lexeme res = CHKTYPE(type);
-
-    printf("$$%u %u %u %u %u %u %u\r\n", res, !isECap(res), lx_ENC, lx_BIT, res>lx_ENC, res<lx_BIT, (res>lx_ENC && res<lx_BIT));
 
     while (!isEncap(res) && res != lx_NA){
         token * t = createToken(NULL, type, NULL);
@@ -130,8 +129,6 @@ size_t pushOperator(tBuffer * buf, char * str, size_t max)
     char c0 = str[0];
     char c1 = max >= 2 ? str[1] : 0;
     //char c2 = max >= 3 ? str[2] : 0;
-
-    printf("\r\n$%s >> %c %c\r\n", str, c0, c1);
 
     switch (c0){
         case '+':
@@ -202,7 +199,7 @@ size_t pushOperator(tBuffer * buf, char * str, size_t max)
 
         case '=':
             if (c1=='=') {result=lx_CMP_EQU; ret=1;}
-            else result = lx_SET | LEVEL_FOUR;
+            else result = lx_SET | LEVEL_TWO;
         break;
 
         case '<':
@@ -293,11 +290,7 @@ size_t pushOperator(tBuffer * buf, char * str, size_t max)
         result |= LEVEL_THREE;
 
     //buf->opStack[buf->oCount++] = result;
-    printf("Pushed %d (%c)\r\n", result, c0);
     pushOpToStack(buf, result);
-    printf("Verifying %d %d %d\r\n", buf->opStack[buf->oCount-1], CHKLVL(result), result&RIGHT_MASK);
-
-    printf("{%u}", result);
 
     return ret;
 } 
@@ -312,14 +305,11 @@ void pushOperand(tBuffer * buf, char * str, size_t max, lexeme explicit)
 
     //token * t = createToken(str, explicit, data);
     appendTBuffer(buf, t, false);
-
-    printf("[%s, %d]", str, explicit);
 }
 
 //TODO implement modified shunting yard as in docs
 int tokenize(node * node, char * raw)
 {
-    printf("Input: %s from node %d\r\n", raw, node->id_index);
     fflush(stdout);
 
     size_t len = strlen(raw);

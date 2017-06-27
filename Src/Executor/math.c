@@ -19,7 +19,7 @@ token * math(token*lval, token*rval, lexeme op){
     switch(op){
 
         case lx_ADD: *ret = lv + rv; break;
-        case lx_SUB: *ret = lv + rv; break;
+        case lx_SUB: *ret = lv - rv; break;
         case lx_MULT: *ret = lv * rv; break;
         case lx_DIV: *ret = lv / rv; break;
         case lx_MOD: *ret = (int)lv % (int) rv; break;
@@ -33,7 +33,7 @@ token * math(token*lval, token*rval, lexeme op){
     char * rstr = malloc(128);
     snprintf(rstr, 128, "%lf", *ret);
 
-    printf("RESULT %lf\r\n", *ret);
+    printf("RESULT (%s %s %u) %lf\r\n", lval->raw, rval->raw, CHKTYPE(op), *ret);
 
     return createToken(rstr, lx_DOUBLE, ret);
 }

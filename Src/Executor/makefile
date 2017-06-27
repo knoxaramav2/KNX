@@ -8,7 +8,7 @@ VERSION = -DEXCVersion=\"0.0.1\"
 OUT = libEXC.so
 CLEANEXT = o a
 DBGFLAGS=
-SRC= exec.c runner.c keyword.c math.c
+SRC= exec.c runner.c keyword.c math.c operator.c
 EXPORT_PTH=../../bin/
 
 ifeq ($(shell uname), Linux)

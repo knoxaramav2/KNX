@@ -17,12 +17,12 @@ int kw_quit(node * n, token * t)
     return 0;
 }
 
-int runKeyword(node * n, lexeme word, token * arg)
+token * runKeyword(node * n, lexeme word, token * arg)
 {
 
     /*switch(word){
         case lx_KW_QUIT: return kw_quit(n, arg);
     }*/
 
-    return 0;
+    return NULL;
 }

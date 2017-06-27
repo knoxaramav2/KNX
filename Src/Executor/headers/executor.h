@@ -7,6 +7,7 @@
 
 token * execute(node *);
 
-int runKeyword(node *, lexeme, token *);
+token * runKeyword(node *, lexeme, token *);
+token * runOperator(node *, lexeme, token *);
 
 #endif

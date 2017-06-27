@@ -12,70 +12,100 @@ token * nextCom(token * crawler){
     return crawler;
 }
 
-token * executeBinary(token * crawler)
+token * executeBinary(token * arg, lexeme com)
 {
-
-    token * l, * r;
-    r = crawler->left;
-    l = r->left;
-    int operands = 0;
-    lexeme type = CHKTYPE(crawler->type);
-
-    while (l->left && operands < 2){
-        operands += isOperand(type);
-        l = l->left;
-    }
-    
-    token * arg = l;
-
-    arg->left = NULL;
-    l->left = NULL;
-    r->right = NULL;
     token * ret = NULL;
 
-    if (isMath(type)){
-        ret = math(l, r, type);
-    }
+    if (isMath(com))
+        ret = math(arg, arg->right, com);
+
+    return ret;
+}
+
+token * executeUnary(token * arg, lexeme com)
+{
+
+    
+
 
     return NULL;
 }
 
-token * executeUnary(token * crawler)
-{
+token * extract(token * l, token * r){
 
+    token * save = l->left;
+
+    if (l->left)
+        l->left->right = NULL;
+    if (r->right)
+        r->right->left = NULL;
     
+    l->left = NULL;
+    r->right = NULL;
 
-
-    return NULL;
+    return save;
 }
 
 token * splice(token * crawler, token * lval, token * rval)
 {
 
+
+
     return NULL;
 }
 
 token * execute(node * n){
-
-return NULL;
-    token * opCrawler = n->buffer.tokens;
-
-    opCrawler = nextCom(opCrawler);
-
-    if (opCrawler == NULL)
-        return NULL;
-
-    lexeme type = CHKTYPE(opCrawler->type);
-
-    printf("##%u %d %d\r\n", type, isUnary(type), (isKeyword(type) || type==lx_GEN_LAMBDA || type==lx_LOG_NOT));
     
-    int un = isUnary(type);
+    token * c = n->buffer.tokens;
 
-    token * ret = un ?
-        executeUnary(opCrawler) :
-        executeBinary(opCrawler);
+    while (1){
+        //find first command
+        c = nextCom(c);
 
-    
+        if (c==NULL)
+            return NULL;
+        if (c->left==NULL){
+            //TODO missing argument
+            return NULL;
+        }
 
-    return 0;
+        lexeme type = CHKTYPE(c->type);
+        token
+            *i = NULL,
+            *b = NULL,
+            *r = NULL,
+            *n = c->right;
+        
+        if (isUnary(type)){
+            i = c->left->left;
+            b = c->left;
+            b->right = NULL;
+        } else {
+            if (c->left->left == NULL){
+                //TODO throw error
+            }
+
+            i = c->left->left->left;
+            b = c->left->left;
+            if (b)
+                c->left->right = NULL;
+        }
+
+        if (i) 
+            i->right = NULL;
+        b->left = NULL;
+        
+        if (b == c->left){
+            r = executeUnary(b, type);
+        } else {
+            r = executeBinary(b, type);
+        }
+        
+        destroyToken(c);
+        coupleTokens(i, r, n);
+
+        c = r;
+    }
+
+    return c;
 }

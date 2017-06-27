@@ -201,7 +201,7 @@ size_t pushOperator(tBuffer * buf, char * str, size_t max)
 
         case '=':
             if (c1=='=') {result=lx_CMP_EQU; ret=1;}
-            else result = lx_SET;
+            else result = lx_SET | LEVEL_FOUR;
         break;
 
         case '<':

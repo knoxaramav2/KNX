@@ -3,9 +3,9 @@
 
 #include "node.h"
 
-#include "math.h"
+#include "mathx.h"
 
-int execute(node *);
+token * execute(node *);
 
 int runKeyword(node *, lexeme, token *);
 

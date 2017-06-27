@@ -6,6 +6,8 @@
     Some ranges are left open for plugin support
 */
 
+//TODO Add unary flag
+
 #define LEFT_MASK   0b11111111111111110000000000000000
 #define RIGHT_MASK  0b00000000000000001111111111111111
 
@@ -20,14 +22,12 @@
 #define isKwDeclare(x) (x>lx_KW_PRIM && x<lx_CNT)
 #define isKwUtil(x) (x>lx_KW_UTIL && x<lx_STD_PLUGIN)
 
-#define isMath(x) (x>lx_MATH && x<lx_SET)
-
 //use with ctxType (context type) of union 
-#define isLeftUnary(x) (x>)
-
-#define isUnary(x) (isKeyword(x) || isGeneral(x) || x==lx_LOG_NOT)
-
+#define isUnary(x) (isKeyword(x) || x==lx_GEN_LAMBDA || x==lx_LOG_NOT)
 #define isCommand(x) (isOperator(x) || isKeyword(x))
+
+#define isMath(x) (x>lx_MATH && x<lx_SET)
+#define isOperand(x) (!isCommand(x) || isUnary(x))
 
 typedef enum lexeme
 {
@@ -45,6 +45,8 @@ typedef enum lexeme
     lx_ULINT,
     lx_SINT,
     lx_USINT,
+    lx_FLOAT,
+    lx_DOUBLE,
 
     //TEXT
     lx_CHAR,
@@ -221,6 +223,7 @@ CONTEXT ORDERING
 
 */
 
+#define LEVEL_FOUR  0b00000000000001000000000000000000
 #define LEVEL_THREE 0b00000000000000110000000000000000
 #define LEVEL_TWO   0b00000000000000100000000000000000
 #define LEVEL_ONE   0b00000000000000010000000000000000

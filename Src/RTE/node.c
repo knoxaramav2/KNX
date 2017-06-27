@@ -25,6 +25,7 @@ void intrFlag(int d)
 node * createNode()
 {
     node * ret = malloc(sizeof(node));
+    node * root = getRootNode();
 
     ret->parent = NULL;
     ret->children = malloc(0);
@@ -34,16 +35,23 @@ node * createNode()
     ret->status = ns_active;
 
     ret->local = createMemTree();
-    ret->global = NULL;//TODO look up root node
-
     ret->buffer = createTBuffer();
+
+    if (root==NULL){
+        ret->global = ret->local;
+    } else {
+        ret->global = root->global;
+    }
 
     return ret;
 }
 
 int destroyNode(node * n)
 {
-    
+    if (n->id_index == 0)
+        destroyMemTree(n->global);
+    else
+        destroyMemTree(n->local);
 
     return 0;
 }
@@ -88,6 +96,8 @@ do
     if (c==0xa) continue;
     buffer[bindex++] = c;
 } while(self->status != ns_terminated && interrupt);
+
+destroyNode(self);
 
 return NULL;
 }

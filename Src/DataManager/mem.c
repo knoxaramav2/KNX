@@ -3,12 +3,14 @@
 memTree * createMemTree()
 {
 
+    //memTree * tree = createMemTree();
+
     return NULL;
 }
 
 int destroyMemTree(memTree * tree)
 {
-
+    //TODO
     return 0;
 }
 

@@ -18,6 +18,7 @@ extern nodereg * node_reg;
 nodereg * getNodeReg();
 void resizeNodeRegTable();
 int registerNode(node*, node*);
+int unregisterNode(node*);
 
 
 

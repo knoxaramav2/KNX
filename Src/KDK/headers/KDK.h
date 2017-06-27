@@ -10,7 +10,11 @@ Includes are resources in this library
 #include "compinfo.h"
 #include "dat_tables.h"
 #include "node.h"
+#include "node_reg.h"
 #include "debug.h"
+#include "token.h"
+#include "type.h"
+#include "error.h"
 
 //required for some features to work.
 //important features, the best features

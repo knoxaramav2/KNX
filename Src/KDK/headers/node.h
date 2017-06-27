@@ -38,6 +38,7 @@ node_status status;
 
 node * createNode();
 int destroyNode(node *);
+node * getRootNode();
 
 void * _nodeProc(void *);
 

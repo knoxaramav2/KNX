@@ -3,14 +3,14 @@
 CC = gcc
 BITVRS=64
 DEBUG=false
-CFLAGS = -std=c11 -Wall -Iheaders -g
+CFLAGS = -std=c11 -Wall -Iheaders $(COMMON) -g
 LFLAGS = -lm -Iheaders
 DFLAGS = -DDEBUG=$(DEBUG)#build debug arg
 VERSION = -DKDKVersion=\"0.0.1\"
 OUT = libKDK.so
 CLEANEXT = o a
 DBGFLAGS= -d#command line debug arg
-SRC=kdk.c token.c compinfo.c config.c data.c debug.c error.c
+SRC=kdk.c token.c compinfo.c config.c data.c debug.c error.c registry.c
 EXPORT_PTH=../../bin/
 
 ifeq ($(shell uname), Linux)

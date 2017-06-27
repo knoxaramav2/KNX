@@ -1,6 +1,8 @@
 #ifndef KDK_MEM
 #define KDK_MEM
 
+#include "lexeme.h"
+
 typedef enum treeMode{
     tm_binary,
     tm_splay
@@ -28,5 +30,10 @@ int destroyMemTree(memTree *);
 
 obj * createObject(char *, unsigned);
 int destroyObject(obj*);
+
+
+//interfaces
+
+obj * (*_declare_type)();
 
 #endif

@@ -10,8 +10,8 @@
 static void startup() __attribute__((constructor));
 static void shutdown() __attribute__((destructor));
 
-nodereg * node_reg = 0;
-//Config * config;
+nodereg * node_reg = NULL;
+type_reg * type_registry = NULL;
 
 //Constructor/Destructor
 void startup()
@@ -30,6 +30,9 @@ void startup()
     node_reg->idTable = primeCipher(config->maxNodes);
 
     getNodeReg();
+    initTypeRegistry();
+
+    _setTypeRegistry(type_registry);
 
     printf("Data Manager Loaded\r\n");
 }

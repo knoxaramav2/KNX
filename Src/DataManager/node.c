@@ -13,6 +13,11 @@ nodereg * getNodeReg()
     return node_reg;
 }
 
+node * getRootNode()
+{
+    return node_reg->nodeTable[0];
+}
+
 void resizeNodeRegTable()
 {
 //TODO
@@ -41,4 +46,9 @@ int registerNode(node * regnode, node * parent)
 
     printf("Failed to register node\r\n");
     return -1;
+}
+
+int unregisterNode(node* unreg){
+    node_reg->nodeTable[unreg->id_index] = NULL;
+    return 0;
 }

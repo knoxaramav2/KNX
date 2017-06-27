@@ -91,7 +91,7 @@ void pushOpToStack(tBuffer * buf, lexeme lx){
 
     int order = CHKLVL(lx);
     int lorder = buf->oCount == 0 ? 5 : CHKLVL(buf->opStack[buf->oCount-1]);
-    lexeme type = CHKTYPE(lx);
+    //lexeme type = CHKTYPE(lx);
 
     if (lorder <= order && lorder != 1){
         token * t = createToken(NULL, popOpStack(buf), NULL);
@@ -136,7 +136,7 @@ size_t pushOperator(tBuffer * buf, char * str, size_t max)
                 if (buf->head && !isKeyword(buf->head->type) && !isOperator(buf->head->type)){
                     result=lx_SET_POST_INC | LEVEL_TWO; ret=1;
                 }else{
-                    result=lx_SET_PRE_INC; ret=1;
+                    result=lx_SET_PRE_INC | LEVEL_TWO; ret=1;
                 }
             }
             else if (c1=='='){result=lx_SET_ADD; ret=1;}
@@ -147,7 +147,7 @@ size_t pushOperator(tBuffer * buf, char * str, size_t max)
                 if (buf->head && !isKeyword(buf->head->type) && !isOperator(buf->head->type)){
                     result=lx_SET_POST_DEC | LEVEL_TWO; ret=1;
                 }else{
-                    result=lx_SET_PRE_DEC; ret=1;
+                    result=lx_SET_PRE_DEC | LEVEL_TWO; ret=1;
                 }
             }
             else if (c1=='='){result=lx_SET_SUB; ret=1;}
@@ -162,7 +162,7 @@ size_t pushOperator(tBuffer * buf, char * str, size_t max)
             else result = lx_DIV | LEVEL_TWO;
         break;
         case '%':
-            result = lx_MOD;
+            result = lx_MOD | LEVEL_TWO;
         break;
         case '^':
             if (c1=='&') {result=lx_BIT_AND; ret=1;}
@@ -170,7 +170,7 @@ size_t pushOperator(tBuffer * buf, char * str, size_t max)
             else if (c1=='!'){result=lx_BIT_NOT; ret=1;}
             else if (c1=='<'){result=lx_BIT_LEFT; ret=1;}
             else if (c1=='>'){result=lx_BIT_RIGHT; ret=1;}
-            else result=lx_POW;
+            else result=lx_POW | LEVEL_TWO;
         break;
         case (char)251:
         case -30:

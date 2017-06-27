@@ -193,6 +193,7 @@ typedef enum lexeme
     lx_SYS_ERROR=1500,
     lx_SYS_WARNING,
     lx_SYS_EXCEPTION,
+    lx_SYS_MESSAGE
 
 } lexeme;
 

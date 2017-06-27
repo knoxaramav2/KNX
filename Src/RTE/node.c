@@ -77,7 +77,7 @@ do
         buffer[bindex] = 0;
         bindex=0;
 
-        if (strcmp(buffer, "quit") == 0) 
+        if (strcmp(buffer, "quitx") == 0) 
             return NULL;
 
         tokenize(self, buffer);

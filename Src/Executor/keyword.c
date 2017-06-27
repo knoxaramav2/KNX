@@ -4,9 +4,9 @@
 
 #include "node.h"
 
-#include "executor.h"
+#include "keyword.h"
 
-int kw_quit(node * n, token * t)
+token * kw_quit(node * n, token * t)
 {
 
     printf("Quiting node %d\r\n", n->id_index);
@@ -14,15 +14,19 @@ int kw_quit(node * n, token * t)
 
     n->status = ns_terminated;
 
-    return 0;
+    return NULL;
 }
 
 token * runKeyword(node * n, lexeme word, token * arg)
 {
 
-    /*switch(word){
+    switch(word){
         case lx_KW_QUIT: return kw_quit(n, arg);
-    }*/
+
+        default:
+
+        break;
+    }
 
     return NULL;
 }

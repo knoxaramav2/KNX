@@ -12,23 +12,24 @@ token * nextCom(token * crawler){
     return crawler;
 }
 
-token * executeBinary(token * arg, lexeme com)
+token * executeBinary(node * n, token * arg, lexeme com)
 {
     token * ret = NULL;
 
     if (isMath(com))
         ret = math(arg, arg->right, com);
+    if (isKeyword(com))
+        ret = runKeyword(n, com, arg);
 
     return ret;
 }
 
-token * executeUnary(token * arg, lexeme com)
+token * executeUnary(node * n, token * arg, lexeme com)
 {
-
-    
-
-
-    return NULL;
+    token * ret = NULL;
+    if (isKeyword(com))
+        ret = runKeyword(n, com, arg);
+    return ret;
 }
 
 token * extract(token * l, token * r){
@@ -54,20 +55,20 @@ token * splice(token * crawler, token * lval, token * rval)
     return NULL;
 }
 
-token * execute(node * n){
+token * execute(node * nd){
     
-    token * c = n->buffer.tokens;
+    token * c = nd->buffer.tokens;
 
     while (1){
         //find first command
         c = nextCom(c);
 
         if (c==NULL)
-            return NULL;
+            return NULL;/*
         if (c->left==NULL){
             //TODO missing argument
             return NULL;
-        }
+        }*/
 
         lexeme type = CHKTYPE(c->type);
         token
@@ -77,9 +78,11 @@ token * execute(node * n){
             *n = c->right;
         
         if (isUnary(type)){
-            i = c->left->left;
-            b = c->left;
-            b->right = NULL;
+            if (c->left){
+                i = c->left->left;
+                b = c->left;
+                b->right = NULL;
+            }
         } else {
             if (c->left->left == NULL){
                 //TODO throw error
@@ -93,18 +96,19 @@ token * execute(node * n){
 
         if (i) 
             i->right = NULL;
-        b->left = NULL;
+        if (b)
+            b->left = NULL;
         
         if (b == c->left){
-            r = executeUnary(b, type);
+            r = executeUnary(nd, b, type);
         } else {
-            r = executeBinary(b, type);
+            r = executeBinary(nd, b, type);
         }
         
         destroyToken(c);
-        coupleTokens(i, r, n);
+        if (i || r || n) coupleTokens(i, r, n);
 
-        c = r;
+        c = r ?: n;
     }
 
     return c;

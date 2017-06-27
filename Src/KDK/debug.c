@@ -71,7 +71,7 @@ void printBufferStream(tBuffer * buf)
         top->raw, 
         top->type & LEFT_MASK, 
         top->type & RIGHT_MASK,
-        CHKLVL(top->type), !isUnary(top->type));
+        CHKLVL(top->type), !isUnary(CHKTYPE(top->type)));
         top = top->right;
     }
 

@@ -83,6 +83,7 @@ lexeme popOpStack(tBuffer * buf){
 }
 
 void pushOpToStack(tBuffer * buf, lexeme lx){
+
     if (buf->oCount == 0){
         buf->opStack[buf->oCount++] = lx;
         return;
@@ -102,12 +103,13 @@ void pushOpToStack(tBuffer * buf, lexeme lx){
 //returns first open on stack
 void collapseEncap(tBuffer * buf, lexeme stopper)
 {
-    lexeme res = CHKTYPE(popOpStack(buf));
+    lexeme type = popOpStack(buf);
+    lexeme res = CHKTYPE(type);
 
-    printf("$$%d %d %d %d %d %d %d\r\n", res, !isECap(res), lx_ENC, lx_BIT, res>lx_ENC, res<lx_BIT, (res>lx_ENC && res<lx_BIT));
+    printf("$$%u %u %u %u %u %u %u\r\n", res, !isECap(res), lx_ENC, lx_BIT, res>lx_ENC, res<lx_BIT, (res>lx_ENC && res<lx_BIT));
 
     while (!isEncap(res) && res != lx_NA){
-        token * t = createToken(NULL, res, NULL);
+        token * t = createToken(NULL, type, NULL);
         appendTBuffer(buf, t, false);
         res = CHKTYPE(popOpStack(buf));
     }
@@ -130,16 +132,11 @@ size_t pushOperator(tBuffer * buf, char * str, size_t max)
 
     printf("\r\n$%s >> %c %c\r\n", str, c0, c1);
 
-    //printf("<<%d %c%c %d %d\r\n", c0, c1, getType(buf->head->type), !isKeyword(buf->head->type), !isOperator(buf->head->type));
-
-    bool rToL = false;
-
     switch (c0){
         case '+':
             if (c1=='+') {
                 if (buf->head && !isKeyword(buf->head->type) && !isOperator(buf->head->type)){
                     result=lx_SET_POST_INC | LEVEL_TWO; ret=1;
-                    rToL = true;
                 }else{
                     result=lx_SET_PRE_INC; ret=1;
                 }
@@ -151,7 +148,6 @@ size_t pushOperator(tBuffer * buf, char * str, size_t max)
             if (c1=='-') {
                 if (buf->head && !isKeyword(buf->head->type) && !isOperator(buf->head->type)){
                     result=lx_SET_POST_DEC | LEVEL_TWO; ret=1;
-                    rToL = true;
                 }else{
                     result=lx_SET_PRE_DEC; ret=1;
                 }

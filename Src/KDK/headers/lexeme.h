@@ -20,6 +20,8 @@
 #define isKwDeclare(x) (x>lx_KW_PRIM && x<lx_CNT)
 #define isKwUtil(x) (x>lx_KW_UTIL && x<lx_STD_PLUGIN)
 
+#define isMath(x) (x>lx_MATH && x<lx_SET)
+
 //use with ctxType (context type) of union 
 #define isLeftUnary(x) (x>)
 
@@ -183,7 +185,12 @@ typedef enum lexeme
     lx_EXT_PLUGIN = 800,
 
     //TYPE OFFSETS
-    lx_TYPE_REG=1100
+    lx_TYPE_REG=1100,
+
+    //System messages
+    lx_SYS_ERROR=1500,
+    lx_SYS_WARNING,
+    lx_SYS_EXCEPTION,
 
 } lexeme;
 

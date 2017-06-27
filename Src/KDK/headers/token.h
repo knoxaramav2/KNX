@@ -2,6 +2,7 @@
 #define KDK_TOKEN
 
 #include <stdbool.h>
+#include <string.h>
 
 #include "lexeme.h"
 

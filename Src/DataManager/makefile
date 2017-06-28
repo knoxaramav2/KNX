@@ -3,7 +3,7 @@
 CC = gcc
 BITVRS=64
 CFLAGS = -std=c11 -Wall -Iheaders -I../KDK/headers $(COMMON) -g
-LFLAGS = -lm -Iheaders -L$(BINPATH) -l:libKDK.so
+LFLAGS = -lm -Iheaders -L$(BINPATH) -l:libKDK.so $(KLIB)
 VERSION = -DDTMVersion=\"0.0.1\"
 OUT = libDTM.so
 CLEANEXT = o a

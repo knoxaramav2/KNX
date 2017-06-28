@@ -237,14 +237,15 @@ size_t pushOperator(tBuffer * buf, char * str, size_t max)
             ++buf->eCount;
         break;
         case ')':
-            result = lx_ENC_CPARAN;
+            //result = lx_ENC_OPARAN;
             --buf->eCount;
-            collapseEncap(buf, result);
+            collapseEncap(buf, lx_ENC_OPARAN);
             return 0;
         case '}':
             result = lx_ENC_CBRACE;
             --buf->eCount;
             collapseEncap(buf, result);
+            pushOpToStack(buf, lx_CNT_ENDBODY | LEVEL_TWO);
             return 0;
         case ']':
             result = lx_ENC_CBRACK;

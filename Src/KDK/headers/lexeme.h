@@ -172,6 +172,8 @@ typedef enum lexeme
     lx_CNT_CASE,        //
     lx_CNT_BREAK,       //break
     lx_CNT_CONTINUE,    //continue
+        //meta
+    lx_CNT_ENDBODY,
 
     //utility
     lx_KW_UTIL,

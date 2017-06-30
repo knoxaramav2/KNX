@@ -2,6 +2,14 @@
 {
     "files.associations": {
         "mem.h": "c",
-        "lexeme.h": "c"
+        "lexeme.h": "c",
+        "stdio.h": "c",
+        "type.h": "c",
+        "corecrt_math.h": "c",
+        "corecrt_wio.h": "c",
+        "nb30.h": "c",
+        "compinfo.h": "c",
+        "token.h": "c",
+        "config.h": "c"
     }
 }

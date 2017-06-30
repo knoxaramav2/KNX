@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
+#include "KNX_String.h"
 #include "KNX_Hash.h"
 
 #include "parser.h"
@@ -71,7 +73,27 @@ token * resolveSymbol(char * sym){
         lex = lx_NA_SYM;
     }
 
-    token * ret = createToken(lex == lx_NA_SYM ? sym : NULL, lex, NULL);
+    void * data;
+
+    //detect if number
+    if (lex == lx_NA_SYM){
+        int numret = isNumeric(sym);
+        if (numret == 1){
+            lex = lx_INT;
+            data = malloc(sizeof(int));
+            *(int *)data = atoi(sym);
+        }
+        else if (numret == 2){
+            lex = lx_DOUBLE;
+            data = malloc(sizeof(double));
+            *(int *)data = atof(sym);
+        }
+        else {
+            //symbol lookup
+        }
+    }
+
+    token * ret = createToken(lex == lx_NA_SYM ? sym : NULL, lex, data);
 
     return ret;
 }

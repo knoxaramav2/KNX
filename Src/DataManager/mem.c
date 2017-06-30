@@ -4,6 +4,7 @@
 
 #include "type.h"
 #include "mem.h"
+#include "node_reg.h"
 
 memTree * createMemTree()
 {

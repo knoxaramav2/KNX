@@ -8,6 +8,9 @@
 
 //TODO Add unary flag
 
+#include "config.h"
+
+
 #define LEFT_MASK   0b11111111111111110000000000000000
 #define RIGHT_MASK  0b00000000000000001111111111111111
 
@@ -34,11 +37,11 @@ typedef enum lexeme
     lx_NA,
     lx_NA_OPERAND,
     lx_NA_SYM,
-    lx_NA_OPERATOR = 256,
+    lx_NA_OPERATOR,
 
     //primitive types
     //NUMERICS
-    lx_NUMERIC = 257,
+    lx_TYPE_OFFSET=20,
     lx_INT,
     lx_UINT,
     lx_LINT,
@@ -65,8 +68,10 @@ typedef enum lexeme
     lx_FUNCTION,
     lx_VOID,
 
+    //###################Type registry reserved
+
     //OPERATORS
-    lx_OPERATOR,
+    lx_OPERATOR=MAX_TYPE_COUNT + 20,
     //math
     lx_MATH,
     lx_ADD,             //x+y
@@ -138,7 +143,7 @@ typedef enum lexeme
     lx_BIT_RIGHT,        //^>
 
     //KEYWORDS
-    lx_KEYWORD,
+    lx_KEYWORD=MAX_TYPE_COUNT + 120,
     //primitives
     lx_KW_PRIM,
     lx_KW_INT,          //int(name, *val)
@@ -185,14 +190,11 @@ typedef enum lexeme
     lx_KW_QUIT,         //quit
     
     //REGISTER OFFSETS
-    lx_STD_PLUGIN = 500,
-    lx_EXT_PLUGIN = 800,
-
-    //TYPE OFFSETS
-    lx_TYPE_REG=1100,
+    lx_STD_PLUGIN = MAX_TYPE_COUNT + 700,
+    lx_EXT_PLUGIN = MAX_TYPE_COUNT + 800,
 
     //System messages
-    lx_SYS_ERROR=1500,
+    lx_SYS_ERROR=MAX_TYPE_COUNT + 1100,
     lx_SYS_WARNING,
     lx_SYS_EXCEPTION,
     lx_SYS_MESSAGE

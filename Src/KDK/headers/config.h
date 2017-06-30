@@ -3,6 +3,8 @@
 
 #include <stdbool.h>
 
+#define MAX_TYPE_COUNT  400
+
 typedef struct Config
 {
     //flags

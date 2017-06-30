@@ -3,8 +3,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "datamanager.h"
 #include "node.h"
+#include "node_reg.h"
+#include "mem.h"
+#include "type.h"
+
+#include "datamanager.h"
 
 nodereg * node_reg;
 

@@ -4,6 +4,9 @@
 #include <string.h>
 
 #include "config.h"
+#include "node_reg.h"
+#include "mem.h"
+#include "type.h"
 
 #include "datamanager.h"
 

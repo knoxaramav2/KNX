@@ -197,7 +197,9 @@ typedef enum lexeme
     lx_SYS_ERROR=MAX_TYPE_COUNT + 1100,
     lx_SYS_WARNING,
     lx_SYS_EXCEPTION,
+    lx_LANG_EXCEPTION,
     lx_SYS_MESSAGE
+    
 
 } lexeme;
 

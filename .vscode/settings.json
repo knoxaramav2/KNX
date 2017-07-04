@@ -10,6 +10,14 @@
         "nb30.h": "c",
         "compinfo.h": "c",
         "token.h": "c",
-        "config.h": "c"
+        "config.h": "c",
+        "datman.c": "cpp",
+        "registry.c": "cpp",
+        "windef.h": "c",
+        "wtypes.h": "c",
+        "node.h": "c",
+        "vcruntime.h": "c",
+        "minwindef.h": "c",
+        "corecrt.h": "c"
     }
 }

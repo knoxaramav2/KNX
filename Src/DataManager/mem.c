@@ -87,6 +87,8 @@ int destroyMemTree(memTree * tree)
     return 0;
 }
 
+
+//1 redef 2 unknown 3 null object
 int addToTree(memTree * tree, leaf * l){
     if (tree->root == NULL){
         tree->root = l;
@@ -121,21 +123,25 @@ int addToTree(memTree * tree, leaf * l){
     return 2;
 }
 
-obj * createObject(memTree * tree, char * name, unsigned type, void * data)
-{
-    obj * var = malloc(sizeof(obj));
-    var->hash = FNV_1a_32(name);
-    var->type = type;
-    var->data = data;
+int appendObject(memTree * tree, obj * object){
+
+    if (object == NULL)
+        return 3;
 
     leaf * l = malloc(sizeof(leaf));
-    l->data = var;
+    l->data = object;
     l->left = NULL;
     l->right = NULL;
     l->parent = NULL;
 
-    if (addToTree(tree, l))
-        return NULL;
+    return addToTree(tree, l);
+}
+
+obj * createObject(char * name, lexeme type, void * data){
+    obj * var = malloc(sizeof(obj));
+    var->hash = FNV_1a_32(name);
+    var->type = type;
+    var->data = data;
 
     return var;
 }

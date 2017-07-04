@@ -40,7 +40,8 @@ obj * memUpdate(obj *);
 bool memDelete(obj *);
 
 
-obj * createObject(memTree*, char *, unsigned, void *);
+int appendObject(memTree*, obj *);
+obj * createObject(char *, lexeme, void *);
 int destroyObject(memTree*, char *);
 
 

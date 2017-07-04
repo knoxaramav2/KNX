@@ -153,7 +153,8 @@ int startRoot()
     registerNode(root, NULL);
 
     pthread_create(&root->_handle, NULL, _nodeProc, root);
-    printf("%d\r\n", pthread_join(root->_handle, NULL));
+    //printf("%d\r\n", );
+    pthread_join(root->_handle, NULL);
 
     return 0;
 }

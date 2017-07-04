@@ -8,15 +8,15 @@
 #include "mem.h"
 #include "token.h"
 
-typedef obj * (*type_constructor)(char *, token *);
-typedef int (*type_destructor)();
+typedef obj * (*type_constructor)(token *);
+typedef int (*type_destructor)(obj *);
 typedef obj * (*type_cast)(unsigned, obj*);
 
 //TODO Make cast tables dynamic to save memory
 //("Wont somebody think of the kilobytes?")
 typedef struct type_slot{
     unsigned long hash;
-    
+
     type_constructor constructor;
     type_destructor destructor;
     type_cast cast_table[MAX_TYPE_COUNT];

@@ -25,7 +25,32 @@ char getEscapeChar(char c){
     return c;
 }
 
-token * resolveSymbol(char * sym){
+lexeme popOpStack(tBuffer * buf){
+    return buf->oCount > 0 ? 
+        buf->opStack[--buf->oCount] :
+        lx_NA;
+}
+
+void pushOpToStack(tBuffer * buf, lexeme lx){
+
+    if (buf->oCount == 0){
+        buf->opStack[buf->oCount++] = lx;
+        return;
+    }
+
+    int order = CHKLVL(lx);
+    int lorder = buf->oCount == 0 ? 5 : CHKLVL(buf->opStack[buf->oCount-1]);
+    //lexeme type = CHKTYPE(lx);
+
+    if (lorder <= order && lorder != 1){
+        token * t = createToken(NULL, popOpStack(buf), NULL);
+        appendTBuffer(buf, t, false);
+    }
+
+    buf->opStack[buf->oCount++] = lx;
+}
+
+token * resolveSymbol(tBuffer * buf, char * sym){
 
     lexeme lex = lx_NA;
 
@@ -73,10 +98,11 @@ token * resolveSymbol(char * sym){
         lex = lx_NA_SYM;
     }
 
-    void * data;
-
     //detect if number
+    //flip to make prettier
     if (lex == lx_NA_SYM){
+        void * data;
+
         int numret = isNumeric(sym);
         if (numret == 1){
             lex = lx_INT;
@@ -91,36 +117,13 @@ token * resolveSymbol(char * sym){
         else {
             //symbol lookup
         }
+        
+        return createToken(lex == lx_NA_SYM ? sym : NULL, lex, data);
     }
 
-    token * ret = createToken(lex == lx_NA_SYM ? sym : NULL, lex, data);
+    pushOpToStack(buf, lex);
 
-    return ret;
-}
-
-lexeme popOpStack(tBuffer * buf){
-    return buf->oCount > 0 ? 
-        buf->opStack[--buf->oCount] :
-        lx_NA;
-}
-
-void pushOpToStack(tBuffer * buf, lexeme lx){
-
-    if (buf->oCount == 0){
-        buf->opStack[buf->oCount++] = lx;
-        return;
-    }
-
-    int order = CHKLVL(lx);
-    int lorder = buf->oCount == 0 ? 5 : CHKLVL(buf->opStack[buf->oCount-1]);
-    //lexeme type = CHKTYPE(lx);
-
-    if (lorder <= order && lorder != 1){
-        token * t = createToken(NULL, popOpStack(buf), NULL);
-        appendTBuffer(buf, t, false);
-    }
-
-    buf->opStack[buf->oCount++] = lx;
+    return NULL;
 }
 
 //returns first open on stack
@@ -322,12 +325,23 @@ void pushOperand(tBuffer * buf, char * str, size_t max, lexeme explicit)
 {
     token * t = NULL;
     if (explicit == lx_NA)
-        t = resolveSymbol(str);
-    else
+        t = resolveSymbol(buf, str);
+    else if (explicit == lx_STRING){
+        size_t len = sizeof(str) + 1;
+        char * data = malloc(len);
+        strncpy(data, str, len);
+        t = createToken(NULL, explicit, data);
+    } else if (explicit == lx_CHAR){
+        char * data = malloc(2);
+        data[0] = *str;
+        data[1] = 0;
+        t = createToken(NULL, explicit, data);
+    } else {
         t = createToken(str, explicit, NULL);
-
-    //token * t = createToken(str, explicit, data);
-    appendTBuffer(buf, t, false);
+    }
+        
+    if (t)
+        appendTBuffer(buf, t, false);
 }
 
 //TODO implement modified shunting yard as in docs
@@ -351,7 +365,8 @@ int tokenize(node * node, char * raw)
                     pushOperand(
                         &node->buffer, 
                         buffer, index, 
-                        node->buffer.qState == QBIT_S && index == 1 ? lx_CHAR : lx_STRING);
+                        node->buffer.qState == QBIT_S && index == 1 ? 
+                            lx_CHAR : lx_STRING);
                     node->buffer.qState = 0;
                     index = 0;
                     continue;

@@ -38,6 +38,8 @@ int registerType(char * name, type_constructor cons, type_destructor dest){
     type_registry->slots[regCount].hash = hash;
     type_registry->slots[regCount].cast_count = 0;
 
+    printf("Registered %s (%u)\r\n", name, regCount);
+
     ++type_registry->registered_types;
 
     return 0;

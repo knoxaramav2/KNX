@@ -16,6 +16,8 @@ static void shutdown() __attribute__((destructor));
 nodereg * node_reg = NULL;
 type_reg * type_registry = NULL;
 
+int loadPrimitives();
+
 //Constructor/Destructor
 void startup()
 {
@@ -36,6 +38,12 @@ void startup()
     initTypeRegistry();
 
     _setTypeRegistry(type_registry);
+
+    int fail;
+    if ((fail = loadPrimitives())){
+        printf("Error loading primitives: %d failures\r\n", fail);
+        return;
+    }
 
     printf("Data Manager Loaded\r\n");
 }

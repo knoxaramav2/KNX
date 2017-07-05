@@ -31,6 +31,7 @@ tBuffer buffer;
 //meta
 pthread_t _handle;
 int id_index;
+int exit_code;
 
 node_status status;
 

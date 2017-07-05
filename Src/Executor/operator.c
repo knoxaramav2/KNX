@@ -3,8 +3,11 @@
 
 #include "executor.h"
 
-token * runOperator(node * n, lexeme lx, token * t)
+token * runOperator(token * arg, lexeme word)
 {
+
+    if (isMath(word))
+        return math(arg, arg->right, word);
 
     return NULL;
 }

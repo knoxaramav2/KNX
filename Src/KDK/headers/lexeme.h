@@ -188,6 +188,9 @@ typedef enum lexeme
     lx_KW_IMPORT,       //import(library)
     lx_KW_RELEASE,      //release(library)
     lx_KW_QUIT,         //quit
+    lx_KW_PRINT,        //print(...)
+
+    //common
     
     //REGISTER OFFSETS
     lx_STD_PLUGIN = MAX_TYPE_COUNT + 700,

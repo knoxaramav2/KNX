@@ -18,6 +18,7 @@
         "node.h": "c",
         "vcruntime.h": "c",
         "minwindef.h": "c",
-        "corecrt.h": "c"
+        "corecrt.h": "c",
+        "wingdi.h": "c"
     }
 }

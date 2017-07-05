@@ -11,8 +11,11 @@ token * math(token*lval, token*rval, lexeme op){
 
     double lv, rv;
 
-    sscanf(lval->raw, "%lf", &lv);
-    sscanf(rval->raw, "%lf", &rv);
+    lv = *((double *)lval->info);
+    rv = *((double *)rval->info);
+
+    //sscanf(lval->raw, "%lf", &lv);
+    //sscanf(rval->raw, "%lf", &rv);
 
     double * ret = malloc(sizeof(double));
 
@@ -30,10 +33,7 @@ token * math(token*lval, token*rval, lexeme op){
         break;
     }
 
-    char * rstr = malloc(128);
-    snprintf(rstr, 128, "%lf", *ret);
+    printf("RESULT (%lf %lf %u) %lf\r\n", *((double *)lval->info), *((double *)rval->info), CHKTYPE(op), *ret);
 
-    printf("RESULT (%s %s %u) %lf\r\n", lval->raw, rval->raw, CHKTYPE(op), *ret);
-
-    return createToken(rstr, lx_DOUBLE, ret);
+    return createToken(NULL, lx_DOUBLE, ret);
 }

@@ -8,16 +8,15 @@
 
 token * kw_quit(node * n, token * t)
 {
-
-    printf("Quiting node %d\r\n", n->id_index);
-    fflush(stdout);
+    n->exit_code =  t ? *(int *) t->info : 0;
+    printf("Quiting node %d (%d)\r\n", n->id_index, n->exit_code);
 
     n->status = ns_terminated;
 
     return NULL;
 }
 
-token * runKeyword(node * n, lexeme word, token * arg)
+token * runKeyword(node * n, token * arg, lexeme word)
 {
 
     switch(word){

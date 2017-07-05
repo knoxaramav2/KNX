@@ -108,11 +108,13 @@ token * resolveSymbol(tBuffer * buf, char * sym){
             lex = lx_INT;
             data = malloc(sizeof(int));
             *(int *)data = atoi(sym);
+            printf("INT %d\r\n", *((int *)data));
         }
         else if (numret == 2){
             lex = lx_DOUBLE;
             data = malloc(sizeof(double));
-            *(int *)data = atof(sym);
+            *(double *)data = atof(sym);
+            printf("DOUBLE %lf\r\n", *((double*)data));
         }
         else {
             //symbol lookup

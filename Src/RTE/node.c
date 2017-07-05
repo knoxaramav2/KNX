@@ -32,6 +32,7 @@ node * createNode()
     ret->numChild = 0;
 
     ret->id_index = 0;
+    ret->exit_code = 0;
     ret->status = ns_active;
 
     ret->local = createMemTree();

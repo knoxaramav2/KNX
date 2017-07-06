@@ -44,9 +44,7 @@ obj * c_int(token * data){
             value = data->right->info;
     }
 
-    createObject(name , lx_INT, value);
-
-    return NULL;
+    return createObject(name , lx_INT, value);
 }
 
 int d_int(obj * self){
@@ -54,6 +52,12 @@ int d_int(obj * self){
     free(self->data);
 
     return 0;
+}
+
+void * c_int2double(void * orig){
+    double * data = malloc(sizeof(double));
+    *data = (double) *(int *) orig;
+    return data;
 }
 
 //UNSIGNED INTEGER
@@ -76,8 +80,8 @@ printf("Loading primitives\r\n");
 
 int fail = 0;
 
-registerType("int", c_int, d_int);
-
+fail += registerType("int", c_int, d_int);
+fail += addCaster(&type_registry->slots[type_registry->registered_types-1], lx_DOUBLE, c_int2double);
 
 
 return fail;

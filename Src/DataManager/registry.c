@@ -37,10 +37,21 @@ int registerType(char * name, type_constructor cons, type_destructor dest){
     type_registry->slots[regCount].destructor = dest;
     type_registry->slots[regCount].hash = hash;
     type_registry->slots[regCount].cast_count = 0;
+    type_registry->slots[regCount].type = lx_TYPE_OFFSET + regCount + 1;
 
     printf("Registered %s (%u)\r\n", name, regCount);
 
     ++type_registry->registered_types;
+
+    return 0;
+}
+
+int addCaster(type_slot * slot, lexeme from, type_cast cast){
+
+    slot->cast_table[slot->cast_count] = cast;
+    slot->cast_map[slot->cast_count] = from;
+
+    ++slot->cast_count;
 
     return 0;
 }

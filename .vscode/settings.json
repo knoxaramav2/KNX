@@ -19,6 +19,7 @@
         "vcruntime.h": "c",
         "minwindef.h": "c",
         "corecrt.h": "c",
-        "wingdi.h": "c"
+        "wingdi.h": "c",
+        "wincrypt.h": "c"
     }
 }

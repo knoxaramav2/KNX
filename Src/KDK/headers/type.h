@@ -10,15 +10,17 @@
 
 typedef obj * (*type_constructor)(token *);
 typedef int (*type_destructor)(obj *);
-typedef obj * (*type_cast)(unsigned, obj*);
+typedef void * (*type_cast)(void *);
 
 //TODO Make cast tables dynamic to save memory
 //("Wont somebody think of the kilobytes?")
 typedef struct type_slot{
     unsigned long hash;
+    lexeme type;
 
     type_constructor constructor;
     type_destructor destructor;
+    lexeme cast_map[MAX_TYPE_COUNT];
     type_cast cast_table[MAX_TYPE_COUNT];
 
     unsigned cast_count;
@@ -35,7 +37,10 @@ extern type_reg * type_registry;
 void _setTypeRegistry(type_reg *);
 type_reg * getTypeRegistry();
 int registerType (char *, type_constructor, type_destructor);
+int addCaster(type_slot*, lexeme, type_cast);
 
+obj * spawnType(lexeme, token *);
+void * castTo(void*, lexeme, lexeme);
 
 
 #endif

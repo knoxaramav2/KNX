@@ -139,7 +139,7 @@ int appendObject(memTree * tree, obj * object){
 
 obj * createObject(char * name, lexeme type, void * data){
     obj * var = malloc(sizeof(obj));
-    var->hash = FNV_1a_32(name);
+    var->hash = name != NULL ? FNV_1a_32(name) : 0;
     var->type = type;
     var->data = data;
 

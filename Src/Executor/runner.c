@@ -39,18 +39,21 @@ token * execute(node * nd){
     token * itr = nd->buffer.tokens;
     token * cont = NULL,
     * arg = NULL,
-    * lsav = NULL;
+    * lsav = NULL,
+    * ret = NULL;
 
     while(itr){
 
+        ret = itr;
+
         //move to command token
-        while (itr && !isCommand((itr->type & RIGHT_MASK)))
+        while (itr && !isCommand(itr->type))
             itr = itr->right;
         if (!itr){
             break;
         } 
 
-        lexeme com = itr->type & RIGHT_MASK;
+        lexeme com = itr->type;
         bool unary = isUnary (com);
         cont = itr->right;
         arg = unary ?
@@ -71,28 +74,12 @@ token * execute(node * nd){
         free(itr);
 
         itr = run(nd, arg, com);
+        destroyTokenStrand(arg);
 
-        while(arg){
-            token * t = arg->right;
-            destroyToken(arg);
-            arg = t;
-        }
-
-        if (lsav){
-            lsav->right = itr;
-            if (itr){
-                itr->left = lsav;
-                lsav->right = itr;
-                itr->right = cont;
-                if (cont)
-                    cont->left = itr;
-                
-                itr = lsav;
-            }
-        }
+        coupleTokens(lsav, itr, cont);
     }   
 
-    nd->buffer.tokens = itr; 
+    nd->buffer.tokens = ret; 
 
-    return itr;
+    return ret;
 }

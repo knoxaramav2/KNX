@@ -47,7 +47,7 @@ void destroyToken(token * target)
 void destroyTokenStrand(token * t){
     while (t != NULL){
         token * r = t->right;
-        destroyToken(r);
+        destroyToken(t);
         t=r;
     }
 }

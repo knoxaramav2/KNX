@@ -238,7 +238,8 @@ CONTEXT ORDERING
 #define LEVEL_TWO   0b00000000000000100000000000000000
 #define LEVEL_ONE   0b00000000000000010000000000000000
 
-#define CHKTYPE(x) ((x << 16) >> 16)
+#define CHKTYPE(x) ((x << 16) >> 16)//TODO replace with STRIP
 #define CHKLVL(x) (x >> 16)
+#define STRIP(x) (x & RIGHT_MASK)
 
 #endif

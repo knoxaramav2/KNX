@@ -44,6 +44,7 @@ void pushOpToStack(tBuffer * buf, lexeme lx){
 
     if (lorder <= order && lorder != 1){
         token * t = createToken(NULL, popOpStack(buf), NULL);
+        t->type = STRIP(t->type);
         appendTBuffer(buf, t, false);
     }
 
@@ -136,6 +137,7 @@ void collapseEncap(tBuffer * buf, lexeme stopper)
 
     while (!isEncap(res) && res != lx_NA){
         token * t = createToken(NULL, type, NULL);
+        t->type = STRIP(t->type);
         appendTBuffer(buf, t, false);
         type = popOpStack(buf);
         res = CHKTYPE(type);

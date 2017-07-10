@@ -54,6 +54,9 @@ void destroyTokenStrand(token * t){
 
 void coupleTokens(token * left, token * center, token * right)
 {
+    if (!left && !center && !right)
+        return;
+
     if (!center)
         return coupleTokens(NULL, left, right);
 

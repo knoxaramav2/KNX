@@ -5,7 +5,6 @@
 
 type_reg * type_registry;
 
-
 //INTEGER
 
 obj * c_exception(char * msg, lexeme lx){
@@ -28,6 +27,9 @@ obj * c_int(token * data){
     if (data == NULL){
         return c_exception("Invalid Overload Exception", lx_LANG_EXCEPTION);
     }
+
+    if (data->type == lx_LIST)
+        data = (token*) data->info;
 
     char * name = NULL;
     int * value = malloc(sizeof (int));

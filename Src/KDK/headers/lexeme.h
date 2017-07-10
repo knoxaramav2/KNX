@@ -19,6 +19,7 @@
 #define isType(x) (x> lx_NUMERIC && x<lx_OPERATOR)
 #define isOperator(x) (x>lx_OPERATOR && x<lx_KEYWORD)
 #define isKeyword(x) (x>lx_KEYWORD && x<lx_STD_PLUGIN)
+#define isDecl(x) (x>lx_KW_PRIM && x<lx_CNT)
 #define isSetter(x) (x>lx_SET && x<lx_LOG)
 #define isLogic(x) (x>lx_LOG && x<lx_CMP)
 #define isGeneral(x) (x>lx_GEN && x<lx_ENC)
@@ -241,5 +242,8 @@ CONTEXT ORDERING
 
 #define CHKTYPE(x) (x & TYPE_MASK)
 #define CHKLVL(x) ((ORDER_MASK & x) >> 16)
+
+//UTIL
+#define KW2TYPE(x) (x-lx_KW_PRIM+lx_TYPE_OFFSET)
 
 #endif

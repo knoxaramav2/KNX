@@ -4,6 +4,8 @@ type_reg * type_registry;
 
 obj * spawnType(lexeme target, token * args){
 
+    target = KW2TYPE(target);
+
     for(int i = 0; i < type_registry->registered_types; ++i){
         if (target != type_registry->slots[i].type)
             continue;

@@ -60,7 +60,7 @@ token * resolveSymbol(node * n, tBuffer * buf, char * sym){
 
     switch(hash){
 
-        case 2902189215581572LLU: lex = lx_KW_INT | LEVEL_FOUR; break;//int
+        case 2902189215581572LLU: lex = lx_KW_INT; break;//int
         case 339556138201278380LLU: lex = lx_KW_UINT; break;//uint
         case 313436435282222236LLU: lex = lx_KW_LINT; break;//lint
         case 333751759433611532LLU: lex = lx_KW_SINT; break;//sint
@@ -130,7 +130,7 @@ token * resolveSymbol(node * n, tBuffer * buf, char * sym){
         return createToken(lex == lx_NA_SYM && isPrimitive ? sym : NULL, lex, data);
     }
 
-    pushOpToStack(buf, lex);
+    pushOpToStack(buf, lex | LEVEL_FOUR);
 
     return NULL;
 }

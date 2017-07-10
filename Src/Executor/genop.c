@@ -5,6 +5,19 @@
 
 token * listItem(token * arg){
 
+    //append
+    if (arg->type == lx_LIST){
+        token * l = (token *) arg->info;
+
+        while(l->right)
+            l = l->right;
+
+        coupleTokens(NULL, l, arg->right);
+
+        return arg;
+    }
+
+    //new list
     return createToken(NULL, lx_LIST, arg);
 }
 

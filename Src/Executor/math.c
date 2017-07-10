@@ -44,8 +44,5 @@ token * math(token*lval, token*rval, lexeme op){
 
     printf("RESULT (%lf %lf %u) %lf\r\n", lv, rv, CHKTYPE(op), *ret);
 
-    //args
-    //destroyTokenStrand(lval);
-
     return createToken(NULL, lx_DOUBLE, ret);
 }

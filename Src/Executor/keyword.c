@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include "../"
 #include "node.h"
 
 #include "keyword.h"

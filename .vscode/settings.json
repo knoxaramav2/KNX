@@ -21,6 +21,7 @@
         "corecrt.h": "c",
         "wingdi.h": "c",
         "wincrypt.h": "c",
-        "corecrt_malloc.h": "c"
+        "corecrt_malloc.h": "c",
+        "genop.h": "c"
     }
 }

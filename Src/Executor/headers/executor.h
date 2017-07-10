@@ -7,6 +7,7 @@
 #include "logic.h"
 #include "control.h"
 #include "keyword.h"
+#include "genop.h"
 
 token * execute(node *);
 

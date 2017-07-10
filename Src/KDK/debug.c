@@ -67,10 +67,11 @@ void printBufferStream(tBuffer * buf)
     token * top = buf->tokens;
 
     while (top){
-        printf("|%s, [%u %u], lvl? %d, bin? %d|\r\n", 
-        top->raw, 
-        top->type & LEFT_MASK, 
-        top->type & RIGHT_MASK,
+        printf("|%s, [%u %u %u], lvl? %d, bin? %d|\r\n", 
+        top->raw,
+        top->type & MANAGE_CAST, 
+        top->type & ORDER_MASK, 
+        top->type & TYPE_MASK,
         CHKLVL(top->type), !isUnary(CHKTYPE(top->type)));
         top = top->right;
     }

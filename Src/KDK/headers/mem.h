@@ -14,7 +14,7 @@ typedef struct obj
 {
     unsigned long hash;
     void * data;
-    unsigned type;
+    lexeme type;
 } obj;
 
 typedef struct leaf{
@@ -34,8 +34,8 @@ typedef struct memTree{
 memTree * createMemTree();
 int destroyMemTree(memTree *);
 
-obj * memSearch(char *);
-obj * memLookup(unsigned long);
+obj * memSearch(memTree *, char *);
+obj * memLookup(memTree *, unsigned long, char*);
 obj * memUpdate(obj *);
 bool memDelete(obj *);
 

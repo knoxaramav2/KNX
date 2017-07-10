@@ -6,6 +6,7 @@
 #include "KNX_String.h"
 #include "KNX_Hash.h"
 
+#include "mem.h"
 #include "parser.h"
 #include "debug.h"
 
@@ -44,14 +45,14 @@ void pushOpToStack(tBuffer * buf, lexeme lx){
 
     if (lorder <= order && lorder != 1){
         token * t = createToken(NULL, popOpStack(buf), NULL);
-        t->type = STRIP(t->type);
+        t->type = CHKTYPE(t->type);
         appendTBuffer(buf, t, false);
     }
 
     buf->opStack[buf->oCount++] = lx;
 }
 
-token * resolveSymbol(tBuffer * buf, char * sym){
+token * resolveSymbol(node * n, tBuffer * buf, char * sym){
 
     lexeme lex = lx_NA;
 
@@ -59,7 +60,7 @@ token * resolveSymbol(tBuffer * buf, char * sym){
 
     switch(hash){
 
-        case 2902189215581572LLU: lex = lx_KW_INT; break;//int
+        case 2902189215581572LLU: lex = lx_KW_INT | LEVEL_FOUR; break;//int
         case 339556138201278380LLU: lex = lx_KW_UINT; break;//uint
         case 313436435282222236LLU: lex = lx_KW_LINT; break;//lint
         case 333751759433611532LLU: lex = lx_KW_SINT; break;//sint
@@ -103,25 +104,30 @@ token * resolveSymbol(tBuffer * buf, char * sym){
     //flip to make prettier
     if (lex == lx_NA_SYM){
         void * data;
+        bool isPrimitive = true;
 
         int numret = isNumeric(sym);
         if (numret == 1){
             lex = lx_INT;
             data = malloc(sizeof(int));
             *(int *)data = atoi(sym);
-            printf("INT %d\r\n", *((int *)data));
         }
         else if (numret == 2){
             lex = lx_DOUBLE;
             data = malloc(sizeof(double));
             *(double *)data = atof(sym);
-            printf("DOUBLE %lf\r\n", *((double*)data));
         }
         else {
             //symbol lookup
+            obj * o = memSearch(n->local, sym);
+            if (o){
+                lex = o->type;
+                data = o;
+                isPrimitive = false;
+            }
         }
-        
-        return createToken(lex == lx_NA_SYM ? sym : NULL, lex, data);
+
+        return createToken(lex == lx_NA_SYM && isPrimitive ? sym : NULL, lex, data);
     }
 
     pushOpToStack(buf, lex);
@@ -137,7 +143,7 @@ void collapseEncap(tBuffer * buf, lexeme stopper)
 
     while (!isEncap(res) && res != lx_NA){
         token * t = createToken(NULL, type, NULL);
-        t->type = STRIP(t->type);
+        t->type = CHKTYPE(t->type);
         appendTBuffer(buf, t, false);
         type = popOpStack(buf);
         res = CHKTYPE(type);
@@ -325,11 +331,11 @@ size_t pushOperator(tBuffer * buf, char * str, size_t max)
     return ret;
 } 
 
-void pushOperand(tBuffer * buf, char * str, size_t max, lexeme explicit)
+void pushOperand(node * n, tBuffer * buf, char * str, size_t max, lexeme explicit)
 {
     token * t = NULL;
     if (explicit == lx_NA)
-        t = resolveSymbol(buf, str);
+        t = resolveSymbol(n, buf, str);
     else if (explicit == lx_STRING){
         size_t len = sizeof(str) + 1;
         char * data = malloc(len);
@@ -367,6 +373,7 @@ int tokenize(node * node, char * raw)
                 (c=='\"' && node->buffer.qState == QBIT_D)){
                     buffer[index]=0;
                     pushOperand(
+                        node,
                         &node->buffer, 
                         buffer, index, 
                         node->buffer.qState == QBIT_S && index == 1 ? 
@@ -404,7 +411,7 @@ int tokenize(node * node, char * raw)
         } else {
             if (index > 0){
                 buffer[index] = 0;
-                pushOperand(&node->buffer, buffer, index, lx_NA);
+                pushOperand(node , &node->buffer, buffer, index, lx_NA);
                 index = 0;
             }
 

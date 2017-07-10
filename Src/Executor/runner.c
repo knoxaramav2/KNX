@@ -74,7 +74,8 @@ token * execute(node * nd){
         free(itr);
 
         itr = run(nd, arg, com);
-        destroyTokenStrand(arg);
+        if (itr && itr->type != lx_LIST)
+            destroyTokenStrand(arg);
 
         coupleTokens(lsav, itr, cont);
     }   

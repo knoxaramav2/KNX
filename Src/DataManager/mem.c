@@ -16,6 +16,22 @@ memTree * createMemTree()
     return ret;
 }
 
+//recursively destroy branches
+int destroyBranch(leaf * leaf){
+    return 0;
+}
+
+int destroyMemTree(memTree * tree)
+{
+    int ret = destroyBranch(tree->root);
+    
+    if (ret) return ret;
+    
+    free(tree);
+
+    return 0;
+}
+
 leaf * leafLookup(memTree * tree, unsigned long hash){
 
     leaf * itr = tree->root;
@@ -70,23 +86,6 @@ int destroyLeaf(memTree * tree, unsigned long hash){
 
     return 0;
 }
-
-//recursively destroy branches
-int destroyBranch(){
-    return 0;
-}
-
-int destroyMemTree(memTree * tree)
-{
-    int ret = destroyBranch(tree->root);
-    
-    if (ret) return ret;
-    
-    free(tree);
-
-    return 0;
-}
-
 
 //1 redef 2 unknown 3 null object
 int addToTree(memTree * tree, leaf * l){
@@ -152,4 +151,46 @@ int destroyObject(memTree*tree, char * str)
 
     destroyLeaf(tree, hash);
     return 0;
+}
+
+unsigned long resolvePartialName(char ** itr){
+
+    char * hold = *itr;
+    while (**itr){
+        if (**itr == '.'){
+            **itr = 0;
+            unsigned long ret = FNV_1a_32(hold);
+            **itr='.';
+            return ret;
+        }
+        else ++*itr;
+    }
+
+    return FNV_1a_32(hold);
+}
+
+obj * memLookup (memTree * tree, unsigned long hash, char * remainder){
+
+    //if (remainder)
+
+    return NULL;
+}
+
+obj * memSearch(memTree * tree, char * name){
+
+    char seg [128];
+    short pos = 0;
+
+    //seperate name by delimiter '.'
+    char * itr = name;
+    while (*itr){
+        if (*itr == '.'){
+            seg[pos] = 0;
+            return memLookup(tree, FNV_1a_32(seg), seg+pos);
+        } else {
+            seg[pos++] = *itr;
+        }
+    }
+
+    return memLookup(tree, FNV_1a_32(seg), NULL);
 }

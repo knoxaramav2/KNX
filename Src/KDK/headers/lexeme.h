@@ -10,9 +10,11 @@
 
 #include "config.h"
 
+#define MANAGE_CAST 0b10000000000000000000000000000000
+#define ORDER_MASK  0b00000000000001110000000000000000
+#define TYPE_MASK   0b00000000000000001111111111111111
 
-#define LEFT_MASK   0b11111111111111110000000000000000
-#define RIGHT_MASK  0b00000000000000001111111111111111
+#define MAX_KW_TYPE 120
 
 #define isType(x) (x> lx_NUMERIC && x<lx_OPERATOR)
 #define isOperator(x) (x>lx_OPERATOR && x<lx_KEYWORD)
@@ -41,7 +43,7 @@ typedef enum lexeme
 
     //primitive types
     //NUMERICS
-    lx_TYPE_OFFSET=20,
+    lx_TYPE_OFFSET=20,//20
     lx_INT,
     lx_UINT,
     lx_LINT,
@@ -71,7 +73,7 @@ typedef enum lexeme
     //###################Type registry reserved
 
     //OPERATORS
-    lx_OPERATOR=MAX_TYPE_COUNT + 20,
+    lx_OPERATOR=lx_TYPE_OFFSET + MAX_TYPE_COUNT,//420
     //math
     lx_MATH,
     lx_ADD,             //x+y
@@ -143,7 +145,7 @@ typedef enum lexeme
     lx_BIT_RIGHT,        //^>
 
     //KEYWORDS
-    lx_KEYWORD=MAX_TYPE_COUNT + 120,
+    lx_KEYWORD=lx_OPERATOR + 100,//520
     //primitives
     lx_KW_PRIM,
     lx_KW_INT,          //int(name, *val)
@@ -164,7 +166,7 @@ typedef enum lexeme
     lx_KW_VOID,         //void 
 
     //control
-    lx_CNT,
+    lx_CNT=lx_KEYWORD + MAX_TYPE_COUNT,//920
     lx_CNT_IF,          //if (cond){expression}
     lx_CNT_ELSE,        //else {expression}
     lx_CNT_ELIF,        //elif (cond){expression}
@@ -193,17 +195,15 @@ typedef enum lexeme
     //common
     
     //REGISTER OFFSETS
-    lx_STD_PLUGIN = MAX_TYPE_COUNT + 700,
-    lx_EXT_PLUGIN = MAX_TYPE_COUNT + 800,
+    lx_STD_PLUGIN = lx_CNT + 100,//1020
+    lx_EXT_PLUGIN = lx_STD_PLUGIN + 100,//1120
 
     //System messages
-    lx_SYS_ERROR=MAX_TYPE_COUNT + 1100,
+    lx_SYS_ERROR=lx_EXT_PLUGIN + 100,//1220
     lx_SYS_WARNING,
     lx_SYS_EXCEPTION,
     lx_LANG_EXCEPTION,
     lx_SYS_MESSAGE
-    
-
 } lexeme;
 
 /*
@@ -228,7 +228,8 @@ CONTEXT ORDERING
 
         ignored when pushing further operators
 
-
+4th level-------
+    Useful for keywords
 
 
 */
@@ -238,8 +239,7 @@ CONTEXT ORDERING
 #define LEVEL_TWO   0b00000000000000100000000000000000
 #define LEVEL_ONE   0b00000000000000010000000000000000
 
-#define CHKTYPE(x) ((x << 16) >> 16)//TODO replace with STRIP
-#define CHKLVL(x) (x >> 16)
-#define STRIP(x) (x & RIGHT_MASK)
+#define CHKTYPE(x) (x & TYPE_MASK)
+#define CHKLVL(x) ((ORDER_MASK & x) >> 16)
 
 #endif

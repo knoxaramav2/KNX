@@ -26,6 +26,8 @@
         "objutil.h": "c",
         "objidl.h": "c",
         "winuser.h": "c",
-        "winspool.h": "c"
+        "winspool.h": "c",
+        "minwinbase.h": "c",
+        "arm_neon.h": "c"
     }
 }

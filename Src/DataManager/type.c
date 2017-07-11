@@ -3,7 +3,6 @@
 type_reg * type_registry;
 
 obj * spawnType(lexeme target, token * args){
-
     target = KW2TYPE(target);
 
     for(int i = 0; i < type_registry->registered_types; ++i){
@@ -17,6 +16,9 @@ obj * spawnType(lexeme target, token * args){
 }
 
 void * castTo(void * src, lexeme from, lexeme to){
+    if (!src || (from == to))
+        return src;
+
     for(int i = 0; i < type_registry->registered_types; ++i){
         if (from != type_registry->slots[i].type)
             continue;

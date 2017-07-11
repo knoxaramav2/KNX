@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "type.h"
+
 #include "registry.h"
 
 type_reg * type_registry;
@@ -28,22 +30,31 @@ obj * c_int(token * data){
         return c_exception("Invalid Overload Exception", lx_LANG_EXCEPTION);
     }
 
+    //convert list item token to argument string
     if (data->type == lx_LIST)
-        data = (token*) data->info;
+        data = getTokenValue(data);
 
     char * name = NULL;
     int * value = malloc(sizeof (int));
     *value = 0;
 
-    if (data->type == lx_STRING || data->type == lx_CHAR) {
-        name = data->info;
-    } else {
-        return c_exception("Invalid Overload Exception", lx_LANG_EXCEPTION);
-    }
-
-    if (data->right){
-        if (data->right->type == lx_INT)
-            value = data->right->info;
+    for (int cdx = 0; data; ++cdx){
+        switch (cdx){
+            case 0:
+                name = castTo(getTokenValue(data), data->type, lx_STRING);
+                if (name == NULL)
+                    return c_exception("Invalid Overload Exception", lx_LANG_EXCEPTION);
+            break;
+            case 1:
+                value = castTo(getTokenValue(data), data->type, lx_INT);
+                if (value == NULL)
+                    return c_exception("Invalid Overload Exception", lx_LANG_EXCEPTION);
+            break;
+            default:
+                return c_exception("Invalid Overload Exception", lx_LANG_EXCEPTION);
+        }
+        
+        data = data->right;
     }
 
     return createObject(name , lx_INT, value);

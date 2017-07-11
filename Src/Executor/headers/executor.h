@@ -8,6 +8,7 @@
 #include "control.h"
 #include "keyword.h"
 #include "genop.h"
+#include "setter.h"
 
 token * execute(node *);
 

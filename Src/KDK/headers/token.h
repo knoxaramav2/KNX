@@ -72,5 +72,7 @@ tBuffer createTBuffer();
 void clearTBuffer(tBuffer *);
 void appendTBuffer(tBuffer *, token *, bool);
 
+void * getTokenValue(token *);
+
 
 #endif

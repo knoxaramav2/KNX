@@ -19,11 +19,8 @@ token * math(token*lval, token*rval, lexeme op){
 
     printf("{%d %d}\r\n", *(int*)l, *(int*)r);
 
-    bool lcast = lval->type != lx_DOUBLE;
-    bool rcast = rval->type != lx_DOUBLE;
-
-    l = lcast ? castTo(l, lval->type, lx_DOUBLE) : lval->info;
-    r = rcast ? castTo(r, rval->type, lx_DOUBLE) : rval->info;
+    l = castTo(l, lval->type, lx_DOUBLE);
+    r = castTo(r, rval->type, lx_DOUBLE);
     
     double lv = *(double*)l;
     double rv = *(double*)r;
@@ -44,9 +41,9 @@ token * math(token*lval, token*rval, lexeme op){
     }
 
     //destroy temp cast
-    if (lcast)
+    if (lval->type != lx_DOUBLE)
         free(l);
-    if (rcast)
+    if (rval->type != lx_DOUBLE)
         free(r);
 
     printf("RESULT (%lf %lf %u) %lf\r\n", lv, rv, CHKTYPE(op), *ret);

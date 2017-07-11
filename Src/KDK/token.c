@@ -4,17 +4,11 @@
 
 #include "token.h"
 
-token * createToken(char * raw, lexeme type, void * data)
+token * createToken(bool stored, lexeme type, void * data)
 {
     token * ret = malloc(sizeof(token));
 
-    if (raw){
-        ret->raw = malloc(strlen(raw)+1);
-        ret->raw = strncpy(ret->raw, raw, strlen(raw)+1);
-    } else {
-        ret->raw = NULL;
-    }
-    
+    ret->isStored = stored;
     ret->type = type;
     ret->info = data;
 
@@ -26,8 +20,10 @@ token * createToken(char * raw, lexeme type, void * data)
 
 void destroyToken(token * target)
 {
-    if (target->raw)
-        free(target->raw);
+    //is stored memory
+    if (!target->isStored && target->info){
+        free(target->info);
+    }
     
     if (target->left && target->right)
     {

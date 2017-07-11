@@ -44,7 +44,7 @@ void pushOpToStack(tBuffer * buf, lexeme lx){
     //lexeme type = CHKTYPE(lx);
 
     if (lorder <= order && lorder != 1){
-        token * t = createToken(NULL, popOpStack(buf), NULL);
+        token * t = createToken(false, popOpStack(buf), NULL);
         t->type = CHKTYPE(t->type);
         appendTBuffer(buf, t, false);
     }
@@ -127,7 +127,7 @@ token * resolveSymbol(node * n, tBuffer * buf, char * sym){
             }
         }
 
-        return createToken(lex == lx_NA_SYM && isPrimitive ? sym : NULL, lex, data);
+        return createToken(!isPrimitive, lex, data);
     }
 
     pushOpToStack(buf, lex | LEVEL_FOUR);
@@ -142,7 +142,7 @@ void collapseEncap(tBuffer * buf, lexeme stopper)
     lexeme res = CHKTYPE(type);
 
     while (!isEncap(res) && res != lx_NA){
-        token * t = createToken(NULL, type, NULL);
+        token * t = createToken(false, type, NULL);
         t->type = CHKTYPE(t->type);
         appendTBuffer(buf, t, false);
         type = popOpStack(buf);
@@ -340,14 +340,15 @@ void pushOperand(node * n, tBuffer * buf, char * str, size_t max, lexeme explici
         size_t len = sizeof(str) + 1;
         char * data = malloc(len);
         strncpy(data, str, len);
-        t = createToken(NULL, explicit, data);
+        t = createToken(false, explicit, data);
     } else if (explicit == lx_CHAR){
         char * data = malloc(2);
         data[0] = *str;
         data[1] = 0;
-        t = createToken(NULL, explicit, data);
+        t = createToken(false, explicit, data);
     } else {
-        t = createToken(str, explicit, NULL);
+        //??
+        t = createToken(NULL, explicit, str);
     }
         
     if (t)

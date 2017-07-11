@@ -27,6 +27,7 @@
 #define isBitwise(x) (x>lx_BIT && x<lx_KEYWORD)
 #define isKwDeclare(x) (x>lx_KW_PRIM && x<lx_CNT)
 #define isKwUtil(x) (x>lx_KW_UTIL && x<lx_STD_PLUGIN)
+#define isFault(x) (x>lx_SYS_ERROR && x<= lx_SYS_MESSAGE)
 
 //use with ctxType (context type) of union 
 #define isUnary(x) (isKeyword(x) || x==lx_GEN_LAMBDA || x==lx_LOG_NOT)

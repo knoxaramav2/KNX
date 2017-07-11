@@ -31,40 +31,39 @@ typedef struct tBuffer
     
 unsigned char qState;
 
-//operator stack
-lexeme opStack [128];
-unsigned oCount;
-int eCount;//encapsulation level
+    //operator stack
+    lexeme opStack [128];
+    unsigned oCount;
+    int eCount;//encapsulation level
 
-//output stack
-token * tokens;
-token * head;
-unsigned tCount;
+    //output stack
+    token * tokens;
+    token * head;
+    unsigned tCount;
 
-//lexer buffer
-char buffer[1024];
-size_t index;
+    //lexer buffer
+    char buffer[1024];
+    size_t index;
 
-bool yieldLine;
-short commentMode;
+    bool yieldLine;
+    short commentMode;
 
 } tBuffer;
 
 typedef struct token{
+    lexeme type;
+    bool isStored;
+    void * info;
 
-char * raw;//necessary?
-lexeme type;
-//tkn_id id;
-void * info;
+    tBuffer buffer;
 
-tBuffer buffer;
-
-struct token * left;
-struct token * right;
+    struct token * left;
+    struct token * right;
 
 } token;
 
-token * createToken(char *, lexeme, void *);
+//TODO change bool to storage location id
+token * createToken(bool , lexeme, void *);
 void coupleTokens(token *, token *, token *);
 void destroyToken(token *);
 void destroyTokenStrand(token *);

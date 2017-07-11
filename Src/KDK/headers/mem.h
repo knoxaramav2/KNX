@@ -4,6 +4,7 @@
 #include <stdbool.h>
 
 #include "lexeme.h"
+#include "token.h"
 
 typedef enum treeMode{
     tm_binary,
@@ -35,15 +36,13 @@ memTree * createMemTree();
 int destroyMemTree(memTree *);
 
 obj * memSearch(memTree *, char *);
-obj * memLookup(memTree *, unsigned long, char*);
+obj * memLookup(memTree *, unsigned long);
 obj * memUpdate(obj *);
 bool memDelete(obj *);
-
 
 int appendObject(memTree*, obj *);
 obj * createObject(char *, lexeme, void *);
 int destroyObject(memTree*, char *);
-
 
 //interfaces
 

@@ -169,28 +169,39 @@ unsigned long resolvePartialName(char ** itr){
     return FNV_1a_32(hold);
 }
 
-obj * memLookup (memTree * tree, unsigned long hash, char * remainder){
+obj * memLookup (memTree * tree, unsigned long hash){
 
-    //if (remainder)
+    leaf * lf = tree->root;
+
+    while (lf){
+        if (hash < lf->data->hash)
+            lf = lf->left;
+        else if (hash > lf->data->hash)
+            lf = lf->right;
+        else
+            return lf->data;
+    }
 
     return NULL;
 }
 
 obj * memSearch(memTree * tree, char * name){
 
-    char seg [128];
-    short pos = 0;
+    //char seg [128];
+    //short pos = 0;
 
-    //seperate name by delimiter '.'
-    char * itr = name;
-    while (*itr){
-        if (*itr == '.'){
-            seg[pos] = 0;
-            return memLookup(tree, FNV_1a_32(seg), seg+pos);
-        } else {
-            seg[pos++] = *itr;
-        }
+    char * index = name;
+    unsigned long hash = resolvePartialName(&name);
+
+    obj * ret = memLookup(tree, hash);
+    if (ret == NULL){
+        //search for module
     }
 
-    return memLookup(tree, FNV_1a_32(seg), NULL);
+    //continue lookup into member
+    if (*index){
+
+    }
+
+    return ret;
 }

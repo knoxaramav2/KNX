@@ -22,6 +22,10 @@
         "wingdi.h": "c",
         "wincrypt.h": "c",
         "corecrt_malloc.h": "c",
-        "genop.h": "c"
+        "genop.h": "c",
+        "objutil.h": "c",
+        "objidl.h": "c",
+        "winuser.h": "c",
+        "winspool.h": "c"
     }
 }

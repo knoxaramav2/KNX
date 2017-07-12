@@ -7,6 +7,7 @@
 
 #include "mem.h"
 #include "token.h"
+#include "core_structs.h"
 
 //required definitions for compiled data types
 typedef obj * (*type_constructor)(token *);

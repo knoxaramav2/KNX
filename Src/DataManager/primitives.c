@@ -1,3 +1,7 @@
+/*
+defines and registers built in data types and structures
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 

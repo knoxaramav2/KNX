@@ -10,6 +10,8 @@ token * runOperator(token * arg, lexeme word)
         return math(arg, arg->right, word);
     if (isGeneral(word))
         return runGenOp(arg, word);
+    if (isSetter(word))
+        return runSetter(arg, word);
 
     return NULL;
 }

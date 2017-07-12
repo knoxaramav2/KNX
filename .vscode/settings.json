@@ -28,6 +28,9 @@
         "winuser.h": "c",
         "winspool.h": "c",
         "minwinbase.h": "c",
-        "arm_neon.h": "c"
+        "arm_neon.h": "c",
+        "setter.h": "c",
+        "primitives.c": "cpp",
+        "type.c": "cpp"
     }
 }

@@ -34,3 +34,31 @@ void * castTo(void * src, lexeme from, lexeme to){
 
     return NULL;
 }
+
+void * copyValue(void * src, lexeme type){
+
+    if (!src) return NULL;
+
+    for(int i = 0; i < type_registry->registered_types; ++i){
+        if (type != type_registry->slots[i].type)
+            continue;
+
+        return type_registry->slots[i].copyConstructor(src);
+    }
+
+    return NULL;
+}
+
+void * typeMath(void * l, void * r, lexeme lt, lexeme rt, lexeme word){
+    if (!l || !r)
+        return NULL;
+    
+    for(int i = 0; i < type_registry->registered_types; ++i){
+        if (lt != type_registry->slots[i].type)
+            continue;
+
+        return type_registry->slots[i].math(l, r, rt, word);
+    }
+
+    return NULL;
+}

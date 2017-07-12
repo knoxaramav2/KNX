@@ -18,7 +18,7 @@ void initTypeRegistry(){
     type_registry->registered_types = 0;
 }
 
-int registerType(char * name, type_constructor cons, type_destructor dest){
+int registerType(char * name, type_constructor cons, type_destructor dest, copy_constructor copy){
 
     unsigned long hash = FNV_1a_32(name);
     unsigned regCount = type_registry->registered_types;
@@ -33,11 +33,16 @@ int registerType(char * name, type_constructor cons, type_destructor dest){
     }
 
     //setup next available type slot
-    type_registry->slots[regCount].constructor = cons;
-    type_registry->slots[regCount].destructor = dest;
-    type_registry->slots[regCount].hash = hash;
-    type_registry->slots[regCount].cast_count = 0;
-    type_registry->slots[regCount].type = lx_TYPE_OFFSET + regCount + 1;
+    type_slot * slot = &type_registry->slots[regCount];
+    slot->constructor = cons;
+    slot->copyConstructor = copy;
+    slot->destructor = dest;
+    slot->hash = hash;
+    slot->cast_count = 0;
+    slot->type = lx_TYPE_OFFSET + regCount + 1;
+
+    //optional
+    slot->math = NULL;
 
     printf("Registered %s (%u)\r\n", name, regCount);
 
@@ -53,5 +58,12 @@ int addCaster(type_slot * slot, lexeme from, type_cast cast){
 
     ++slot->cast_count;
 
+    return 0;
+}
+
+int assignMath(type_slot * slot, type_math math){
+    if (slot->math)
+        return 1;
+    slot->math = math;
     return 0;
 }

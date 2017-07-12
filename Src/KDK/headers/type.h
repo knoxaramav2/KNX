@@ -8,9 +8,16 @@
 #include "mem.h"
 #include "token.h"
 
+//required definitions for compiled data types
 typedef obj * (*type_constructor)(token *);
 typedef int (*type_destructor)(obj *);
+typedef void * (*copy_constructor)(void *);
+typedef void * (*type_set)(void *, lexeme);
+
+//additional/optional
 typedef void * (*type_cast)(void *);
+typedef void * (*type_math)(void *, void*, lexeme, lexeme);
+
 
 //TODO Make cast tables dynamic to save memory
 //("Wont somebody think of the kilobytes?")
@@ -19,9 +26,12 @@ typedef struct type_slot{
     lexeme type;
 
     type_constructor constructor;
+    copy_constructor copyConstructor;
     type_destructor destructor;
     lexeme cast_map[MAX_TYPE_COUNT];
     type_cast cast_table[MAX_TYPE_COUNT];
+
+    type_math math;
 
     unsigned cast_count;
 } type_slot;
@@ -36,11 +46,15 @@ extern type_reg * type_registry;
 
 void _setTypeRegistry(type_reg *);
 type_reg * getTypeRegistry();
-int registerType (char *, type_constructor, type_destructor);
+int registerType (char *, type_constructor, type_destructor, copy_constructor);
 int addCaster(type_slot*, lexeme, type_cast);
+int assignMath(type_slot*, type_math);
+
 
 obj * spawnType(lexeme, token *);
 void * castTo(void*, lexeme, lexeme);
+void * copyValue(void*, lexeme);
+void * typeMath(void *, void *, lexeme, lexeme, lexeme);
 
 
 #endif

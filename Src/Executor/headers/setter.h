@@ -1,6 +1,6 @@
 #ifndef EXEC_SET
 #define EXEC_SET
 
-token * runSetter(token *);
+token * runSetter(token *, lexeme);
 
 #endif

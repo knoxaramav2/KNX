@@ -71,6 +71,7 @@ typedef enum lexeme
     lx_BYTE,
     lx_FUNCTION,
     lx_VOID,
+    lx_EXCEPTION,
 
     //###################Type registry reserved
 
@@ -181,6 +182,7 @@ typedef enum lexeme
     lx_CNT_CASE,        //
     lx_CNT_BREAK,       //break
     lx_CNT_CONTINUE,    //continue
+    lx_CNT_THROW,
         //meta
     lx_CNT_ENDBODY,
 

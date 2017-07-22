@@ -19,10 +19,16 @@ typedef struct t_list{
     obj * info;
 } t_list;
 
+//similar to a list, able to 
+//inherit other classes
 typedef struct t_class{
+    struct t_class * super;
+
     unsigned elements;
     obj * info;
 } t_class;
+
+//TODO specialized interface struct?
 
 //accepts a list of arguments to check against a callers submitted list
 //while, due to name-hash searches, same-name overloads for differing

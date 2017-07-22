@@ -31,6 +31,9 @@
         "arm_neon.h": "c",
         "setter.h": "c",
         "primitives.c": "cpp",
-        "type.c": "cpp"
+        "type.c": "cpp",
+        "convert.c": "cpp",
+        "mem.c": "cpp",
+		"C_Cpp.intelliSenseEngine": "Default"
     }
 }

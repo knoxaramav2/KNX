@@ -2,6 +2,13 @@
 defines and registers built in data types and structures
 */
 
+/*
+NOTES:
+
+In case of exception, return c_execption("exception messege", exception_id)
+
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -11,18 +18,13 @@ defines and registers built in data types and structures
 
 type_reg * type_registry;
 
+t_exception * createException(char * name, char * msg){
+    //t_exception * ret = malloc(sizeof(t_exception));
+
+    return NULL;
+}
+
 //INTEGER
-
-obj * c_exception(char * msg, lexeme lx){
-    return createObject(msg, lx, NULL);
-}
-
-int d_excepection(obj * self){
-    //if (self->msg)
-        //free(self->msg);
-    free(self);
-    return 0;
-}
 
 /*overloads:
     name (def value 0)
@@ -31,7 +33,7 @@ int d_excepection(obj * self){
 obj * c_int(token * data){
 
     if (data == NULL){
-        return c_exception("Invalid Overload Exception", lx_LANG_EXCEPTION);
+        //return c_exception("Invalid Overload Exception", lx_LANG_EXCEPTION);
     }
 
     //convert list item token to argument string
@@ -47,15 +49,15 @@ obj * c_int(token * data){
             case 0:
                 name = castTo(getTokenValue(data), data->type, lx_STRING);
                 if (name == NULL)
-                    return c_exception("Invalid Overload Exception", lx_LANG_EXCEPTION);
+                    ;//return createException("Invalid Overload Exception");
             break;
             case 1:
                 value = castTo(getTokenValue(data), data->type, lx_INT);
                 if (value == NULL)
-                    return c_exception("Invalid Overload Exception", lx_LANG_EXCEPTION);
+                    ;//return createException("Invalid Overload Exception");
             break;
             default:
-                return c_exception("Invalid Overload Exception", lx_LANG_EXCEPTION);
+                ;//return createException("Invalid Overload Exception");
         }
         
         data = data->right;
@@ -83,7 +85,7 @@ void * c_int2double(void * orig){
     return data;
 }
 
-void * sum_math (void * lv, void * rv, lexeme rt, lexeme word){
+void * sum_math_int (void * lv, void * rv, lexeme rt, lexeme word){
 
 
     int * ret = malloc(sizeof(int));
@@ -108,6 +110,25 @@ void * sum_math (void * lv, void * rv, lexeme rt, lexeme word){
 }
 
 //UNSIGNED INTEGER
+obj * c_uint(token * data){
+
+    return NULL;
+}
+
+void * cc_uint(void * v){
+
+    return NULL;
+}
+
+int d_uint(obj * self){
+
+    return 0;
+}
+
+void * sum_math_uint(void * lv, void * rv, lexeme rt, lexeme word){
+
+    return NULL;
+}
 
 //LONG INTEGER
 
@@ -121,15 +142,74 @@ void * sum_math (void * lv, void * rv, lexeme rt, lexeme word){
 
 //DOUBLE
 
+//CHAR
+
+
+//UCHAR
+
+
+//WCHAR
+
+
+//STRING
+
+
+//WSTRING
+
+
+//ARRAY
+
+
+//LIST
+
+
+//CLASS
+
+
+//BYTE
+
+
+//FUNCTION
+
+
+//VOID
+
+
+//EXCEPTION
+
+/*overloads:
+    none
+    extra message
+*/
+obj * c_exception(token * except){
+    char * val = castTo(except->info, except->type, lx_STRING);
+    return createObject(val, lx_EXCEPTION, NULL);
+}
+
+int d_excepection(obj * self){
+
+    if (self->data)
+        free(self->data);
+    free(self);
+    return 0;
+}
+
+
+
 int loadPrimitives(){
 
 printf("Loading primitives\r\n");
 
 int fail = 0;
 
+//signed integer
 fail += registerType("int", c_int, d_int, cc_int);
 fail += addCaster(&type_registry->slots[type_registry->registered_types-1], lx_DOUBLE, c_int2double);
-fail += assignMath(&type_registry->slots[type_registry->registered_types-1], sum_math);
+fail += assignMath(&type_registry->slots[type_registry->registered_types-1], sum_math_int);
+
+//unsigned integer
+fail += registerType("uint", c_uint, d_uint, cc_uint);
+fail += assignMath(&type_registry->slots[type_registry->registered_types-1], sum_math_uint);
 
 return fail;
 

@@ -9,6 +9,12 @@
 
 #include "keyword.h"
 
+
+int throwException(t_exception * ex){
+
+    return 0;
+}
+
 token * kw_quit(node * n, token * t)
 {
     int * val = NULL;
@@ -26,6 +32,13 @@ token * kw_quit(node * n, token * t)
         free(val);
 
     return createToken(NULL, lx_VOID, NULL);
+}
+
+token * kw_throw(node *n, token *t){
+
+
+
+    return NULL;
 }
 
 token * runKeyword(node * n, token * arg, lexeme word)
@@ -47,6 +60,7 @@ token * runKeyword(node * n, token * arg, lexeme word)
 
     switch(word){
         case lx_KW_QUIT: return kw_quit(n, arg);
+        case lx_KW_THROW: return kw_throw(n, arg);
 
         default:
 

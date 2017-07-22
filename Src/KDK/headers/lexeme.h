@@ -195,6 +195,7 @@ typedef enum lexeme
     lx_KW_RELEASE,      //release(library)
     lx_KW_QUIT,         //quit
     lx_KW_PRINT,        //print(...)
+    lx_KW_THROW,
 
     //common
     

@@ -57,5 +57,8 @@ void * castTo(void*, lexeme, lexeme);
 void * copyValue(void*, lexeme);
 void * typeMath(void *, void *, lexeme, lexeme, lexeme);
 
+//exposed exception constructor
+t_exception * createException(char * name, char * msg);
+int throwException(t_exception *);
 
 #endif

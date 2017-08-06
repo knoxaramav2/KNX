@@ -43,14 +43,13 @@ typedef struct type_reg{
     
 } type_reg;
 
-extern type_reg * type_registry;
+//extern type_reg * type_registry;
 
 void _setTypeRegistry(type_reg *);
 type_reg * getTypeRegistry();
 int registerType (char *, type_constructor, type_destructor, copy_constructor);
 int addCaster(type_slot*, lexeme, type_cast);
 int assignMath(type_slot*, type_math);
-
 
 obj * spawnType(lexeme, token *);
 void * castTo(void*, lexeme, lexeme);

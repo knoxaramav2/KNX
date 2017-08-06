@@ -20,4 +20,14 @@ Includes are resources in this library
 //important features, the best features
 void init_sdk();
 
+
+//defines common handle between modules
+//allows access to interfaces defined in
+//seperate modules declared by KDK
+typedef struct HKDK{
+
+
+
+} HKDK;
+
 #endif

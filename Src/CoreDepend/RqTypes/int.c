@@ -1,36 +1,7 @@
-/*
-defines and registers built in data types and structures
-*/
-
-/*
-NOTES:
-
-In case of exception, return c_execption("exception messege", exception_id)
-
-*/
-
-#include <stdio.h>
 #include <stdlib.h>
 
-#include "type.h"
+#include "TypeDecl.h"
 
-#include "registry.h"
-
-type_reg * type_registry;
-
-t_exception * createException(char * name, char * msg){
-    //t_exception * ret = malloc(sizeof(t_exception));
-
-    return NULL;
-}
-
-//INTEGER
-
-/*overloads:
-    name (def value 0)
-    name value
-*/
-/*
 obj * c_int(token * data){
 
     if (data == NULL){
@@ -109,90 +80,14 @@ void * sum_math_int (void * lv, void * rv, lexeme rt, lexeme word){
 
     return ret;
 }
-*/
 
-/*
-//UNSIGNED INTEGER
-obj * c_uint(token * data){
+int registerInt(type_reg * type_registry){
 
-    return NULL;
-}
+    int fail = 0;
 
-void * cc_uint(void * v){
+    fail += registerType("int", c_int, d_int, cc_int);
+    fail += addCaster(&type_registry->slots[type_registry->registered_types-1], lx_DOUBLE, c_int2double);
+    fail += assignMath(&type_registry->slots[type_registry->registered_types-1], sum_math_int);
 
-    return NULL;
-}
-
-int d_uint(obj * self){
-
-    return 0;
-}
-
-void * sum_math_uint(void * lv, void * rv, lexeme rt, lexeme word){
-
-    return NULL;
-}
-*/
-//LONG INTEGER
-
-//UNSIGNED LONG INTEGER
-
-//SHORT INTEGER
-
-//UNSIGNED SHORT INTEGER
-
-//FLOAT
-
-//DOUBLE
-
-//CHAR
-
-
-//UCHAR
-
-
-//WCHAR
-
-
-//STRING
-
-
-//WSTRING
-
-
-//ARRAY
-
-
-//LIST
-
-
-//CLASS
-
-
-//BYTE
-
-
-//FUNCTION
-
-
-//VOID
-
-
-//EXCEPTION
-
-/*overloads:
-    none
-    extra message
-*/
-obj * c_exception(token * except){
-    char * val = castTo(except->info, except->type, lx_STRING);
-    return createObject(val, lx_EXCEPTION, NULL);
-}
-
-int d_excepection(obj * self){
-
-    if (self->data)
-        free(self->data);
-    free(self);
-    return 0;
-}
+    return fail;
+};

@@ -19,10 +19,14 @@ Config * _config = 0;
 
 int initComponents()
 {
+    //core components
     register_module("libMDM.so");
     register_module("libDTM.so");
     register_module("libPRS.so");
     register_module("libEXC.so");
+
+    //required modules
+    register_module("required/libTYP.so");
 
     return 0;
 }

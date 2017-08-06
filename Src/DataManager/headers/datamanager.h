@@ -7,8 +7,12 @@ Config * config;
 
 unsigned long * primeCipher(int);
 
+typedef struct HDTM{
 
+    
 
+} HDTM, * pHDTM;
 
+pHDTM * _handle;
 
 #endif

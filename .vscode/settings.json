@@ -34,6 +34,8 @@
         "type.c": "cpp",
         "convert.c": "cpp",
         "mem.c": "cpp",
-		"C_Cpp.intelliSenseEngine": "Default"
+        "C_Cpp.intelliSenseEngine": "Default",
+        "node.c": "cpp",
+        "typedecl.h": "c"
     }
 }

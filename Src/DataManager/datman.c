@@ -16,19 +16,18 @@ static void shutdown() __attribute__((destructor));
 nodereg * node_reg = NULL;
 type_reg * type_registry = NULL;
 
-int loadPrimitives();
-
 //Constructor/Destructor
 void startup()
 {
     config = getConfig();
+
+    _handle = malloc(sizeof(HDTM));
 
     node_reg = malloc(sizeof(nodereg));
     node_reg->usedIdIndices = malloc(sizeof(int *) * config->maxNodes);
     node_reg->nodeTable = malloc(sizeof(node *) * config->maxNodes);
 
     for (unsigned i = 0; i < config->maxNodes; ++i){
-        //node_reg->usedIdIndices[i]=false;
         node_reg->nodeTable[i] = NULL;
     }
 
@@ -38,12 +37,6 @@ void startup()
     initTypeRegistry();
 
     _setTypeRegistry(type_registry);
-
-    int fail;
-    if ((fail = loadPrimitives())){
-        printf("Error loading primitives: %d failures\r\n", fail);
-        return;
-    }
 
     printf("Data Manager Loaded\r\n");
 }

@@ -8,7 +8,7 @@ VERSION = -DDTMVersion=\"0.0.1\"
 OUT = libDTM.so
 CLEANEXT = o a
 DBGFLAGS=
-SRC= datman.c prime.c node.c mem.c registry.c primitives.c type.c convert.c
+SRC= datman.c prime.c node.c mem.c registry.c type.c convert.c
 EXPORT_PTH=../../bin/
 
 ifeq ($(shell uname), Linux)
@@ -16,6 +16,7 @@ ifeq ($(shell uname), Linux)
 	PLATFORM = -D__LINUX
 	OSMODE = -DBITMODE=$(BITVRS)
 	CFLAGS += -fPIC
+	
 else
 #Windows
 	FixPath = $(subst /,\,$1)

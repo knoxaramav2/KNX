@@ -43,7 +43,7 @@ typedef enum lexeme
     lx_NA_SYM,
     lx_NA_OPERATOR,
 
-    //primitive types
+    //primitive types (register in DTM RqTypes/TypeDecl.h)
     //NUMERICS
     lx_TYPE_OFFSET=20,//20
     lx_INT,
@@ -154,6 +154,7 @@ typedef enum lexeme
     lx_KW_INT,          //int(name, *val)
     lx_KW_UINT,         //uint(name, *val)    
     lx_KW_LINT,         //lint(name, *val)
+    lx_KW_ULINT,
     lx_KW_SINT,         //sint(name, *val)
     lx_KW_USINT,        //usint(name, *val)
     lx_KW_CHAR,         //char(name, val)    
@@ -167,6 +168,7 @@ typedef enum lexeme
     lx_KW_BYTE,         //byte(name, length)
     lx_KW_FUNCTION,     //proc(name, type name1, type name2, ..., {expression})
     lx_KW_VOID,         //void 
+    lx_KW_EXCEPTION,    //exception
 
     //control
     lx_CNT=lx_KEYWORD + MAX_TYPE_COUNT,//920

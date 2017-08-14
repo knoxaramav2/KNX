@@ -2,7 +2,7 @@
 
 #include "TypeDecl.h"
 
-obj * c_int(token * data){
+static obj * __constructor(token * data){
 
     if (data == NULL){
         //return c_exception("Invalid Overload Exception", lx_LANG_EXCEPTION);
@@ -38,13 +38,13 @@ obj * c_int(token * data){
     return createObject(name , lx_INT, value);
 }
 
-void * cc_int(void * v){
+static void * __copy_constructor(void * v){
     int * val = malloc(sizeof(int));
     *val = *(int*) v;
     return val;
 }
 
-int d_int(obj * self){
+static int __destructor(obj * self){
     
     free(self->data);
 
@@ -85,7 +85,7 @@ int registerInt(type_reg * type_registry){
 
     int fail = 0;
 
-    fail += registerType("int", c_int, d_int, cc_int);
+    fail += registerType("int", __constructor, __destructor, __copy_constructor);
     fail += addCaster(&type_registry->slots[type_registry->registered_types-1], lx_DOUBLE, c_int2double);
     fail += assignMath(&type_registry->slots[type_registry->registered_types-1], sum_math_int);
 

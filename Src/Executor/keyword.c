@@ -11,7 +11,7 @@
 
 
 int throwException(t_exception * ex){
-
+    printf("TODO: %s", ex->msg);
     return 0;
 }
 

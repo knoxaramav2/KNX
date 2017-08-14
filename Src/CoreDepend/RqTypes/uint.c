@@ -2,17 +2,17 @@
 
 #include "TypeDecl.h"
 
-obj * c_uint(token * data){
+static obj * c_uint(token * data){
 
     return NULL;
 }
 
-void * cc_uint(void * v){
+static void * cc_uint(void * v){
 
     return NULL;
 }
 
-int d_uint(obj * self){
+static int d_uint(obj * self){
 
     return 0;
 }

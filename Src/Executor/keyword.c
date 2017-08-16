@@ -57,6 +57,8 @@ token * runKeyword(node * n, token * arg, lexeme word)
         token * ret = createToken((char*)arg->info, data->type, data);
         ret->isStored = true;
         return ret;
+    } else if (isKwUtil(word)){
+
     }
 
     switch(word){

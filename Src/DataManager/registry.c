@@ -51,10 +51,10 @@ int registerType(char * name, type_constructor cons, type_destructor dest, copy_
     return 0;
 }
 
-int addCaster(type_slot * slot, lexeme from, type_cast cast){
+int addCaster(type_slot * slot, lexeme to, type_cast cast){
 
     slot->cast_table[slot->cast_count] = cast;
-    slot->cast_map[slot->cast_count] = from;
+    slot->cast_map[slot->cast_count] = to;
 
     ++slot->cast_count;
 

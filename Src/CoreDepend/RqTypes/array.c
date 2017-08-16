@@ -21,7 +21,7 @@ int registerArray(type_reg * type_registery){
 
     int fail = 0;
 
-    fail += registerType("", __constructor, __destructor, __copy_constructor);
+    fail += registerType("array", __constructor, __destructor, __copy_constructor);
 
     return fail;
 }

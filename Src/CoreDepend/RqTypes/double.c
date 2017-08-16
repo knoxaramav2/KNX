@@ -17,11 +17,11 @@ static int __destructor(obj * self){
     return 0;
 }
 
-int registerList(type_reg * type_registery){
+int registerDouble(type_reg * type_registery){
 
     int fail = 0;
 
-    fail += registerType("list", __constructor, __destructor, __copy_constructor);
+    fail += registerType("double", __constructor, __destructor, __copy_constructor);
 
     return fail;
 }

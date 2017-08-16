@@ -21,7 +21,7 @@ int registerVoid(type_reg * type_registery){
 
     int fail = 0;
 
-    fail += registerType("", __constructor, __destructor, __copy_constructor);
+    fail += registerType("void", __constructor, __destructor, __copy_constructor);
 
     return fail;
 }

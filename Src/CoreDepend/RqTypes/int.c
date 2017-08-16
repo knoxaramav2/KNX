@@ -1,5 +1,7 @@
 #include <stdlib.h>
 
+#include "KNX_Hash.h"
+
 #include "TypeDecl.h"
 
 static obj * __constructor(token * data){
@@ -19,12 +21,12 @@ static obj * __constructor(token * data){
     for (int cdx = 0; data; ++cdx){
         switch (cdx){
             case 0:
-                name = castTo(getTokenValue(data), data->type, lx_STRING);
+                name = castTo(data->info, data->type, lx_STRING);
                 if (name == NULL)
                     ;//return createException("Invalid Overload Exception");
             break;
             case 1:
-                value = castTo(getTokenValue(data), data->type, lx_INT);
+                value = castTo(data->info, data->type, lx_INT);
                 if (value == NULL)
                     ;//return createException("Invalid Overload Exception");
             break;
@@ -70,6 +72,24 @@ void * sum_math_int (void * lv, void * rv, lexeme rt, lexeme word){
         case lx_ADD:
             *ret = *(int*)lv + *(int*)rv;
         break;
+        case lx_SUB:
+            *ret = *(int*)lv - *(int*)rv;
+        break;
+        case lx_DIV:
+            *ret = *(int*)lv / *(int*)rv;
+        break;
+        case lx_MULT:
+            *ret = *(int*)lv * *(int*)rv;
+        break;
+        case lx_MOD:
+            *ret = *(int*)lv % *(int*)rv;
+        break;
+        case lx_POW:
+            *ret = *(int*)lv ^ *(int*)rv;
+        break;
+        /*case lx_ROOT:
+            *ret = *(int*)lv + *(int*)rv;
+        break;*/
         default:
 
         break;

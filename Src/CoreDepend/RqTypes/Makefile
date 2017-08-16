@@ -10,7 +10,7 @@ VERSION = -DKDKVersion=\"0.0.1\"
 OUT = libTYP.so
 CLEANEXT = o a
 DBGFLAGS= -d#command line debug arg
-SRC=RqTypes.c int.c uint.c lint.c ulint.c sint.c usint.c \
+SRC=RqTypes.c int.c uint.c lint.c ulint.c sint.c usint.c float.c double.c \
 	char.c uchar.c wchar.c string.c wstring.c \
 	array.c list.c class.c byte.c function.c void.c \
 	exception.c

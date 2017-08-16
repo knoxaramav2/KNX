@@ -24,6 +24,8 @@ void startup()
     fail += registerULInt(type_registry);
     fail += registerSInt(type_registry);
     fail += registerUSInt(type_registry);
+    fail += registerFloat(type_registry);
+    fail += registerDouble(type_registry);
 
     fail += registerChar(type_registry);
     fail += registerUChar(type_registry);
@@ -38,8 +40,6 @@ void startup()
     fail += registerFunction(type_registry);
     fail += registerVoid(type_registry);
     fail += registerException(type_registry);
-
-    //fail += registerException(type_registry);
 }
 
 void shutdown()

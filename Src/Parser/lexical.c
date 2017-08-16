@@ -58,6 +58,7 @@ token * resolveSymbol(node * n, tBuffer * buf, char * sym){
 
     unsigned long long hash = FNV_1a_32(sym);
 
+    //TODO move to tiered symbol resolve
     switch(hash){
 
         case 2902189215581572LLU: lex = lx_KW_INT; break;//int
@@ -103,8 +104,8 @@ token * resolveSymbol(node * n, tBuffer * buf, char * sym){
     //detect if number
     //flip to make prettier
     if (lex == lx_NA_SYM){
-        void * data;
-        bool isPrimitive = true;
+        void * data = NULL;
+        bool isStored = false;
 
         int numret = isNumeric(sym);
         if (numret == 1){
@@ -123,11 +124,11 @@ token * resolveSymbol(node * n, tBuffer * buf, char * sym){
             if (o){
                 lex = o->type;
                 data = o;
-                isPrimitive = false;
+                isStored = true;
             }
         }
 
-        return createToken(!isPrimitive, lex, data);
+        return createToken(isStored, lex, data);
     }
 
     pushOpToStack(buf, lex | LEVEL_FOUR);

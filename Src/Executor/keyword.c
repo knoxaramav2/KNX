@@ -21,7 +21,7 @@ token * kw_quit(node * n, token * t)
     bool casted = false;
     if (t){
         casted = t->type != lx_INT;
-        val = castTo(t->info, t->type, lx_INT);
+        val = castTo(getTokenValue(t), t->type, lx_INT);
     }
     n->exit_code = val ? *val : 0;
     printf("Quiting node %d (%d)\r\n", n->id_index, n->exit_code);
@@ -55,6 +55,7 @@ token * runKeyword(node * n, token * arg, lexeme word)
 
         appendObject(n->local, data);
         token * ret = createToken((char*)arg->info, data->type, data);
+        ret->isStored = true;
         return ret;
     }
 

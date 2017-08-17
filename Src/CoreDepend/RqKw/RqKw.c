@@ -16,6 +16,27 @@ void startup()
 
     //REGISTER CONTROL KW's
     registerFunction(keyword_registry, kw_if, "if");
+    registerFunction(keyword_registry, kw_if, "else");
+    registerFunction(keyword_registry, kw_if, "elif");
+    registerFunction(keyword_registry, kw_if, "do");
+    registerFunction(keyword_registry, kw_if, "while");
+    registerFunction(keyword_registry, kw_if, "for");
+    registerFunction(keyword_registry, kw_if, "switch");
+    registerFunction(keyword_registry, kw_if, "case");
+    registerFunction(keyword_registry, kw_if, "break");
+    registerFunction(keyword_registry, kw_if, "continue");
+
+    //REGISTER UTIL KW's
+    registerFunction(keyword_registry, kw_if, "typeof");
+    registerFunction(keyword_registry, kw_if, "delete");
+    registerFunction(keyword_registry, kw_if, "cast");
+    registerFunction(keyword_registry, kw_if, "import");
+    registerFunction(keyword_registry, kw_if, "release");
+    registerFunction(keyword_registry, kw_if, "quit");
+    registerFunction(keyword_registry, kw_print, "print");
+    registerFunction(keyword_registry, kw_if, "throw");
+    registerFunction(keyword_registry, kw_if, "try");
+    registerFunction(keyword_registry, kw_if, "catch");
 }
 
 void shutdown()

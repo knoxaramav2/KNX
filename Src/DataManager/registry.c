@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "KNX_Hash.h"
 
@@ -66,7 +67,8 @@ obj * invokeFunction(func_reg * reg, node * n, token * arg, unsigned long hash){
 
 obj * invokeKeyword(node * n, token * arg, lexeme word){
 
-    return keyword_registry->slots[word-(lx_KW_UTIL+1)].func(n, arg);
+    int select = word-(lx_CNT+1);
+    return keyword_registry->slots[select].func(n, arg);
 }
 
 func_reg * getKeywordRegistry(){
@@ -104,6 +106,10 @@ int registerType(char * name, type_constructor cons, type_destructor dest, copy_
     slot->cast_count = 0;
     slot->type = lx_TYPE_OFFSET + regCount + 1;
 
+    size_t nmLen = strlen(name) + 1;
+    slot->name = malloc(nmLen);
+    strncpy(slot->name, name, nmLen);
+
     //optional
     slot->math = NULL;
 
@@ -129,4 +135,18 @@ int assignMath(type_slot * slot, type_math math){
         return 1;
     slot->math = math;
     return 0;
+}
+
+char * getTypeName(lexeme type){
+    for (unsigned x = 0; x < type_registry->registered_types; ++x){
+        if (type_registry->slots[x].type == type){
+            char * typeName = type_registry->slots[x].name;
+            size_t len = strlen(typeName) +1;
+            char * ret = malloc(len);
+            strncpy(ret, typeName, len);
+            return ret;
+        }
+    }
+
+    return NULL;
 }

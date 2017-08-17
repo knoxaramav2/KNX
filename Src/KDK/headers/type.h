@@ -23,6 +23,7 @@ typedef void * (*type_math)(void *, void*, lexeme, lexeme);
 //TODO Make cast tables dynamic to save memory
 //("Wont somebody think of the kilobytes?")
 typedef struct type_slot{
+    char * name;
     unsigned long hash;
     lexeme type;
 
@@ -55,6 +56,8 @@ obj * spawnType(lexeme, token *);
 void * castTo(void*, lexeme, lexeme);
 void * copyValue(void*, lexeme);
 void * typeMath(void *, void *, lexeme, lexeme, lexeme);
+
+char * getTypeName(lexeme);
 
 //exposed exception constructor
 t_exception * createException(char * name, char * msg);

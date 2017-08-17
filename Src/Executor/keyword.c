@@ -6,6 +6,7 @@
 #include "node.h"
 #include "objUtil.h"
 #include "type.h"
+#include "function.h"
 
 #include "keyword.h"
 
@@ -50,25 +51,35 @@ token * runKeyword(node * n, token * arg, lexeme word)
         obj * data = spawnType(word, arg);
 
         if (!data || isFault(data->type)){
-            printf("Failure : keyword.c\r\n");
+            //printf("Failure : keyword.c\r\n");
+            return NULL;
         }
 
         appendObject(n->local, data);
         token * ret = createToken((char*)arg->info, data->type, data);
         ret->isStored = true;
         return ret;
-    } else if (isKwUtil(word)){
+    } else if (isFKeyword(word)){
+        obj * data = invokeKeyword(n, arg, word);
 
+        if (!data || isFault(data->type)){
+            //printf("Failure : keyword.c\r\n");
+            return NULL;
+        }
+
+        token * ret = createToken((char*)arg->info, data->type, data);
+
+        return ret;
     }
 
-    switch(word){
+    /*switch(word){
         case lx_KW_QUIT: return kw_quit(n, arg);
         case lx_KW_THROW: return kw_throw(n, arg);
 
         default:
 
         break;
-    }
+    }*/
 
     return NULL;
 }

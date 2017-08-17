@@ -17,3 +17,11 @@ void * getTokenValue(token * tk){
     }
     return tk->info;
 }
+
+token * getTokenList(token * list){
+
+    if (list->type != lx_LIST)
+        return list;
+
+    return list->info;
+}

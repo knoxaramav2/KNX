@@ -96,6 +96,7 @@ token * resolveSymbol(node * n, tBuffer * buf, char * sym){
         case 17446148261328024908LLU: lex = lx_KW_IMPORT; break;//import
         case 1303734914311023094LLU: lex = lx_KW_RELEASE; break;//release
         case 348816759751995988LLU: lex = lx_KW_QUIT; break;//quit
+        case 161663717155468524LLU: lex = lx_KW_PRINT; break;//print
         
         default:
         lex = lx_NA_SYM;
@@ -338,7 +339,7 @@ void pushOperand(node * n, tBuffer * buf, char * str, size_t max, lexeme explici
     if (explicit == lx_NA)
         t = resolveSymbol(n, buf, str);
     else if (explicit == lx_STRING){
-        size_t len = sizeof(str) + 1;
+        size_t len = strlen(str) + 1;
         char * data = malloc(len);
         strncpy(data, str, len);
         t = createToken(false, explicit, data);
@@ -356,11 +357,8 @@ void pushOperand(node * n, tBuffer * buf, char * str, size_t max, lexeme explici
         appendTBuffer(buf, t, false);
 }
 
-//TODO implement modified shunting yard as in docs
 int tokenize(node * node, char * raw)
 {
-    fflush(stdout);
-
     size_t len = strlen(raw);
     char * buffer = node->buffer.buffer;
     size_t index = node->buffer.index;

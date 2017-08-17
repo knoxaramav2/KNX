@@ -72,7 +72,6 @@ token * execute(node * nd){
             itr->left->right = NULL;
         
         free(itr);
-
         itr = run(nd, arg, com);
         if (itr && itr->type != lx_LIST)
             destroyTokenStrand(arg);

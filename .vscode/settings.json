@@ -37,6 +37,7 @@
         "C_Cpp.intelliSenseEngine": "Default",
         "node.c": "cpp",
         "typedecl.h": "c",
-        "kwdecl.h": "c"
+        "kwdecl.h": "c",
+        "keyword.h": "c"
     }
 }

@@ -19,6 +19,7 @@
 #define isType(x) (x> lx_NUMERIC && x<lx_OPERATOR)
 #define isOperator(x) (x>lx_OPERATOR && x<lx_KEYWORD)
 #define isKeyword(x) (x>lx_KEYWORD && x<lx_STD_PLUGIN)
+#define isFKeyword(x) (x>lx_CNT && x <lx_STD_PLUGIN)
 #define isDecl(x) (x>lx_KW_PRIM && x<lx_CNT)
 #define isSetter(x) (x>lx_SET && x<lx_LOG)
 #define isLogic(x) (x>lx_LOG && x<lx_CMP)
@@ -28,6 +29,7 @@
 #define isKwDeclare(x) (x>lx_KW_PRIM && x<lx_CNT)
 #define isKwUtil(x) (x>lx_KW_UTIL && x<lx_STD_PLUGIN)
 #define isFault(x) (x>lx_SYS_ERROR && x<= lx_SYS_MESSAGE)
+#define isPrintable(x) (x == lx_CHAR || x == lx_STRING)
 
 //use with ctxType (context type) of union 
 #define isUnary(x) (isKeyword(x) || x==lx_GEN_LAMBDA || x==lx_LOG_NOT)
@@ -184,12 +186,11 @@ typedef enum lexeme
     lx_CNT_CASE,        //
     lx_CNT_BREAK,       //break
     lx_CNT_CONTINUE,    //continue
-        //meta
-    lx_CNT_ENDBODY,
 
     //utility
     lx_KW_UTIL,
-    lx_KW_TYPEOF,       //typeof(obj)
+    lx_KW_TYPEOF        //typeof(obj) 
+        = lx_KW_UTIL,       //keeps index lookup consistant
     lx_KW_DELETE,       //delete(obj)
     lx_KW_CAST,         //cast(obj, type)
     lx_KW_IMPORT,       //import(library)
@@ -199,6 +200,9 @@ typedef enum lexeme
     lx_KW_THROW,        //throw(exception)
     lx_KW_TRY,         //try({...}, catch(e), ...)
     lx_KW_CATCH,
+
+    //meta
+    lx_CNT_ENDBODY,
 
     //common
     

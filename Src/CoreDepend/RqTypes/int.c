@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 
 #include "KNX_Hash.h"
 
@@ -59,6 +60,12 @@ void * c_int2double(void * orig){
     return data;
 }
 
+void * c_int2string(void * orig){
+    char * data = malloc(11);
+    sprintf(data, "%d", *(int *) orig);
+    return data;
+}
+
 void * sum_math_int (void * lv, void * rv, lexeme rt, lexeme word){
 
 
@@ -106,7 +113,10 @@ int registerInt(type_reg * type_registry){
     int fail = 0;
 
     fail += registerType("int", __constructor, __destructor, __copy_constructor);
+
     fail += addCaster(&type_registry->slots[type_registry->registered_types-1], lx_DOUBLE, c_int2double);
+    fail += addCaster(&type_registry->slots[type_registry->registered_types-1], lx_STRING, c_int2string);
+
     fail += assignMath(&type_registry->slots[type_registry->registered_types-1], sum_math_int);
 
     return fail;

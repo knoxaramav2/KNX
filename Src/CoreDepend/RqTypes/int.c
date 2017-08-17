@@ -10,17 +10,15 @@ static obj * __constructor(token * data){
     if (data == NULL){
         //return c_exception("Invalid Overload Exception", lx_LANG_EXCEPTION);
     }
-
-    //convert list item token to argument string
-    if (data->type == lx_LIST)
-        data = getTokenValue(data);
+    
+    data = getTokenList(data);
 
     char * name = NULL;
     int * value = malloc(sizeof (int));
     *value = 0;
 
-    for (int cdx = 0; data; ++cdx){
-        switch (cdx){
+    for (int indx = 0; data; ++indx){
+        switch (indx){
             case 0:
                 name = castTo(data->info, data->type, lx_STRING);
                 if (name == NULL)
@@ -66,7 +64,7 @@ void * c_int2string(void * orig){
     return data;
 }
 
-void * sum_math_int (void * lv, void * rv, lexeme rt, lexeme word){
+token * math_int (void * lv, void * rv, lexeme rt, lexeme op){
 
 
     int * ret = malloc(sizeof(int));
@@ -75,7 +73,7 @@ void * sum_math_int (void * lv, void * rv, lexeme rt, lexeme word){
 
     tmp = castTo(rv, rt, lx_INT);
 
-    switch(word){
+    switch(op){
         case lx_ADD:
             *ret = *(int*)lv + *(int*)rv;
         break;
@@ -105,7 +103,7 @@ void * sum_math_int (void * lv, void * rv, lexeme rt, lexeme word){
     if (tmp != rv)
         free(tmp);
 
-    return ret;
+    return createToken(false, lx_INT, ret);
 }
 
 int registerInt(type_reg * type_registry){
@@ -117,7 +115,7 @@ int registerInt(type_reg * type_registry){
     fail += addCaster(&type_registry->slots[type_registry->registered_types-1], lx_DOUBLE, c_int2double);
     fail += addCaster(&type_registry->slots[type_registry->registered_types-1], lx_STRING, c_int2string);
 
-    fail += assignMath(&type_registry->slots[type_registry->registered_types-1], sum_math_int);
+    fail += assignMath(&type_registry->slots[type_registry->registered_types-1], math_int);
 
     return fail;
 };

@@ -17,9 +17,9 @@ token * math(token*lval, token*rval, lexeme op){
     l = getTokenValue(lval);
     r = getTokenValue(rval);
     
-    void * ret = typeMath(l, r, lval->type, rval->type, op);
+    token * ret = typeMath(l, r, lval->type, rval->type, op);
 
-    printf("RESULT %d\r\n", *(int*) ret);
+    //printf("RESULT %d\r\n", *(int*) ret);
 
-    return createToken(NULL, lx_DOUBLE, ret);
+    return ret;
 }

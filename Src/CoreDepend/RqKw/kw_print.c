@@ -10,13 +10,14 @@ obj * kw_print(node * n, token * arg){
 
     while (stream){
 
+        void * info = getTokenValue(stream);
 
         void * data = isPrintable(arg->type) ?
-            copyValue(arg->info, lx_STRING) :
-            castTo(stream->info, stream->type, lx_STRING);
+            copyValue(info, lx_STRING) :
+            castTo(info, stream->type, lx_STRING);
 
         if (data){
-            printf("%s", (char *) data); fflush(stdout);
+            printf("%s", (char *) data);
         } else {
             if (stream->info){
                 char * name = getTypeName(arg->type);
@@ -34,6 +35,7 @@ obj * kw_print(node * n, token * arg){
     }
 
     printf("\r\n");
+    fflush(stdout);
 
     return NULL;
 }

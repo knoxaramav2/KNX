@@ -17,7 +17,7 @@ static int d_uint(obj * self){
     return 0;
 }
 
-void * sum_math_uint(void * lv, void * rv, lexeme rt, lexeme word){
+token * sum_math_uint(void * lv, void * rv, lexeme rt, lexeme word){
 
     return NULL;
 }

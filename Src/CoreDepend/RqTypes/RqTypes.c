@@ -18,12 +18,13 @@ void startup()
     
     //IMPORTANT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     //Must be in order described in lexeme.h
+    fail += registerSInt(type_registry);
+    fail += registerUSInt(type_registry);
     fail += registerInt(type_registry);
     fail += registerUInt(type_registry);
     fail += registerLInt(type_registry);
     fail += registerULInt(type_registry);
-    fail += registerSInt(type_registry);
-    fail += registerUSInt(type_registry);
+    
     fail += registerFloat(type_registry);
     fail += registerDouble(type_registry);
 

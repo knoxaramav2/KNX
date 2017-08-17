@@ -17,8 +17,9 @@ typedef void * (*type_set)(void *, lexeme);
 
 //additional/optional
 typedef void * (*type_cast)(void *);
-typedef void * (*type_math)(void *, void*, lexeme, lexeme);
+typedef token * (*type_math)(void *, void*, lexeme, lexeme);
 
+lexeme getPriorityType(lexeme, lexeme);
 
 //TODO Make cast tables dynamic to save memory
 //("Wont somebody think of the kilobytes?")
@@ -55,7 +56,7 @@ int assignMath(type_slot*, type_math);
 obj * spawnType(lexeme, token *);
 void * castTo(void*, lexeme, lexeme);
 void * copyValue(void*, lexeme);
-void * typeMath(void *, void *, lexeme, lexeme, lexeme);
+token * typeMath(void *, void *, lexeme, lexeme, lexeme);
 
 char * getTypeName(lexeme);
 

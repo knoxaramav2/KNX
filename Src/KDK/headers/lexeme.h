@@ -19,6 +19,7 @@
 #define isType(x) (x> lx_NUMERIC && x<lx_OPERATOR)
 #define isOperator(x) (x>lx_OPERATOR && x<lx_KEYWORD)
 #define isKeyword(x) (x>lx_KEYWORD && x<lx_STD_PLUGIN)
+#define isDKeyword(x) (x>lx_KW_PRIM && x<lx_CNT)
 #define isFKeyword(x) (x>lx_CNT && x <lx_STD_PLUGIN)
 #define isDecl(x) (x>lx_KW_PRIM && x<lx_CNT)
 #define isSetter(x) (x>lx_SET && x<lx_LOG)
@@ -37,6 +38,10 @@
 
 #define isMath(x) (x>lx_MATH && x<lx_SET)
 #define isOperand(x) (!isCommand(x) || isUnary(x))
+#define selPriorityOp(x, y) (x < y ? y : x)
+
+#define getDeclIndex(x) (x-(lx_TYPE_OFFSET + 1))
+#define getKwDeclIndex(x) ((x-lx_KW_PRIM-1))
 
 typedef enum lexeme
 {
@@ -48,12 +53,12 @@ typedef enum lexeme
     //primitive types (register in DTM RqTypes/TypeDecl.h)
     //NUMERICS
     lx_TYPE_OFFSET=20,//20
+    lx_SINT,
+    lx_USINT,
     lx_INT,
     lx_UINT,
     lx_LINT,
     lx_ULINT,
-    lx_SINT,
-    lx_USINT,
     lx_FLOAT,
     lx_DOUBLE,
 
@@ -153,12 +158,15 @@ typedef enum lexeme
     lx_KEYWORD=lx_OPERATOR + 100,//520
     //primitives
     lx_KW_PRIM,
+    lx_KW_SINT,         //sint(name, *val)
+    lx_KW_USINT,        //usint(name, *val)
     lx_KW_INT,          //int(name, *val)
     lx_KW_UINT,         //uint(name, *val)    
     lx_KW_LINT,         //lint(name, *val)
     lx_KW_ULINT,
-    lx_KW_SINT,         //sint(name, *val)
-    lx_KW_USINT,        //usint(name, *val)
+    
+    lx_KW_FLOAT,        //float(name, *val)
+    lx_KW_DOUBLE,       //double(name, *val)
     lx_KW_CHAR,         //char(name, val)    
     lx_KW_UCHAR,        //uchar(name, val)
     lx_KW_WCHAR,        //wchar(name, val)

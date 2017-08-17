@@ -69,10 +69,6 @@ token * math_string(void * lv, void * rv, lexeme rt, lexeme op){
     size_t lLen = strlen((char *) lv);
     size_t rLen = strlen((char *) tmp);
 
-    char 
-        * lc = (char*) lv, 
-        * rc = (char*) tmp;
-
     switch(op){
         case lx_ADD:
             result = malloc(lLen + rLen + 1);
@@ -105,7 +101,7 @@ token * math_string(void * lv, void * rv, lexeme rt, lexeme op){
 
     if (delCast)
         free(tmp);
-        
+
     return createToken(false, lx_STRING, result);
 }
 

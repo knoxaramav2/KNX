@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <math.h>
 
 #include "KNX_Hash.h"
 
@@ -75,22 +76,22 @@ token * math_int (void * lv, void * rv, lexeme rt, lexeme op){
 
     switch(op){
         case lx_ADD:
-            *ret = *(int*)lv + *(int*)rv;
+            *ret = *(int*)lv + *(int*)tmp;
         break;
         case lx_SUB:
-            *ret = *(int*)lv - *(int*)rv;
+            *ret = *(int*)lv - *(int*)tmp;
         break;
         case lx_DIV:
-            *ret = *(int*)lv / *(int*)rv;
+            *ret = *(int*)lv / *(int*)tmp;
         break;
         case lx_MULT:
-            *ret = *(int*)lv * *(int*)rv;
+            *ret = *(int*)lv * *(int*)tmp;
         break;
         case lx_MOD:
-            *ret = *(int*)lv % *(int*)rv;
+            *ret = *(int*)lv % *(int*)tmp;
         break;
         case lx_POW:
-            *ret = *(int*)lv ^ *(int*)rv;
+            *ret = (int) pow(*(int*)lv , *(int*)tmp);
         break;
         /*case lx_ROOT:
             *ret = *(int*)lv + *(int*)rv;

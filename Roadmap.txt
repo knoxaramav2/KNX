@@ -2,37 +2,37 @@ legend______
 	not started
 -	started
 +	well in progress
-*	finished / stable
+x	finished / stable
 !	abandoned
 
 [-] UML
 [-] General Docs
 [+] Makefiles
 [ ] DevTool
-[-] KDK skeleton
+[x] KDK skeleton
 [-] RTE skeleton
 [x] ModuleManager Skeleton
 [x] DataManager Skeleton
 [x] Parser Skeleton
 [x] Executor Skeleton
 [-] KDK - Structs
-[-] KDK - Interfaces
+[+] KDK - Interfaces
 [-] RTE - Config
 [-] RTE - Cmd parser/ options
-[-] RTE - Initialize components/ interfaces
+[+] RTE - Initialize components/ interfaces
 [-] RTE - Node Registration
 [x] RTE - Runnable Node
 [x] Parser - Tokenization
 [-] Parser - Multi-level buffering
 [!] Parser - Context Reordering
-[ ] DataManager - Type Registration
-[ ] DataManager - Method Registration
+[x] DataManager - Type Registration
+[x] DataManager - Method Registration
 [ ] ModuleManager - Import Std. Modules
 [ ] ModuleManager - Import Ext. Modules
 [ ] ModuleManager - Reload Modules
 [ ] ModuleManager - Unload Modules
-[-] Executor - Math
-[-] Executor - Run keywords
+[+] Executor - Math
+[+] Executor - Run keywords
 [ ] Executor - Run ext. methods
 
 ---------Std. Modules-----------

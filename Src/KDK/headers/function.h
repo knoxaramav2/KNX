@@ -21,4 +21,7 @@ int registerFunction(func_reg *, function, char *);
 obj * invokeFunction(func_reg *, node*, token *, unsigned long);
 obj * invokeKeyword(node*, token *, lexeme);//slightly more efficient
 
+func_reg * getKeywordRegistry();
+void _setKeywordRegistry(func_reg *);
+
 #endif

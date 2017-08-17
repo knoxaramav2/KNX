@@ -35,6 +35,7 @@ void startup()
 
     getNodeReg();
     initTypeRegistry();
+    initKwRegistry();
 
     _setTypeRegistry(type_registry);
 

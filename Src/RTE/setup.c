@@ -27,6 +27,7 @@ int initComponents()
 
     //required modules
     register_module("required/libTYP.so");
+    register_module("required/libKW.so");
 
     return 0;
 }

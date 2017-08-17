@@ -24,6 +24,8 @@ void initKwRegistry(){
     keyword_registry->registered_functions = 0;
     keyword_registry->slotCount = DEFAULT_FUNC_SLOTS;
     keyword_registry->slots = malloc(sizeof(func_slot) * DEFAULT_FUNC_SLOTS);
+
+    _setKeywordRegistry(keyword_registry);
 }
 
 int registerFunction(func_reg * reg, function func, char * name){
@@ -37,14 +39,16 @@ int registerFunction(func_reg * reg, function func, char * name){
 
         reg->slots = tmp;
         reg->slotCount *= 2;
-
-        //TODO check for symbol collision
-        func_slot * slot = &reg->slots[reg->registered_functions];
-        slot->func = func;
-        slot->hash = FNV_1a_32(name);
-        
-        ++reg->registered_functions;
     }
+
+    //TODO check for symbol collision
+    func_slot * slot = &reg->slots[reg->registered_functions];
+    slot->func = func;
+    slot->hash = FNV_1a_32(name);
+    
+    ++reg->registered_functions;
+
+    printf("Registered function %s\r\n", name);
 
     return 0;
 }
@@ -62,7 +66,11 @@ obj * invokeFunction(func_reg * reg, node * n, token * arg, unsigned long hash){
 
 obj * invokeKeyword(node * n, token * arg, lexeme word){
 
-    return keyword_registry->slots[word-(lx_KW_UTIL+1)];
+    return keyword_registry->slots[word-(lx_KW_UTIL+1)].func(n, arg);
+}
+
+func_reg * getKeywordRegistry(){
+    return keyword_registry;
 }
 
 //TYPE REGISTRY

@@ -184,7 +184,6 @@ typedef enum lexeme
     lx_CNT_CASE,        //
     lx_CNT_BREAK,       //break
     lx_CNT_CONTINUE,    //continue
-    lx_CNT_THROW,
         //meta
     lx_CNT_ENDBODY,
 
@@ -198,6 +197,8 @@ typedef enum lexeme
     lx_KW_QUIT,         //quit
     lx_KW_PRINT,        //print(...)
     lx_KW_THROW,        //throw(exception)
+    lx_KW_TRY,         //try({...}, catch(e), ...)
+    lx_KW_CATCH,
 
     //common
     

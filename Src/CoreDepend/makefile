@@ -1,7 +1,7 @@
 #compiles required (core) module set
 #BINPATH=
 SUBDIRS = \
-	RqTypes
+	RqTypes RqKw
 
 P_BINPATH=$(BINPATH)/std
 

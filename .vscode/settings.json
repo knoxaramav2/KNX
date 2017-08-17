@@ -36,6 +36,7 @@
         "mem.c": "cpp",
         "C_Cpp.intelliSenseEngine": "Default",
         "node.c": "cpp",
-        "typedecl.h": "c"
+        "typedecl.h": "c",
+        "kwdecl.h": "c"
     }
 }

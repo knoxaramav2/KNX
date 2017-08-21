@@ -11,7 +11,7 @@ OUT = libKW.so
 CLEANEXT = o a
 DBGFLAGS= -d#command line debug arg
 SRC=RqKw.c \
-	kw_if.c kw_print.c
+	kw_if.c kw_print.c kw_quit.c
 EXPORT_PTH=../../../bin/required/
 
 ifeq ($(shell uname), Linux)

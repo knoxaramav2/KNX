@@ -20,6 +20,9 @@ void * getTokenValue(token * tk){
 
 token * getTokenList(token * list){
 
+    if (list == NULL)
+        return NULL;
+
     if (list->type != lx_LIST)
         return list;
 

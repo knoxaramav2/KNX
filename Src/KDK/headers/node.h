@@ -5,10 +5,13 @@
 
 #include "token.h"
 #include "mem.h"
+//#include "module.h"
 
 /*
 implemented in RTE/node.c
 */
+
+typedef struct HMODULE HMODULE;
 
 typedef enum node_status{
 ns_active,
@@ -18,6 +21,8 @@ ns_terminated
 } node_status;
 
 typedef struct node{
+
+HMODULE * hModule;
 
 struct node * parent;
 struct node ** children;

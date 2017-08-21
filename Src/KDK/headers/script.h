@@ -1,8 +1,10 @@
 #ifndef KDK_SCRIPT
 #define KDK_SCRIPT
 
-typedef struct script{
+#include "module.h"
 
+typedef struct script{
+    HMODULE hModule;
 } script;
 
 #endif

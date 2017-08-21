@@ -6,7 +6,7 @@
 
 HMODULE * root = NULL;
 
-HMODULE * createHModule(char * str, node * n, treeMode mode){
+HMODULE * createHModule(char * str, node * n, memTree * scope, tBuffer * buffer){
 
     HMODULE * ret = malloc(sizeof(HMODULE));
     ret->owner = n;
@@ -15,16 +15,14 @@ HMODULE * createHModule(char * str, node * n, treeMode mode){
     ret->id = malloc(len);
     strncpy(ret->id, str, len);
 
-    ret->memory = createMemTree();
-    ret->buffer = createTBuffer();
+    ret->memory = scope;
+    ret->buffer = buffer;
 
     return ret;
 }
 
 void destroyHModule(HMODULE * module){
-    destroyMemTree(module->memory);
-    clearTBuffer(&module->buffer);
-    free(id);
+    free(module->id);
     free(module);
 }
 

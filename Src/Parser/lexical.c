@@ -357,8 +357,9 @@ void pushOperand(node * n, tBuffer * buf, char * str, size_t max, lexeme explici
         appendTBuffer(buf, t, false);
 }
 
-int tokenize(node * node, char * raw)
+int tokenize(HMODULE * hModule, char * raw)
 {
+    node * node = hModule->owner;
     size_t len = strlen(raw);
     char * buffer = node->buffer.buffer;
     size_t index = node->buffer.index;

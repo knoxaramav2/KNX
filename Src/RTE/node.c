@@ -38,6 +38,8 @@ node * createNode()
     ret->local = createMemTree();
     ret->buffer = createTBuffer();
 
+    ret->hModule = NULL;
+
     if (root==NULL){
         ret->global = ret->local;
     } else {
@@ -89,7 +91,7 @@ do
         if (strcmp(buffer, "quitx") == 0) 
             return NULL;
 
-        tokenize(self, buffer);
+        tokenize(self->hModule, buffer);
         execute(self);
         clearTBuffer(&self->buffer);
     }

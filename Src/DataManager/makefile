@@ -8,7 +8,7 @@ VERSION = -DDTMVersion=\"0.0.1\"
 OUT = libDTM.so
 CLEANEXT = o a
 DBGFLAGS=
-SRC= datman.c prime.c node.c mem.c registry.c type.c convert.c
+SRC= datman.c prime.c node.c mem.c registry.c type.c convert.c module.c
 EXPORT_PTH=../../bin/
 
 ifeq ($(shell uname), Linux)

@@ -3,6 +3,9 @@
 
 #include "token.h"
 #include "mem.h"
+#include "node.h"
+
+typedef struct node node;
 
 /*
 Contains information about the scope owner of statement issuing bodies
@@ -28,11 +31,10 @@ typedef struct HMODULE{
 
     char * id;
 
-    tBuffer buffer;
+    tBuffer * buffer;
 } HMODULE;
 
-HMODULE * createHModule(char *, node *, treeMode);
-
+HMODULE * createHModule(char *, node *, memTree *, tBuffer *);
 HMODULE * getRootHandle();
 
 //setup procedures

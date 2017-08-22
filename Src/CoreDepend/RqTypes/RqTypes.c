@@ -41,6 +41,7 @@ void startup()
     fail += registerFunction(type_registry);
     fail += registerVoid(type_registry);
     fail += registerException(type_registry);
+    fail += registerScript(type_registry);
 }
 
 void shutdown()

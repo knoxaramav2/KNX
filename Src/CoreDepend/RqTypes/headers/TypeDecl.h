@@ -33,5 +33,6 @@ int registerByte(type_reg*);
 int registerFunction(type_reg*);
 int registerVoid(type_reg*);
 int registerException(type_reg*);
+int registerScript(type_reg*);
 
 #endif

@@ -10,41 +10,9 @@
 
 #include "keyword.h"
 
-
-int throwException(t_exception * ex){
-    printf("TODO: %s", ex->msg);
-    return 0;
-}
-
-token * kw_quit(node * n, token * t)
+token * runKeyword(HMODULE * module, token * arg, lexeme word)
 {
-    int * val = NULL;
-    bool casted = false;
-    if (t){
-        casted = t->type != lx_INT;
-        val = castTo(getTokenValue(t), t->type, lx_INT);
-    }
-    n->exit_code = val ? *val : 0;
-    printf("Quiting node %d (%d)\r\n", n->id_index, n->exit_code);
-
-    n->status = ns_terminated;
-
-    if (casted)
-        free(val);
-
-    return createToken(NULL, lx_VOID, NULL);
-}
-
-token * kw_throw(node *n, token *t){
-
-
-
-    return NULL;
-}
-
-token * runKeyword(node * n, token * arg, lexeme word)
-{
-
+    node * n = module->owner;
     //declare variable
     //TODO differ on scope
     if (isDecl(word)){
@@ -60,7 +28,7 @@ token * runKeyword(node * n, token * arg, lexeme word)
         ret->isStored = true;
         return ret;
     } else if (isFKeyword(word)){
-        obj * data = invokeKeyword(n, arg, word);
+        obj * data = invokeKeyword(module, arg, word);
 
         if (!data || isFault(data->type)){
             //printf("Failure : keyword.c\r\n");
@@ -71,15 +39,6 @@ token * runKeyword(node * n, token * arg, lexeme word)
 
         return ret;
     }
-
-    /*switch(word){
-        case lx_KW_QUIT: return kw_quit(n, arg);
-        case lx_KW_THROW: return kw_throw(n, arg);
-
-        default:
-
-        break;
-    }*/
 
     return NULL;
 }

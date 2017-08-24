@@ -1,7 +1,9 @@
 #ifndef EXEC_KEYWORD
 #define EXEC_KEYWORD
 
-token * runKeyword(node * n, token * arg, lexeme word);
+#include "module.h"
+
+token * runKeyword(HMODULE * module, token * arg, lexeme word);
 token * runOperator(token * arg, lexeme word);
 
 #endif

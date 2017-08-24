@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "module.h"
+
 #include "executor.h"
 
 /*
@@ -25,17 +27,19 @@ command execution procedure: 12 step program addition
 12) GOTO 1
 */
 
-token * run(node * nd, token * arg, lexeme command){
+token * run(HMODULE * module, token * arg, lexeme command){
 
     if (isKeyword(command)){
-        return runKeyword(nd, arg, command);
+        return runKeyword(module, arg, command);
     } else {
         return runOperator(arg, command);
     }
 }
 
-token * execute(node * nd){
+token * execute(HMODULE * module){
     
+    node * nd = module->owner;
+
     token * itr = nd->buffer.tokens;
     token * cont = NULL,
     * arg = NULL,
@@ -72,7 +76,7 @@ token * execute(node * nd){
             itr->left->right = NULL;
         
         free(itr);
-        itr = run(nd, arg, com);
+        itr = run(module, arg, com);
         if (itr && itr->type != lx_LIST)
             destroyTokenStrand(arg);
 

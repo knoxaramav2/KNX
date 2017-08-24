@@ -8,6 +8,7 @@
 
 #include "node_reg.h"
 #include "type.h"
+#include "module.h"
 
 #include "registry.h"
 
@@ -65,8 +66,9 @@ obj * invokeFunction(func_reg * reg, node * n, token * arg, unsigned long hash){
     return NULL;
 }
 
-obj * invokeKeyword(node * n, token * arg, lexeme word){
+obj * invokeKeyword(HMODULE * module, token * arg, lexeme word){
 
+    node * n = module->owner;
     int select = word-(lx_CNT+1);
     return keyword_registry->slots[select].func(n, arg);
 }

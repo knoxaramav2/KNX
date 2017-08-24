@@ -1,7 +1,7 @@
 #ifndef EXEC
 #define EXEC
 
-#include "node.h"
+#include "module.h"
 
 #include "mathx.h"
 #include "logic.h"
@@ -10,6 +10,6 @@
 #include "genop.h"
 #include "setter.h"
 
-token * execute(node *);
+token * execute(HMODULE *);
 
 #endif

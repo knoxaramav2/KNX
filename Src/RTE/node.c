@@ -92,7 +92,7 @@ do
             return NULL;
 
         tokenize(self->hModule, buffer);
-        execute(self);
+        execute(self->hModule);
         clearTBuffer(&self->buffer);
     }
 

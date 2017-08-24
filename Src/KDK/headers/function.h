@@ -1,6 +1,8 @@
 #ifndef KDK_FUNCTION
 #define KDK_FUNCTION
 
+#include "module.h"
+
 #include "node.h"
 #include "mem.h"
 
@@ -19,7 +21,7 @@ typedef struct func_reg{
 
 int registerFunction(func_reg *, function, char *);
 obj * invokeFunction(func_reg *, node*, token *, unsigned long);
-obj * invokeKeyword(node*, token *, lexeme);//slightly more efficient
+obj * invokeKeyword(HMODULE *, token *, lexeme);//slightly more efficient
 
 func_reg * getKeywordRegistry();
 void _setKeywordRegistry(func_reg *);

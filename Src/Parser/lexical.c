@@ -57,6 +57,7 @@ token * resolveSymbol(node * n, tBuffer * buf, char * sym){
     lexeme lex = lx_NA;
 
     unsigned long long hash = FNV_1a_32(sym);
+    //printf("%llu\r\n", FNV_1a_32(sym));
 
     //TODO move to tiered symbol resolve
     switch(hash){
@@ -94,6 +95,7 @@ token * resolveSymbol(node * n, tBuffer * buf, char * sym){
         case 10505907191231071951LLU: lex = lx_KW_DELETE; break;//delete
         case 277490748868856452LLU: lex = lx_KW_CAST; break;//cast
         case 17446148261328024908LLU: lex = lx_KW_IMPORT; break;//import
+        case 3178111638436240LLU: lex = lx_KW_RUN; break;//run
         case 1303734914311023094LLU: lex = lx_KW_RELEASE; break;//release
         case 348816759751995988LLU: lex = lx_KW_QUIT; break;//quit
         case 161663717155468524LLU: lex = lx_KW_PRINT; break;//print

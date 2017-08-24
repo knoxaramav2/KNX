@@ -79,6 +79,7 @@ typedef enum lexeme
     lx_FUNCTION,
     lx_VOID,
     lx_EXCEPTION,
+    lx_SCRIPT,
 
     //###################Type registry reserved
 
@@ -179,6 +180,7 @@ typedef enum lexeme
     lx_KW_FUNCTION,     //proc(name, type name1, type name2, ..., {expression})
     lx_KW_VOID,         //void 
     lx_KW_EXCEPTION,    //exception
+    lx_KW_SCRIPT,       //script (internal)
 
     //control
     lx_CNT=lx_KEYWORD + MAX_TYPE_COUNT,//920
@@ -202,6 +204,7 @@ typedef enum lexeme
     lx_KW_DELETE,       //delete(obj)
     lx_KW_CAST,         //cast(obj, type)
     lx_KW_IMPORT,       //import(library)
+    lx_KW_RUN,          //run(script)
     lx_KW_RELEASE,      //release(library)
     lx_KW_QUIT,         //quit
     lx_KW_PRINT,        //print(...)
@@ -211,6 +214,7 @@ typedef enum lexeme
 
     //meta
     lx_CNT_ENDBODY,
+    lx_SYM_STUB,        //for resolving
 
     //common
     

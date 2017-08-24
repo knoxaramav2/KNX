@@ -6,9 +6,35 @@
 //args: [script name] [token stream]
 static obj * __constructor(token * data){
 
-    script * ret = malloc(sizeof(script));
+    if (data == NULL){
+        //return c_exception("Invalid Overload Exception", lx_LANG_EXCEPTION);
+    }
+    
+    data = getTokenList(data);
 
-    return ret;
+    char * name = NULL;
+    script * value = malloc(sizeof(script));
+
+    for (int indx = 0; data; ++indx){
+        switch (indx){
+            case 0:
+                name = castTo(data->info, data->type, lx_STRING);
+                if (name == NULL)
+                    ;//return createException("Invalid Overload Exception");
+            break;
+            case 1:
+                value = castTo(data->info, data->type, lx_INT);
+                if (value == NULL)
+                    ;//return createException("Invalid Overload Exception");
+            break;
+            default:
+                ;//return createException("Invalid Overload Exception");
+        }
+        
+        data = data->right;
+    }
+
+    return createObject(name, lx_SCRIPT, value);
 }
 
 static void * __copy_constructor(void * v){

@@ -38,6 +38,7 @@
         "node.c": "cpp",
         "typedecl.h": "c",
         "kwdecl.h": "c",
-        "keyword.h": "c"
+        "keyword.h": "c",
+        "file.h": "c"
     }
 }

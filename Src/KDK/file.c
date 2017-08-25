@@ -1,4 +1,11 @@
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+
+#include "dat_tables.h"
 #include "file.h"
+
+DatTable datTable;
 
 //TODO use configs
 int initFileBuffer(fileBuffer* buffer, Config * config){
@@ -68,4 +75,17 @@ fchar * fReadLineBuffer(fileBuffer*buffer){
 fchar fReadCharBuffer(fileBuffer*buffer){
 
     return 0;
+}
+
+//TODO check in calling directory, check in script folder
+char * localizePath(char * orig){
+
+    char * ret = malloc(strlen(orig) + strlen(datTable.exeLocation) + 2);
+    size_t exeLen = strlen(datTable.exeLocation);
+    
+    strncpy(ret, datTable.exeLocation, exeLen);
+    ret[exeLen]='\\';
+    strncpy(ret + exeLen + 1, orig, strlen(orig) + 1);
+    printf("%s\r\n", ret);
+    return ret;
 }

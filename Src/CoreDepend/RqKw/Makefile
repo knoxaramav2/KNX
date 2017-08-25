@@ -11,7 +11,7 @@ OUT = libKW.so
 CLEANEXT = o a
 DBGFLAGS= -d#command line debug arg
 SRC=RqKw.c \
-	kw_if.c kw_print.c kw_quit.c kw_typeof.c
+	kw_if.c kw_print.c kw_quit.c kw_typeof.c kw_run.c
 EXPORT_PTH=../../../bin/required/
 
 ifeq ($(shell uname), Linux)
@@ -27,7 +27,7 @@ else
 endif
 
 all:
-	$(CC) $(CFLAGS) $(DFLAGS) $(LFLAGS) $(VERSION) $(SRC) -shared -o $(EXPORT_PTH)$(OUT) $(OSMODE) $(PLATFORM) $(KLIB_MOD)
+	$(CC) $(CFLAGS) $(DFLAGS) $(LFLAGS) $(VERSION) $(PLATFORM) $(SRC) -shared -o $(EXPORT_PTH)$(OUT) $(OSMODE) $(PLATFORM) $(KLIB_MOD)
 
 .PHONY: clean
 clean:

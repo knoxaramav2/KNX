@@ -24,11 +24,13 @@ init_sdk();
 
 int rCode = 0;
 
+nodeArg * arg = createNodeArg();
+
 if ((rCode = initComponents()))
     return rCode |= 0xA;
-if ((rCode = parseCmd(argc, argv)))
+if ((rCode = parseCmd(argc, argv, arg)))
     return rCode |= 0xB;
-if ((rCode = startRoot()))
+if ((rCode = startRoot(arg)))
     return rCode |= 0xC;
 if ((rCode = shutdown()))
     return rCode |= 0xD;

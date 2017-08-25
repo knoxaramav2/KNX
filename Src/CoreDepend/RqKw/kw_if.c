@@ -2,7 +2,7 @@
 
 #include "KwDecl.h"
 
-obj * kw_if(node * n, token * arg){
+obj * kw_if(HMODULE * module, token * arg){
 
     obj * result = NULL;
 

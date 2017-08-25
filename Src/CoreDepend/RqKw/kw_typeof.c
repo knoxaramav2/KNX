@@ -4,27 +4,11 @@
 #include "KwDecl.h"
 #include "type.h"
 
-obj * kw_typeof(node * n, token * arg){
-
-    token * stream = getTokenList(arg);
+obj * kw_typeof(HMODULE * module, token * arg){
     
-    if (stream){
-
-        void * info = getTokenValue(stream);
-        int * pExitCode = castTo(info, stream->type, lx_INT);
-
-        if (pExitCode){
-            n->exit_code = *pExitCode;
-            free(pExitCode);
-        } else {
-            n->exit_code = -1;
-        }
+    if (arg){
+        return createObject(NULL, lx_STRING, getTypeName(arg->type));
     }
-
-    n->status = ns_terminated;
-
-    printf("Quiting node %d with code (%d)\r\n", n->id_index, n->exit_code);
-    fflush(stdout);
 
     return NULL;
 }

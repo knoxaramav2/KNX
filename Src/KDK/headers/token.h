@@ -26,10 +26,16 @@ typedef union tkn_id{
     unsigned x;
 }tkn_id;*/
 
+typedef struct tStackItem{
+    char * line;
+    struct tStackItem * next;
+} tStackItem;
+
+//TODO move to mem.h
 typedef struct tBuffer
 {
     
-unsigned char qState;
+    unsigned char qState;
 
     //operator stack
     lexeme opStack [128];
@@ -44,6 +50,10 @@ unsigned char qState;
     //lexer buffer
     char buffer[1024];
     size_t index;
+
+    //load buffer
+    tStackItem * stackBuffer;
+    tStackItem * stackIndex;
 
     bool yieldLine;
     short commentMode;

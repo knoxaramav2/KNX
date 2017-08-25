@@ -123,7 +123,7 @@ int parseStr(char * arg)
     return 0;
 }
 
-int parseCmd(int argc, char ** argv)
+int parseCmd(int argc, char ** argv, nodeArg * arg)
 {
     _config = loadDefaultConfig();
 
@@ -152,12 +152,14 @@ int parseCmd(int argc, char ** argv)
     return ret;
 }
 
-int startRoot()
+int startRoot(nodeArg * arg)
 {
     node * root = createNode();
     registerNode(root, NULL);
 
-    pthread_create(&root->_handle, NULL, _nodeProc, root);
+    arg->n = root;
+
+    pthread_create(&root->_handle, NULL, _nodeProc, arg);
     pthread_join(root->_handle, NULL);
 
     return 0;

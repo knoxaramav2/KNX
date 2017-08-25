@@ -17,6 +17,19 @@
 
 static volatile int interrupt = 1;
 
+nodeArg * createNodeArg(){
+    nodeArg * ret = malloc(sizeof(nodeArg));
+    
+    ret->n=NULL;
+    ret->script=NULL;
+
+    return ret;
+}
+
+void destroyNodeArg(nodeArg * arg){
+    free(arg);
+}
+
 void intrFlag(int d)
 {
     interrupt = 0;
@@ -63,19 +76,48 @@ int destroyNode(node * n)
 void * _nodeProc(void * _self)
 {
 
+nodeArg * arg = _self;
+
 signal(SIGINT, intrFlag);
 
-node * self = (node*) _self;
+node * self = arg->n;
 printf("Starting node %d\r\n", self->id_index);
 
 char buffer[256];
 int bindex = 0;
 bool startline = true;
+bool startStack = true;
 
 fflush(stdout);
 
 do
 {
+    if (self->buffer.stackBuffer){
+
+        if (startStack){
+            startStack = false;
+            self->buffer.stackIndex = self->buffer.stackBuffer;
+        }
+
+        if (self->buffer.stackIndex == NULL){
+            self->buffer.stackBuffer = NULL;
+            self->buffer.stackIndex = NULL;
+            startStack = true;
+            continue;
+        }
+
+        tokenize(self->hModule, self->buffer.stackIndex->line);
+        execute(self->hModule);
+        clearTBuffer(&self->buffer);
+        
+        tStackItem * tmp = self->buffer.stackIndex->next;
+        free(self->buffer.stackIndex->line);
+        free(self->buffer.stackIndex);
+
+        self->buffer.stackIndex = tmp;
+        continue;
+    }
+
     if (startline){
         printf("|%d|\t", self->id_index);
         startline=false;
@@ -100,6 +142,7 @@ do
     buffer[bindex++] = c;
 } while(self->status != ns_terminated && interrupt);
 
+destroyNodeArg(arg);
 destroyNode(self);
 
 return NULL;

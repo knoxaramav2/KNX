@@ -31,7 +31,7 @@ void startup()
     registerFunction(keyword_registry, kw_if, "delete");
     registerFunction(keyword_registry, kw_if, "cast");
     registerFunction(keyword_registry, kw_if, "import");
-    registerFunction(keyword_registry, kw_if, "run");
+    registerFunction(keyword_registry, kw_run, "run");
     registerFunction(keyword_registry, kw_if, "release");
     registerFunction(keyword_registry, kw_quit, "quit");
     registerFunction(keyword_registry, kw_print, "print");

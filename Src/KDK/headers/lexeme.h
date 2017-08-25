@@ -80,6 +80,7 @@ typedef enum lexeme
     lx_VOID,
     lx_EXCEPTION,
     lx_SCRIPT,
+    lx_NULL,
 
     //###################Type registry reserved
 

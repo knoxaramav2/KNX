@@ -42,6 +42,14 @@ node_status status;
 
 } node;
 
+typedef struct nodeArg{
+    node * n;
+    char * script;
+} nodeArg;
+
+nodeArg * createNodeArg();
+void destroyNodeArg(nodeArg *);
+
 node * createNode();
 int destroyNode(node *);
 node * getRootNode();

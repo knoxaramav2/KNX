@@ -1,8 +1,9 @@
 #ifndef REQ_KW
 #define REQ_KW
 
-#define KW_ARG_LIST (node *, token *);
+#define KW_ARG_LIST (HMODULE *, token *);
 
+#include "module.h"
 #include "function.h"
 
 //CONTROL
@@ -22,6 +23,7 @@ obj * kw_typeof KW_ARG_LIST
 obj * kw_delete KW_ARG_LIST
 obj * kw_cast KW_ARG_LIST
 obj * kw_import KW_ARG_LIST
+obj * kw_run KW_ARG_LIST
 obj * kw_release KW_ARG_LIST
 obj * kw_quit KW_ARG_LIST
 obj * kw_print KW_ARG_LIST

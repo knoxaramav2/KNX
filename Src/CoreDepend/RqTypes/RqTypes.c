@@ -42,6 +42,7 @@ void startup()
     fail += registerVoid(type_registry);
     fail += registerException(type_registry);
     fail += registerScript(type_registry);
+    fail += registerNull(type_registry);
 }
 
 void shutdown()

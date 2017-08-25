@@ -34,5 +34,6 @@ int registerFunction(type_reg*);
 int registerVoid(type_reg*);
 int registerException(type_reg*);
 int registerScript(type_reg*);
+int registerNull(type_reg*);
 
 #endif

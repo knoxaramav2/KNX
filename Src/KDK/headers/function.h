@@ -4,9 +4,10 @@
 #include "module.h"
 
 #include "node.h"
+#include "module.h"
 #include "mem.h"
 
-typedef obj * (*function)(node *, token *);
+typedef obj * (*function)(HMODULE *, token *);
 
 typedef struct func_slot{
     unsigned hash;
@@ -20,7 +21,7 @@ typedef struct func_reg{
 } func_reg;
 
 int registerFunction(func_reg *, function, char *);
-obj * invokeFunction(func_reg *, node*, token *, unsigned long);
+obj * invokeFunction(func_reg *, HMODULE *, token *, unsigned long);
 obj * invokeKeyword(HMODULE *, token *, lexeme);//slightly more efficient
 
 func_reg * getKeywordRegistry();

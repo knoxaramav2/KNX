@@ -55,11 +55,11 @@ int registerFunction(func_reg * reg, function func, char * name){
     return 0;
 }
 
-obj * invokeFunction(func_reg * reg, node * n, token * arg, unsigned long hash){
+obj * invokeFunction(func_reg * reg, HMODULE * module, token * arg, unsigned long hash){
 
     for (unsigned x = 0; x < reg->registered_functions; ++x){
         if (hash == reg->slots[x].hash){
-            return reg->slots[x].func(n, arg);
+            return reg->slots[x].func(module, arg);
         }
     }
 
@@ -68,9 +68,8 @@ obj * invokeFunction(func_reg * reg, node * n, token * arg, unsigned long hash){
 
 obj * invokeKeyword(HMODULE * module, token * arg, lexeme word){
 
-    node * n = module->owner;
     int select = word-(lx_CNT+1);
-    return keyword_registry->slots[select].func(n, arg);
+    return keyword_registry->slots[select].func(module, arg);
 }
 
 func_reg * getKeywordRegistry(){

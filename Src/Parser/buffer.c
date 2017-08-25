@@ -18,6 +18,9 @@ tBuffer createTBuffer()
     ret.head = NULL;
     ret.tokens = NULL;
 
+    ret.stackBuffer = NULL;
+    ret.stackIndex = NULL;
+
     return ret;
 }
 

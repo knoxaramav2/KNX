@@ -4,7 +4,7 @@
 #include "KwDecl.h"
 #include "type.h"
 
-obj * kw_print(node * n, token * arg){
+obj * kw_print(HMODULE * module, token * arg){
 
     token * stream = getTokenList(arg);
 

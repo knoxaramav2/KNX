@@ -4,11 +4,11 @@
 #include "KwDecl.h"
 #include "type.h"
 
-obj * kw_quit(node * n, token * arg){
+obj * kw_quit(HMODULE * module, token * arg){
 
     token * stream = getTokenList(arg);
 
-    n->exit_code = 0;
+    module->owner->exit_code = 0;
 
     if (stream){
 
@@ -17,16 +17,18 @@ obj * kw_quit(node * n, token * arg){
 
         if (pExitCode){
             
-            n->exit_code = *pExitCode;
+            module->owner->exit_code = *pExitCode;
             free(pExitCode);
         } else {
-            n->exit_code = -1;
+            module->owner->exit_code = -1;
         }
     }
 
-    n->status = ns_terminated;
+    module->owner->status = ns_terminated;
 
-    printf("Quiting node %d with code (%d)\r\n", n->id_index, n->exit_code);
+    printf("Quiting node %d with code (%d)\r\n", 
+        module->owner->id_index, 
+        module->owner->exit_code);
     fflush(stdout);
 
     return NULL;

@@ -5,7 +5,7 @@
 #include <string.h>
 
 #ifdef __WINDOWS
-#include <windows.h>
+//#include <windows.h>
 //#define fchar wchar_t
 #define fchar char
 #else
@@ -39,6 +39,8 @@ typedef struct fileBuffer {
     fileEncoding encoding;
 
 } fileBuffer;
+
+char * localizePath(char *);
 
 int initFileBuffer(fileBuffer*, Config *);
 int clearFileBuffer(fileBuffer*);

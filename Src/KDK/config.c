@@ -38,8 +38,6 @@ return _config;
 
 Config * loadDefaultConfig()
 {
-    printf("Read config\r\n");
-
     if (!_config)
         generateConfig();
 
@@ -118,8 +116,6 @@ Config * loadDefaultConfig()
     }
 
     fclose(defcon);
-
-    printf("Loaded config data\r\n");
 
     return _config;
 }

@@ -1,4 +1,5 @@
 #include "kdk.h"
+#include "debug.h"
 
 #include <stdio.h>
 
@@ -7,7 +8,6 @@ static void shutdown() __attribute__((destructor));
 
 void startup()
 {
-    printf("Starting kdk\r\n");fflush(stdout);
     generateConfig();
 }
 
@@ -18,7 +18,6 @@ void shutdown()
 
 void init_sdk()
 {
-    printf("KDK setup\r\n");
     initDbgGlb();
     initDatTable();
 }

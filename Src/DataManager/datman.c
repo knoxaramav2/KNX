@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "debug.h"
 #include "config.h"
 #include "node_reg.h"
 #include "mem.h"
@@ -39,11 +40,11 @@ void startup()
 
     _setTypeRegistry(type_registry);
 
-    printf("Data Manager Loaded\r\n");
+    dprint("Data Manager Loaded\r\n");
 }
 
 void shutdown()
 {
 
-    printf("Data Manager Unloaded\r\n");
+    dprint("Data Manager Unloaded\r\n");
 }

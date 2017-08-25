@@ -6,6 +6,7 @@
 
 #include "KNX_Hash.h"
 
+#include "debug.h"
 #include "node_reg.h"
 #include "type.h"
 #include "module.h"
@@ -50,7 +51,7 @@ int registerFunction(func_reg * reg, function func, char * name){
     
     ++reg->registered_functions;
 
-    printf("Registered function %s\r\n", name);
+    dprint("Registered function %s\r\n", name);
 
     return 0;
 }
@@ -114,7 +115,7 @@ int registerType(char * name, type_constructor cons, type_destructor dest, copy_
     //optional
     slot->math = NULL;
 
-    printf("Registered %s (%u)\r\n", name, regCount);
+    dprint("Registered %s (%u)\r\n", name, regCount);
 
     ++type_registry->registered_types;
 

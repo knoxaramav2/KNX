@@ -2,12 +2,13 @@
 #include <string.h>
 #include <stdio.h>
 
-#include "token.h"
 #include "dat_tables.h"
 #include "config.h"
 #include "debug.h"
 
 #define BUFFER_SIZE 54
+
+typedef struct tBuffer tBuffer;
 
 Config * _config;
 
@@ -57,9 +58,8 @@ void dflush()
 
 void printBufferStream(tBuffer * buf)
 {
-    printf(">>%d\r\n", _config->debug);
-    //if (!_config->debug)
-    //    return;
+    if (!_config->debug)
+        return;
 
     printf("oCount :%3d\r\n", buf->oCount);
     printf("tCount :%3d\r\n", buf->tCount);
@@ -79,4 +79,17 @@ void printBufferStream(tBuffer * buf)
 
     printf("\r\n");
     fflush(stdout);
+}
+
+
+void dprint(char * msg, ...){
+    if (!_config->debug)
+        return;
+
+    va_list args;
+    va_start(args, msg);
+    vprintf(msg, args);
+    va_end(args);
+
+    //printf("%s\r\n", msg);
 }

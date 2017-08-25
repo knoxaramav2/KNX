@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 
+#include "debug.h"
 #include "type.h"
 #include "function.h"
 
@@ -11,7 +12,7 @@ func_reg * kw_registry = NULL;
 
 void _setKeywordRegistry(func_reg * reg){
     kw_registry = reg;
-    printf("Set Func Registry :%p\r\n", reg);
+    dprint("Set Func Registry :%p\r\n", reg);
 }
 
 func_reg * getKeywordRegistry(){
@@ -21,7 +22,7 @@ func_reg * getKeywordRegistry(){
 void _setTypeRegistry(type_reg * reg)
 {
     type_registry = reg;
-    printf("Set Type Registry :%p\r\n", reg);
+    dprint("Set Type Registry :%p\r\n", reg);
 }
 
 type_reg * getTypeRegistry(){

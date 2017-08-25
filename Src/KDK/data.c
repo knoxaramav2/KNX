@@ -9,6 +9,7 @@
 
 #include "KNX_File.h"
 
+#include "debug.h"
 #include "dat_tables.h"
 
 DatTable datTable;
@@ -25,7 +26,7 @@ void initDatTable()
 
     strncpy(datTable.exeLocation, tmp, strlen(tmp)+1);
 
-    printf("Exe at %s\r\n", datTable.exeLocation);
+    dprint("Exe at %s\r\n", datTable.exeLocation);
 }
 
 DatTable getDatTable()

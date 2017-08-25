@@ -10,8 +10,6 @@ static void shutdown() __attribute__((destructor));
 
 void startup()
 {
-    printf("###################\r\n");
-
     type_reg * type_registry = getTypeRegistry();
 
     int fail = 0;

@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "debug.h"
+
 #include "executor.h"
 
 static void startup() __attribute__((constructor));
@@ -13,11 +15,11 @@ void startup()
 
 
 
-    printf("Executor Loaded\r\n");
+    dprint("Executor Loaded\r\n");
 }
 
 void shutdown()
 {
 
-    printf("Executor Unloaded\r\n");
+    dprint("Executor Unloaded\r\n");
 }

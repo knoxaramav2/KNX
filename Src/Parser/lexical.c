@@ -431,8 +431,6 @@ int tokenize(HMODULE * hModule, char * raw)
 
     printBufferStream(&node->buffer);
 
-    printf("\r\n");
-
     return  node->buffer.oCount == 0 && 
             node->buffer.qState == 0 &&
             !node->buffer.yieldLine ?

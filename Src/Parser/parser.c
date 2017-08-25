@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "debug.h"
+
 #include "parser.h"
 #include "node_reg.h"
 
@@ -11,11 +13,11 @@ static void shutdown() __attribute__((destructor));
 
 void startup()
 {
-    printf("Parser Loaded\r\n");
+    dprint("Parser Loaded\r\n");
 }
 
 void shutdown()
 {
 
-    printf("Parser Unloaded\r\n");
+    dprint("Parser Unloaded\r\n");
 }

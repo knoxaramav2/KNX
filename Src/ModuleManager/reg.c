@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "debug.h"
+
 #include "modreg.h"
 
 mod_reg _modreg;
@@ -15,7 +17,7 @@ void startup()
     _modreg.count = 0;
     _modreg.handles = malloc(0);
 
-    printf("Module Manager Loaded\r\n");
+    dprint("Module Manager Loaded\r\n");
 }
 
 void shutdown()
@@ -24,7 +26,7 @@ void shutdown()
         dlclose(_modreg.handles[i]->handle);
     }
 
-    printf("Module Manager Unloaded\r\n");
+    dprint("Module Manager Unloaded\r\n");
 }
 
 void register_module(char * libpath)

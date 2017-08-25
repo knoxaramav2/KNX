@@ -39,6 +39,7 @@
         "typedecl.h": "c",
         "kwdecl.h": "c",
         "keyword.h": "c",
-        "file.h": "c"
+        "file.h": "c",
+        "debug.h": "c"
     }
 }

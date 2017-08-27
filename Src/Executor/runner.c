@@ -83,7 +83,7 @@ token * execute(HMODULE * module){
         coupleTokens(lsav, itr, cont);
     }   
 
-    nd->buffer.tokens = ret; 
+    nd->buffer.tokens = itr; 
 
-    return ret;
+    return itr;
 }

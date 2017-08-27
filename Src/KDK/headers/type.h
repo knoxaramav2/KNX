@@ -13,11 +13,11 @@
 typedef obj * (*type_constructor)(token *);
 typedef int (*type_destructor)(obj *);
 typedef void * (*copy_constructor)(void *);
-typedef void * (*type_set)(void *, lexeme);
 
 //additional/optional
 typedef void * (*type_cast)(void *);
 typedef token * (*type_math)(void *, void*, lexeme, lexeme);
+typedef token * (*type_set)(void *, void *, lexeme);
 
 lexeme getPriorityType(lexeme, lexeme);
 
@@ -35,6 +35,7 @@ typedef struct type_slot{
     type_cast cast_table[MAX_TYPE_COUNT];
 
     type_math math;
+    type_set setter;
 
     unsigned cast_count;
 } type_slot;
@@ -52,11 +53,13 @@ type_reg * getTypeRegistry();
 int registerType (char *, type_constructor, type_destructor, copy_constructor);
 int addCaster(type_slot*, lexeme, type_cast);
 int assignMath(type_slot*, type_math);
+int assignSetter(type_slot*, type_set);
 
 obj * spawnType(lexeme, token *);
 void * castTo(void*, lexeme, lexeme);
 void * copyValue(void*, lexeme);
 token * typeMath(void *, void *, lexeme, lexeme, lexeme);
+token * setValue(token*, lexeme);
 
 char * getTypeName(lexeme);
 

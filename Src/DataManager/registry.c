@@ -107,6 +107,9 @@ int registerType(char * name, type_constructor cons, type_destructor dest, copy_
     slot->hash = hash;
     slot->cast_count = 0;
     slot->type = lx_TYPE_OFFSET + regCount + 1;
+    //optional fields
+    slot->math=NULL;
+    slot->setter=NULL;
 
     size_t nmLen = strlen(name) + 1;
     slot->name = malloc(nmLen);
@@ -139,6 +142,16 @@ int assignMath(type_slot * slot, type_math math){
     return 0;
 }
 
+int assignSetter(type_slot* slot, type_set setter){
+    
+    if (slot->setter)
+        return 1;
+    
+    slot->setter = setter;
+    
+    return 0;
+}
+
 char * getTypeName(lexeme type){
     for (unsigned x = 0; x < type_registry->registered_types; ++x){
         if (type_registry->slots[x].type == type){
@@ -150,5 +163,5 @@ char * getTypeName(lexeme type){
         }
     }
 
-    return NULL;
+    return 0;
 }

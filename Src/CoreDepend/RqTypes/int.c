@@ -66,32 +66,27 @@ void * c_int2string(void * orig){
 }
 
 token * math_int (void * lv, void * rv, lexeme rt, lexeme op){
-
-
     int * ret = malloc(sizeof(int));
-    void * tmp = NULL;
     *ret = 0;
-
-    tmp = castTo(rv, rt, lx_INT);
 
     switch(op){
         case lx_ADD:
-            *ret = *(int*)lv + *(int*)tmp;
+            *ret = *(int*)lv + *(int*)rv;
         break;
         case lx_SUB:
-            *ret = *(int*)lv - *(int*)tmp;
+            *ret = *(int*)lv - *(int*)rv;
         break;
         case lx_DIV:
-            *ret = *(int*)lv / *(int*)tmp;
+            *ret = *(int*)lv / *(int*)rv;
         break;
         case lx_MULT:
-            *ret = *(int*)lv * *(int*)tmp;
+            *ret = *(int*)lv * *(int*)rv;
         break;
         case lx_MOD:
-            *ret = *(int*)lv % *(int*)tmp;
+            *ret = *(int*)lv % *(int*)rv;
         break;
         case lx_POW:
-            *ret = (int) pow(*(int*)lv , *(int*)tmp);
+            *ret = (int) pow(*(int*)lv , *(int*)rv);
         break;
         /*case lx_ROOT:
             *ret = *(int*)lv + *(int*)rv;
@@ -101,10 +96,60 @@ token * math_int (void * lv, void * rv, lexeme rt, lexeme op){
         break;
     }
 
-    if (tmp != rv)
-        free(tmp);
-
     return createToken(false, lx_INT, ret);
+}
+
+//lval accepts reference to memTree 
+token * set_int(void * lval, void * rval, lexeme op){
+
+    int * l = (int*) lval;
+    int * r = (int*) rval;
+
+    switch(op){
+        case lx_SET:
+        *l = *r;
+        break;
+        case lx_SET_ADD:
+        *l += *r;
+        break;
+        case lx_SET_SUB:
+        *l -= *r;
+        break;
+        case lx_SET_MULT:
+        *l -= *r;
+        break;
+        case lx_SET_DIV:
+        if (*r == 0){
+            //TODO throw exception
+            return NULL;
+        }
+        *l /= *r;
+        break;
+        case lx_SET_AND:
+        *l &= *r;
+        break;
+        case lx_SET_OR:
+        *l |= *r;
+        break;
+        case lx_SET_NOT:
+        *l = ~*r;
+        break;
+        case lx_SET_POST_INC:
+        //TODO
+        break;
+        case lx_SET_POST_DEC:
+        break;
+        case lx_SET_PRE_INC:
+        break;
+        case lx_SET_PRE_DEC:
+        break;
+        case lx_SET_TERN:
+        break;
+        default:
+        return NULL;
+    }
+
+    return createToken(true, lx_INT, l);
 }
 
 int registerInt(type_reg * type_registry){
@@ -117,6 +162,8 @@ int registerInt(type_reg * type_registry){
     fail += addCaster(&type_registry->slots[type_registry->registered_types-1], lx_STRING, c_int2string);
 
     fail += assignMath(&type_registry->slots[type_registry->registered_types-1], math_int);
+
+    fail += assignSetter(&type_registry->slots[type_registry->registered_types-1], set_int);
 
     return fail;
 };

@@ -2,7 +2,21 @@
 
 #include "type.h"
 
+//TODO remove casts: casting to be done in local type files
+//or remove type casting from local files
+
 type_reg * type_registry;
+
+type_slot * getTypeSlot(lexeme type){
+    for(int i = 0; i < type_registry->registered_types; ++i){
+        if (type != type_registry->slots[i].type)
+            continue;
+
+        return &type_registry->slots[i];
+    }
+
+    return NULL;
+}
 
 obj * spawnType(lexeme target, token * args){
 
@@ -64,15 +78,47 @@ token * typeMath(void * l, void * r, lexeme lt, lexeme rt, lexeme word){
         upg = castTo(l, lt, order);
     }
     
-    for(int i = 0; i < type_registry->registered_types; ++i){
-        if (order != type_registry->slots[i].type)
-            continue;
-        token * res = type_registry->slots[i].math(upg, r, rt, word);
-        if (order != lt){
-            free(upg);//TODO destroy if non-primitive
-        }
-        return res;
+    type_slot * slot = getTypeSlot(order);
+    if (slot == NULL)
+        return NULL;
+
+    token * res = slot->math(upg, r, rt, word);
+    if (order != lt){
+        free(upg);//TODO destroy if non-primitive
     }
 
-    return NULL;
+    return res;
+}
+
+token * setValue(token * args, lexeme op){
+
+    args = getTokenList(args);
+
+    if (!args || !args->right){
+        //TODO throw exception
+        return NULL;
+    } else if (!args->isStored){
+        //TODO throw exception
+        return NULL;
+    }
+    
+    type_slot * slot = getTypeSlot(args->type);
+
+    if (slot->setter == NULL){
+        //TODO throw exception
+        return NULL;
+    }
+
+    void * lval = getTokenValue(args);
+    void * rval = getTokenValue(args->right);
+
+    if (args->type != args->right->type)
+        rval = castTo(rval, args->right->type, args->type);
+
+    token * ret = slot->setter(lval, rval, op);
+
+    if (args->type != args->right->type)
+        free(rval);
+
+    return ret;
 }

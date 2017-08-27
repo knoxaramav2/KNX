@@ -40,6 +40,9 @@
         "kwdecl.h": "c",
         "keyword.h": "c",
         "file.h": "c",
-        "debug.h": "c"
+        "debug.h": "c",
+        "type_traits": "cpp",
+        "xstddef": "cpp",
+        "xtr1common": "cpp"
     }
 }

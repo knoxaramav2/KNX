@@ -22,7 +22,7 @@
 #define isDKeyword(x) (x>lx_KW_PRIM && x<lx_CNT)
 #define isFKeyword(x) (x>lx_CNT && x <lx_STD_PLUGIN)
 #define isDecl(x) (x>lx_KW_PRIM && x<lx_CNT)
-#define isSetter(x) (x>lx_SET && x<lx_LOG)
+#define isSetter(x) (x>=lx_SET && x<lx_LOG)
 #define isLogic(x) (x>lx_LOG && x<lx_CMP)
 #define isGeneral(x) (x>lx_GEN && x<lx_ENC)
 #define isEncap(x) (x>lx_ENC && x<lx_BIT)

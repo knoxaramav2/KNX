@@ -9,6 +9,7 @@ static void shutdown() __attribute__((destructor));
 void startup()
 {
     generateConfig();
+    loadDefaultConfig();
 }
 
 void shutdown()

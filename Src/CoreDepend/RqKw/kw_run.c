@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 #include "KwDecl.h"
 #include "type.h"
@@ -21,15 +22,20 @@ int parseToTStack(char * path, tBuffer * buf){
 
         size_t len = strlen(line);
         size_t nullPlace = len;
+        bool isEnd = false;
 
         #ifdef __WINDOWS
+            isEnd = line[nullPlace - 1] != '\n';
             nullPlace -= 2;
         #else
+            isEnd = line[nullPlace] != '\r';
             nullPlace -= 1;
         #endif
 
-        line[nullPlace] = 0;
-        char * raw = malloc(len + 1);
+        if (!isEnd)
+            line[nullPlace] = 0;
+        
+            char * raw = malloc(len + 1);
         strncpy(raw, line, len);
 
         if (buf->stackBuffer == NULL){

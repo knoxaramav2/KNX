@@ -72,6 +72,23 @@ int destroyNode(node * n)
     return 0;
 }
 
+int sanitize(int c){
+
+    //get arrow
+    if (c == 27){
+        getchar();//eat 91
+        char arr = getchar();
+
+        switch(arr){
+            case 65: break;//up
+            case 66: break;//down
+            case 67: break;//right
+            case 68: break;//left
+        }
+    }
+
+    return c;
+}
 
 void * _nodeProc(void * _self)
 {
@@ -125,6 +142,7 @@ do
     }
 
     int c = getchar();
+    c = sanitize(c);
     if (c == '\r' || c == '\n'){
         startline=true;
         buffer[bindex] = 0;

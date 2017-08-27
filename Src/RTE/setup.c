@@ -122,7 +122,7 @@ int parseStr(char * arg)
 
 int parseCmd(int argc, char ** argv, nodeArg * arg)
 {
-    _config = loadDefaultConfig();
+    _config = getConfig();
 
     int ret = 0;
 

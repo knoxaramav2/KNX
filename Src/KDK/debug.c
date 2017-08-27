@@ -4,6 +4,7 @@
 
 #include "dat_tables.h"
 #include "config.h"
+#include "type.h"
 #include "debug.h"
 
 #define BUFFER_SIZE 54
@@ -67,12 +68,11 @@ void printBufferStream(tBuffer * buf)
     token * top = buf->tokens;
 
     while (top){
-        printf("|%d, [%u %u %u], lvl? %d, bin? %d|\r\n", 
+        printf("|%d, %u, lvl? %d, bin? %d|\r\n", 
         top->isStored,
-        top->type & MANAGE_CAST, 
         top->type & ORDER_MASK, 
-        top->type & TYPE_MASK,
-        CHKLVL(top->type), !isUnary(CHKTYPE(top->type)));
+        CHKLVL(top->type), 
+        !isUnary(CHKTYPE(top->type)));
         top = top->right;
     }
 

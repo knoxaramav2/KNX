@@ -39,6 +39,7 @@ void pushOpToStack(tBuffer * buf, lexeme lx){
         return;
     }
 
+    lexeme type = CHKTYPE(lx);
     int order = CHKLVL(lx);
     int lorder = buf->oCount == 0 ? 5 : CHKLVL(buf->opStack[buf->oCount-1]);
     //lexeme type = CHKTYPE(lx);
@@ -134,7 +135,7 @@ token * resolveSymbol(node * n, tBuffer * buf, char * sym){
         return createToken(isStored, lex, data);
     }
 
-    pushOpToStack(buf, lex | LEVEL_FOUR);
+    pushOpToStack(buf, lex | LEVEL_TWO);
 
     return NULL;
 }

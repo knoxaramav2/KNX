@@ -35,7 +35,7 @@ token * runKeyword(HMODULE * module, token * arg, lexeme word)
             return NULL;
         }
 
-        token * ret = createToken((char*)arg->info, data->type, data);
+        token * ret = createToken(false, data->type, data->data);
 
         return ret;
     }

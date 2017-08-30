@@ -35,6 +35,7 @@ void startup()
     registerFunction(keyword_registry, kw_if, "release");
     registerFunction(keyword_registry, kw_quit, "quit");
     registerFunction(keyword_registry, kw_print, "print");
+    registerFunction(keyword_registry, kw_getl, "getl");
     registerFunction(keyword_registry, kw_if, "throw");
     registerFunction(keyword_registry, kw_if, "try");
     registerFunction(keyword_registry, kw_if, "catch");

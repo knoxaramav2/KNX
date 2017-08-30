@@ -47,6 +47,9 @@ typedef struct tBuffer
     token * head;
     unsigned tCount;
 
+    //states
+    lexeme lastPushed;
+
     //lexer buffer
     char buffer[1024];
     size_t index;

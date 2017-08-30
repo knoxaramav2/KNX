@@ -36,21 +36,34 @@ void pushOpToStack(tBuffer * buf, lexeme lx){
 
     if (buf->oCount == 0){
         buf->opStack[buf->oCount++] = lx;
+        buf->lastPushed = CHKTYPE(lx);
         return;
     }
 
-    //lexeme type = CHKTYPE(lx);
     int order = CHKLVL(lx);
     int lorder = buf->oCount == 0 ? 5 : CHKLVL(buf->opStack[buf->oCount-1]);
-    //lexeme type = CHKTYPE(lx);
+    lexeme type = CHKTYPE(lx);
+
+    if (isKeyword(CHKTYPE(lx)) && isOperator(buf->lastPushed)){
+        appendTBuffer(
+            buf,
+            createToken(false, lx_VOID, NULL),
+            false);
+    }
 
     if (lorder <= order && lorder != 1){
-        token * t = createToken(false, popOpStack(buf), NULL);
-        t->type = CHKTYPE(t->type);
+        token * t = NULL;
+        lexeme type = 
+            isKeyword(CHKTYPE(buf->lastPushed)) ?
+            CHKTYPE(lx) :
+            CHKTYPE(popOpStack(buf));
+
+        t = createToken(false, type, NULL);
         appendTBuffer(buf, t, false);
     }
 
     buf->opStack[buf->oCount++] = lx;
+    buf->lastPushed = CHKTYPE(lx);
 }
 
 token * resolveSymbol(node * n, tBuffer * buf, char * sym){
@@ -100,6 +113,7 @@ token * resolveSymbol(node * n, tBuffer * buf, char * sym){
         case 1303734914311023094LLU: lex = lx_KW_RELEASE; break;//release
         case 348816759751995988LLU: lex = lx_KW_QUIT; break;//quit
         case 161663717155468524LLU: lex = lx_KW_PRINT; break;//print
+        case 282309890223063204LLU: lex = lx_KW_GETLINE; break;//getl
         
         default:
         lex = lx_NA_SYM;
@@ -131,7 +145,7 @@ token * resolveSymbol(node * n, tBuffer * buf, char * sym){
                 isStored = true;
             }
         }
-
+        buf->lastPushed = lex;
         return createToken(isStored, lex, data);
     }
 

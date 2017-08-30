@@ -14,6 +14,7 @@ tBuffer createTBuffer()
     ret.yieldLine = 0;
     ret.commentMode = 0;
     ret.index = 0;
+    ret.lastPushed = lx_NA;
 
     ret.head = NULL;
     ret.tokens = NULL;

@@ -27,6 +27,7 @@ obj * kw_run KW_ARG_LIST
 obj * kw_release KW_ARG_LIST
 obj * kw_quit KW_ARG_LIST
 obj * kw_print KW_ARG_LIST
+obj * kw_getl KW_ARG_LIST
 obj * kw_throw KW_ARG_LIST
 obj * kw_try KW_ARG_LIST
 obj * kw_throw KW_ARG_LIST

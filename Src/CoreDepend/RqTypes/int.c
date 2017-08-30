@@ -149,7 +149,7 @@ token * set_int(void * lval, void * rval, lexeme op){
         return NULL;
     }
 
-    return createToken(true, lx_INT, l);
+    return createToken(false, lx_INT, copyValue(l, lx_INT));
 }
 
 int registerInt(type_reg * type_registry){

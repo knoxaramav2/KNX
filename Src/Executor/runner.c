@@ -74,6 +74,7 @@ token * execute(HMODULE * module){
         
         free(itr);
         itr = run(module, arg, com);
+        
         if (itr && itr->type != lx_LIST)
             destroyTokenStrand(arg);
 

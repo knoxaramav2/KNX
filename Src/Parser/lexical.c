@@ -51,10 +51,6 @@ void pushOpToStack(tBuffer * buf, lexeme lx){
             false);
     }
 
-    lexeme a = CHKTYPE(lx_KEYWORD);
-    lexeme b = CHKTYPE(lx_STD_PLUGIN);
-    int c = isKeyword(buf->lastPushed);
-
     if (lorder <= order && lorder != 1){
         if (isKeyword(buf->lastPushed)){
             appendTBuffer(

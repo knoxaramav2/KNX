@@ -105,6 +105,32 @@ token * math_string(void * lv, void * rv, lexeme rt, lexeme op){
     return createToken(false, lx_STRING, result);
 }
 
+token * set_string(void * lval, void * rval, lexeme op){
+
+    char * l = (char *) lval;
+    char * r = (char *) rval;
+
+    size_t lLen = strlen(l);
+    size_t rLen = strlen(r);
+
+    switch(op){
+        case lx_SET:
+            free(l);
+            l = malloc(rLen + 1);
+            strncpy(l, r, rLen + 1);
+        break;
+        case lx_SET_ADD:
+            l = realloc(l, lLen + rLen + 1);
+            strncpy(l+lLen, r, rLen + 1);
+        break;
+        default:
+        //TODO throw exception
+        return NULL;
+    }
+
+    return createToken(false, lx_STRING, copyValue(l, lx_STRING));
+}
+
 int registerString(type_reg * type_registry){
 
     int fail = 0;
@@ -112,6 +138,8 @@ int registerString(type_reg * type_registry){
     fail += registerType("string", __constructor, __destructor, __copy_constructor);
 
     fail += assignMath(&type_registry->slots[type_registry->registered_types-1], math_string);
+    fail += assignSetter(&type_registry->slots[type_registry->registered_types-1], set_string);
+    
 
     return fail;
 }

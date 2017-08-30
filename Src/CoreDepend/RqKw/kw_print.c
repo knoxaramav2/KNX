@@ -11,7 +11,7 @@ obj * kw_print(HMODULE * module, token * arg){
     while (stream){
 
         void * info = getTokenValue(stream);
-
+        obj * test = stream->info;
         void * data = isPrintable(arg->type) ?
             copyValue(info, lx_STRING) :
             castTo(info, stream->type, lx_STRING);

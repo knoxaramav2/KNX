@@ -80,12 +80,19 @@ fchar fReadCharBuffer(fileBuffer*buffer){
 //TODO check in calling directory, check in script folder
 char * localizePath(char * orig){
 
-    char * ret = malloc(strlen(orig) + strlen(datTable.exeLocation) + 2);
+    char * ret;
+
+    if (orig[1]==':'){
+        ret = malloc(strlen(orig) + 1);
+        strncpy(ret, orig, strlen(orig) + 1);
+        return ret;
+    }
+
+    ret = malloc(strlen(orig) + strlen(datTable.exeLocation) + 2);
     size_t exeLen = strlen(datTable.exeLocation);
     
     strncpy(ret, datTable.exeLocation, exeLen);
     ret[exeLen]='\\';
     strncpy(ret + exeLen + 1, orig, strlen(orig) + 1);
-    printf("%s\r\n", ret);
     return ret;
 }

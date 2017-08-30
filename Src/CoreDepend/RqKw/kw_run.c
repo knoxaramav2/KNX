@@ -10,6 +10,10 @@ int parseToTStack(char * path, tBuffer * buf){
 
     char * localPath = localizePath(path);
 
+    printf("%s\r\n", localPath);
+    fflush(stdout);
+    system("PAUSE");
+
     FILE * file = fopen(localPath, "r");
     free(localPath);
 
@@ -17,6 +21,10 @@ int parseToTStack(char * path, tBuffer * buf){
 
     if (!file)
         return 1;
+
+    tStackItem * start = buf->stackBuffer == NULL ?
+        NULL :
+        buf->stackIndex;
 
     while(fgets(line, sizeof(line), file)){
 
@@ -35,8 +43,8 @@ int parseToTStack(char * path, tBuffer * buf){
         if (!isEnd)
             line[nullPlace] = 0;
         
-            char * raw = malloc(len + 1);
-        strncpy(raw, line, len);
+        char * raw = malloc(len + 1);
+        strncpy(raw, line, len + 1);
 
         if (buf->stackBuffer == NULL){
             buf->stackBuffer = malloc(sizeof(tStackItem));
@@ -48,8 +56,8 @@ int parseToTStack(char * path, tBuffer * buf){
             buf->stackIndex->line = raw;
         }
 
-        printf(">> %s\r\n", buf->stackIndex->line);
-        fflush(stdout);
+        //printf(">> %s\r\n", buf->stackIndex->line);
+        //fflush(stdout);
 
         if (ferror(file)){
             fclose(file);
@@ -57,6 +65,8 @@ int parseToTStack(char * path, tBuffer * buf){
         }
     }
     
+    if (start != NULL)
+        buf->stackIndex = start;
 
     fclose(file);
     return 0;

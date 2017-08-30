@@ -11,8 +11,9 @@
 #include "node.h"
 #include "globals.h"
 #include "token.h"
-#include "../Executor/headers/executor.h"
 
+#include "../CoreDepend/RqKw/headers/KwDecl.h"
+#include "../Executor/headers/executor.h"
 #include "../Parser/headers/parser.h"
 
 static volatile int interrupt = 1;
@@ -107,6 +108,14 @@ bool startStack = true;
 
 fflush(stdout);
 
+if (arg->script){
+    char * com = malloc(7 + strlen(arg->script));
+    sprintf(com, "run '%s'", arg->script);
+
+    self->buffer.stackBuffer = malloc(sizeof(tStackItem));
+    self->buffer.stackBuffer->line = com;
+}
+
 do
 {
     if (self->buffer.stackBuffer){
@@ -144,6 +153,9 @@ do
     int c = getchar();
     c = sanitize(c);
     if (c == '\r' || c == '\n'){
+        if (bindex == 0)
+            continue;
+
         startline=true;
         buffer[bindex] = 0;
         bindex=0;

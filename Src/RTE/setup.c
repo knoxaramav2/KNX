@@ -120,9 +120,11 @@ int parseStr(char * arg)
     return 0;
 }
 
-int parseCmd(int argc, char ** argv, nodeArg * arg)
+int parseCmd(int argc, char ** argv, nodeArg * nArg)
 {
     _config = getConfig();
+
+    nArg->script = NULL;
 
     int ret = 0;
 
@@ -130,15 +132,19 @@ int parseCmd(int argc, char ** argv, nodeArg * arg)
     {
         char * arg = argv[i];
         
-        if (strlen(arg) == 1 || arg[0]!='-'){
-            printf("Arguments must preceeded by a dash: %s\r\n", arg);
-            ret |= 1;
-            continue;
-        }
-
         printf("%s\r\n", arg);
 
-        if (arg[1]=='-')
+        if (arg[0] != '-'){
+            nArg->script = malloc(strlen(arg) + 1);
+            strncpy(nArg->script, arg, strlen(arg) + 1);
+
+            for (char * itr = nArg->script; *itr; ++itr){
+                if (*itr=='\\' && *(itr+1) != '\\'){
+                    *itr = '/';
+                }
+            }
+        }
+        else if (arg[1]=='-')
             ret |= parseStr(arg);
         else
             ret |= parseMulti(arg);

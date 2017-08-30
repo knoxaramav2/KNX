@@ -42,7 +42,7 @@ void pushOpToStack(tBuffer * buf, lexeme lx){
 
     int order = CHKLVL(lx);
     int lorder = buf->oCount == 0 ? 5 : CHKLVL(buf->opStack[buf->oCount-1]);
-    lexeme type = CHKTYPE(lx);
+    //lexeme type = CHKTYPE(lx);
 
     if (isKeyword(CHKTYPE(lx)) && isOperator(buf->lastPushed)){
         appendTBuffer(
@@ -51,17 +51,31 @@ void pushOpToStack(tBuffer * buf, lexeme lx){
             false);
     }
 
-    if (lorder <= order && lorder != 1){
-        token * t = NULL;
-        lexeme type = 
-            isKeyword(CHKTYPE(buf->lastPushed)) ?
-            CHKTYPE(lx) :
-            CHKTYPE(popOpStack(buf));
+    lexeme a = CHKTYPE(lx_KEYWORD);
+    lexeme b = CHKTYPE(lx_STD_PLUGIN);
+    int c = isKeyword(buf->lastPushed);
 
-        t = createToken(false, type, NULL);
-        appendTBuffer(buf, t, false);
+    if (lorder <= order && lorder != 1){
+        if (isKeyword(buf->lastPushed)){
+            appendTBuffer(
+                buf,
+                createToken(false, CHKTYPE(lx), NULL),
+                false
+            );
+            
+            return;
+        } else {
+            if (isKeyword(buf->lastPushed)){
+                appendTBuffer(
+                    buf,
+                    createToken(false, CHKTYPE(popOpStack(buf)), NULL),
+                    false
+                );
+            }
+        }
     }
 
+    
     buf->opStack[buf->oCount++] = lx;
     buf->lastPushed = CHKTYPE(lx);
 }
@@ -145,7 +159,6 @@ token * resolveSymbol(node * n, tBuffer * buf, char * sym){
                 isStored = true;
             }
         }
-        buf->lastPushed = lex;
         return createToken(isStored, lex, data);
     }
 

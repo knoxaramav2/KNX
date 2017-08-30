@@ -48,6 +48,9 @@ void clearTBuffer(tBuffer * bf)
 void appendTBuffer(tBuffer * bf, token * tk, bool swapLeft)
 {
 
+    if (!swapLeft)
+        bf->lastPushed = CHKTYPE(tk->type);
+
     if (bf->head == NULL){
 
         bf->head = tk;

@@ -43,12 +43,9 @@ token * execute(HMODULE * module){
     token * itr = nd->buffer.tokens;
     token * cont = NULL,
     * arg = NULL,
-    * lsav = NULL,
-    * ret = NULL;
+    * lsav = NULL;
 
     while(itr){
-
-        ret = itr;
 
         //move to command token
         while (itr && !isCommand(itr->type))

@@ -77,6 +77,10 @@ token * math_int (void * lv, void * rv, lexeme rt, lexeme op){
             *ret = *(int*)lv - *(int*)rv;
         break;
         case lx_DIV:
+        if (*(int*)lv == 0){
+            //TODO throw exception
+            return NULL;
+        }
             *ret = *(int*)lv / *(int*)rv;
         break;
         case lx_MULT:

@@ -15,8 +15,6 @@
 #define isNOChar(x) (x=='.' || x=='_')
 #define isText(x) (isNum(x) || isAlpha(x) || isNOChar(x))
 #define isWhiteSpace(x) (x==' ' || x=='\t' || x==0)
-#define isOCap(x) (x=='(' || x=='[' || x=='{')
-#define isECap(x) (x==')' || x==']' || x=='}')
 #define isQuote(x) (x=='\'' || x=='\"')
 
 #define isMOCap(x) (x>= lx_ENC_OBRACK && x <= lx_ENC_OPARAN)
@@ -27,53 +25,71 @@ char getEscapeChar(char c){
 }
 
 lexeme popOpStack(tBuffer * buf){
-    return buf->oCount > 0 ? 
-        buf->opStack[--buf->oCount] :
-        lx_NA;
+
+    lexeme retType;
+
+    if (buf->oCount > 0){
+        retType = buf->opStack[--buf->oCount];
+        buf->lastPushed = buf->oCount > 0 ?
+            buf->opStack[buf->oCount-1] :
+            lx_NA;
+    } else {
+        retType = lx_NA;
+        buf->lastPushed = lx_NA;
+    }
+
+    if (isOCap(CHKTYPE(retType)))
+        --buf->eCount;
+
+    //printf("popped %d| e: %d o:%d\r\n", CHKTYPE(retType), buf->eCount, buf->oCount);
+
+    return retType;
+}
+
+//TODO fix naming
+void addToOpStack(tBuffer * buf, lexeme lx){
+
+    if (isOCap(CHKTYPE(lx)))
+        ++buf->eCount;
+
+    buf->opStack[buf->oCount++] = lx;
+    buf->lastPushed = lx;
+
+    //printf("pushed %d| e: %d o:%d\r\n", CHKTYPE(lx), buf->eCount, buf->oCount);
 }
 
 void pushOpToStack(tBuffer * buf, lexeme lx){
 
     if (buf->oCount == 0){
-        buf->opStack[buf->oCount++] = lx;
-        buf->lastPushed = CHKTYPE(lx);
+        addToOpStack(buf, lx);
         return;
     }
 
-    int order = CHKLVL(lx);
-    int lorder = buf->oCount == 0 ? 5 : CHKLVL(buf->opStack[buf->oCount-1]);
-    //lexeme type = CHKTYPE(lx);
+    lexeme ltype = CHKTYPE(lx);
+    int 
+        lLvl = CHKLVL(buf->lastPushed), 
+        cLvl = CHKLVL(lx);
 
-    if (isKeyword(CHKTYPE(lx)) && isOperator(buf->lastPushed)){
-        appendTBuffer(
-            buf,
-            createToken(false, lx_VOID, NULL),
-            false);
-    }
+    if ((lLvl <= cLvl) && (lLvl != 1)){
 
-    if (lorder <= order && lorder != 1){
-        if (isKeyword(buf->lastPushed)){
+        if (isKeyword(ltype) && isKeyword(buf->lastPushed)){
             appendTBuffer(
                 buf,
-                createToken(false, CHKTYPE(lx), NULL),
+                createToken(false, ltype, NULL),
                 false
             );
-            
-            return;
         } else {
-            if (isKeyword(buf->lastPushed)){
-                appendTBuffer(
-                    buf,
-                    createToken(false, CHKTYPE(popOpStack(buf)), NULL),
-                    false
-                );
-            }
+            appendTBuffer(
+                buf,
+                createToken(false, CHKTYPE(popOpStack(buf)), NULL),
+                false
+            );
+            addToOpStack(buf, lx);
         }
-    }
 
-    
-    buf->opStack[buf->oCount++] = lx;
-    buf->lastPushed = CHKTYPE(lx);
+    } else {
+        addToOpStack(buf, lx);
+    }
 }
 
 token * resolveSymbol(node * n, tBuffer * buf, char * sym){
@@ -158,7 +174,7 @@ token * resolveSymbol(node * n, tBuffer * buf, char * sym){
         return createToken(isStored, lex, data);
     }
 
-    pushOpToStack(buf, lex | LEVEL_TWO);
+    pushOpToStack(buf, lex | LEVEL_FIVE);
 
     return NULL;
 }
@@ -176,6 +192,10 @@ void collapseEncap(tBuffer * buf, lexeme stopper)
         type = popOpStack(buf);
         res = CHKTYPE(type);
     }
+
+    buf->lastPushed = buf->oCount > 0 ?
+        buf->opStack[buf->oCount-1] :
+        lx_NA;
 
     if (res == lx_NA && res != stopper){
         //TODO unbound error
@@ -290,29 +310,22 @@ size_t pushOperator(tBuffer * buf, char * str, size_t max)
         //encapsulation
         case '(':
             result = lx_ENC_OPARAN | LEVEL_ONE;
-            ++buf->eCount;
         break;
         case '{':
             result = lx_ENC_OBRACE | LEVEL_ONE;
-            ++buf->eCount;
         case '[':
             result = lx_ENC_OBRACK | LEVEL_ONE;
-            ++buf->eCount;
         break;
         case ')':
-            //result = lx_ENC_OPARAN;
-            --buf->eCount;
             collapseEncap(buf, lx_ENC_OPARAN);
             return 0;
         case '}':
             result = lx_ENC_CBRACE;
-            --buf->eCount;
             collapseEncap(buf, result);
             pushOpToStack(buf, lx_CNT_ENDBODY | LEVEL_TWO);
             return 0;
         case ']':
             result = lx_ENC_CBRACK;
-            --buf->eCount;
             collapseEncap(buf, result);
             return 0;
         //control operators
@@ -454,6 +467,7 @@ int tokenize(HMODULE * hModule, char * raw)
     node->buffer.index = index;
 
     printBufferStream(&node->buffer);
+    node->buffer.lastPushed = lx_NA;
 
     return  node->buffer.oCount == 0 && 
             node->buffer.qState == 0 &&

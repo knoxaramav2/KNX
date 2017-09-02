@@ -62,15 +62,14 @@ void printBufferStream(tBuffer * buf)
     if (!_config->debug)
         return;
 
-    printf("oCount :%3d\r\n", buf->oCount);
-    printf("tCount :%3d\r\n", buf->tCount);
+    //printf("oCount :%3d\r\n", buf->oCount);
+    //printf("tCount :%3d\r\n", buf->tCount);
     
     token * top = buf->tokens;
 
     while (top){
-        printf("|%d, %u, lvl? %d, bin? %d|\r\n", 
+        printf("|%d, lvl? %d, bin? %d\r\n", 
         top->isStored,
-        top->type & ORDER_MASK, 
         CHKLVL(top->type), 
         !isUnary(CHKTYPE(top->type)));
         top = top->right;

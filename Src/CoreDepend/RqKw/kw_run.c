@@ -10,10 +10,6 @@ int parseToTStack(char * path, tBuffer * buf){
 
     char * localPath = localizePath(path);
 
-    printf("%s\r\n", localPath);
-    fflush(stdout);
-    system("PAUSE");
-
     FILE * file = fopen(localPath, "r");
     free(localPath);
 

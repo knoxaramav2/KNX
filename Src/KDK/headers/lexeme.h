@@ -26,6 +26,8 @@
 #define isLogic(x) (x>lx_LOG && x<lx_CMP)
 #define isGeneral(x) (x>lx_GEN && x<lx_ENC)
 #define isEncap(x) (x>lx_ENC && x<lx_BIT)
+#define isCCap(x) (x>=lx_ENC_CBRACK && x <= lx_ENC_CPARAN)
+#define isOCap(x) (x>=lx_ENC_OBRACK && x <= lx_ENC_OPARAN)
 #define isBitwise(x) (x>lx_BIT && x<lx_KEYWORD)
 #define isKwDeclare(x) (x>lx_KW_PRIM && x<lx_CNT)
 #define isKwUtil(x) (x>lx_KW_UTIL && x<lx_STD_PLUGIN)
@@ -216,6 +218,7 @@ typedef enum lexeme
 
     //meta
     lx_CNT_ENDBODY,
+    lx_ENC_BODY,
     lx_SYM_STUB,        //for resolving
 
     //common
@@ -260,6 +263,7 @@ CONTEXT ORDERING
 
 */
 
+#define LEVEL_FIVE  0b00000000000001010000000000000000
 #define LEVEL_FOUR  0b00000000000001000000000000000000
 #define LEVEL_THREE 0b00000000000000110000000000000000
 #define LEVEL_TWO   0b00000000000000100000000000000000

@@ -114,6 +114,7 @@ if (arg->script){
 
     self->buffer.stackBuffer = malloc(sizeof(tStackItem));
     self->buffer.stackBuffer->line = com;
+    self->buffer.stackBuffer->next = NULL;
 }
 
 do

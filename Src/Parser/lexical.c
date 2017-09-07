@@ -72,7 +72,7 @@ void pushOpToStack(tBuffer * buf, lexeme lx){
 
     if ((lLvl <= cLvl) && (lLvl != 1)){
 
-        if (isKeyword(ltype) && isKeyword(buf->lastPushed)){
+        if (isKeyword(ltype) && isKeyword(CHKTYPE(buf->lastPushed))){
             appendTBuffer(
                 buf,
                 createToken(false, ltype, NULL),
@@ -174,7 +174,7 @@ token * resolveSymbol(node * n, tBuffer * buf, char * sym){
         return createToken(isStored, lex, data);
     }
 
-    pushOpToStack(buf, lex | LEVEL_FIVE);
+    pushOpToStack(buf, lex | LEVEL_FOUR);
 
     return NULL;
 }
@@ -222,7 +222,7 @@ size_t pushOperator(tBuffer * buf, char * str, size_t max)
                     result=lx_SET_PRE_INC | LEVEL_FOUR; ret=1;
                 }
             }
-            else if (c1=='='){result=lx_SET_ADD | LEVEL_FOUR; ret=1;}
+            else if (c1=='='){result=lx_SET_ADD | LEVEL_FIVE; ret=1;}
             else result = lx_ADD;
         break;
         case '-':
@@ -233,15 +233,15 @@ size_t pushOperator(tBuffer * buf, char * str, size_t max)
                     result=lx_SET_PRE_DEC | LEVEL_FOUR; ret=1;
                 }
             }
-            else if (c1=='='){result=lx_SET_SUB | LEVEL_FOUR; ret=1;}
+            else if (c1=='='){result=lx_SET_SUB | LEVEL_FIVE; ret=1;}
             else result = lx_SUB;
         break;
         case '*':
-            if (c1=='=') {result=lx_SET_MULT | LEVEL_FOUR; ret=1;}
+            if (c1=='=') {result=lx_SET_MULT | LEVEL_FIVE; ret=1;}
             else result = lx_MULT | LEVEL_TWO;
         break;
         case '/':
-            if (c1=='=') {result=lx_SET_DIV | LEVEL_FOUR; ret=1;}
+            if (c1=='=') {result=lx_SET_DIV | LEVEL_FIVE; ret=1;}
             else result = lx_DIV | LEVEL_TWO;
         break;
         case '%':
@@ -261,17 +261,17 @@ size_t pushOperator(tBuffer * buf, char * str, size_t max)
         break;
 
         case '&':
-            if (c1=='=') {result=lx_SET_AND | LEVEL_FOUR; ret=1;}
+            if (c1=='=') {result=lx_SET_AND | LEVEL_FIVE; ret=1;}
             else result = lx_LOG_AND;
         break;
         case '|':
-            if (c1=='=') {result=lx_SET_OR | LEVEL_FOUR; ret=1;}
+            if (c1=='=') {result=lx_SET_OR | LEVEL_FIVE; ret=1;}
             else if (c1=='|') {result=lx_LOG_XOR; ret=1;}
             else if (c1=='!') {result=lx_LOG_XNOR; ret=1;}
             else result = lx_LOG_OR;
         break;
         case '!':
-            if (c1=='=') {result=lx_CMP_NEQU; ret=1;}
+            if (c1=='=') {result=LEVEL_FIVE; ret=1;}
             else if (c1=='|') {result=lx_LOG_NOR; ret=1;}
             else if (c1=='&') {result=lx_LOG_NAND; ret=1;}
             else result = lx_LOG_NOT | LEVEL_TWO;
@@ -282,7 +282,7 @@ size_t pushOperator(tBuffer * buf, char * str, size_t max)
 
         case '=':
             if (c1=='=') {result=lx_CMP_EQU; ret=1;}
-            else result = lx_SET | LEVEL_FOUR;
+            else result = lx_SET | LEVEL_FIVE;
         break;
 
         case '<':

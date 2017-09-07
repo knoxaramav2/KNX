@@ -28,7 +28,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceRoot}/bin/KNX.exe",
-            "args": ["-d", "E:\\Dev\\C\\KNX\\bin\\dev.knx"],
+            "args": ["-d", "dev.knx"],
             "stopAtEntry": false,
             "cwd": "${workspaceRoot}",
             "environment": [],

@@ -68,7 +68,6 @@ obj * invokeFunction(func_reg * reg, HMODULE * module, token * arg, unsigned lon
 }
 
 obj * invokeKeyword(HMODULE * module, token * arg, lexeme word){
-
     int select = word-(lx_CNT+1);
     return keyword_registry->slots[select].func(module, arg);
 }

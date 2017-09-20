@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "lexeme.h"
+#include "stackframe.h"
 
 typedef struct token token;
 
@@ -36,6 +37,8 @@ typedef struct tBuffer
 {
     
     unsigned char qState;
+
+    stackFrame * callStack;
 
     //operator stack
     lexeme opStack [128];

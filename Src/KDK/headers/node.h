@@ -12,6 +12,7 @@ implemented in RTE/node.c
 */
 
 typedef struct HMODULE HMODULE;
+typedef struct tBuffer tBuffer;
 
 typedef enum node_status{
 ns_active,

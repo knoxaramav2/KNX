@@ -174,7 +174,7 @@ token * resolveSymbol(node * n, tBuffer * buf, char * sym){
         return createToken(isStored, lex, data);
     }
 
-    pushOpToStack(buf, lex | LEVEL_FOUR);
+    pushOpToStack(buf, lex | LEVEL_TWO);
 
     return NULL;
 }
@@ -317,6 +317,8 @@ size_t pushOperator(tBuffer * buf, char * str, size_t max)
             result = lx_ENC_OBRACK | LEVEL_ONE;
         break;
         case ')':
+            if (CHKTYPE(buf->lastPushed) == lx_ENC_OPARAN)
+                appendTBuffer(buf, createToken(false, lx_NULL, NULL), false);
             collapseEncap(buf, lx_ENC_OPARAN);
             return 0;
         case '}':

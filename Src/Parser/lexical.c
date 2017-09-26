@@ -7,8 +7,10 @@
 #include "KNX_Hash.h"
 
 #include "mem.h"
-#include "parser.h"
+#include "function.h"
 #include "debug.h"
+
+#include "parser.h"
 
 #define isNum(x) (x>='0' && x<='9')
 #define isAlpha(x) ((x>='a' && x<='z') || (x>='A' && x<='Z'))
@@ -18,6 +20,8 @@
 #define isQuote(x) (x=='\'' || x=='\"')
 
 #define isMOCap(x) (x>= lx_ENC_OBRACK && x <= lx_ENC_OPARAN)
+
+obj * LAST_POP_OBJ;
 
 char getEscapeChar(char c){
 
@@ -30,46 +34,68 @@ lexeme popOpStack(tBuffer * buf){
 
     if (buf->oCount > 0){
         retType = buf->opStack[--buf->oCount];
+        LAST_POP_OBJ = buf->objRefStack[buf->oCount];
         buf->lastPushed = buf->oCount > 0 ?
             buf->opStack[buf->oCount-1] :
             lx_NA;
+        buf->lastModified = buf->lastPushed;
     } else {
         retType = lx_NA;
         buf->lastPushed = lx_NA;
+        buf->lastModified = lx_NA;
+        LAST_POP_OBJ = NULL;
     }
 
     if (isOCap(CHKTYPE(retType)))
         --buf->eCount;
 
-    //printf("popped %d| e: %d o:%d\r\n", CHKTYPE(retType), buf->eCount, buf->oCount);
-
     return retType;
 }
 
 //TODO fix naming
-void addToOpStack(tBuffer * buf, lexeme lx){
+void addToOpStack(tBuffer * buf, lexeme lx, obj * oRef){
 
     if (isOCap(CHKTYPE(lx)))
         ++buf->eCount;
 
-    buf->opStack[buf->oCount++] = lx;
+    buf->opStack[buf->oCount] = lx;
+    buf->objRefStack[buf->oCount] = oRef;
     buf->lastPushed = lx;
+    buf->lastModified = lx;
+    ++buf->oCount;
 
     //printf("pushed %d| e: %d o:%d\r\n", CHKTYPE(lx), buf->eCount, buf->oCount);
 }
 
-void pushOpToStack(tBuffer * buf, lexeme lx){
+void pushOpToStack(tBuffer * buf, lexeme lx, obj* oRef){
 
     if (buf->oCount == 0){
-        addToOpStack(buf, lx);
+        addToOpStack(buf, lx, oRef);
         return;
     }
 
-    lexeme ltype = CHKTYPE(lx);
+    lexeme currType = CHKTYPE(lx);
     int 
-        lLvl = CHKLVL(buf->lastPushed), 
-        cLvl = CHKLVL(lx);
+        lastLvl = CHKLVL(buf->lastPushed), 
+        currLvl = CHKLVL(lx);
 
+    //rules for functions reversed
+    if (currLvl == 5 || lastLvl == 5){
+        addToOpStack(buf, lx, oRef);
+    } 
+    //standard rules
+    else if ((lastLvl <= currLvl) && (lastLvl != 1)) {
+        appendTBuffer(
+            buf,
+            createToken(false, CHKTYPE(popOpStack(buf)), LAST_POP_OBJ),
+            false
+        );
+        addToOpStack(buf, lx, NULL);
+    } else {
+        addToOpStack(buf, lx, NULL);
+    }
+
+    /*
     if ((lLvl <= cLvl) && (lLvl != 1)){
 
         if (isKeyword(ltype) && isKeyword(CHKTYPE(buf->lastPushed))){
@@ -81,15 +107,15 @@ void pushOpToStack(tBuffer * buf, lexeme lx){
         } else {
             appendTBuffer(
                 buf,
-                createToken(false, CHKTYPE(popOpStack(buf)), NULL),
+                createToken(false, CHKTYPE(popOpStack(buf)), LAST_POP_OBJ),
                 false
             );
-            addToOpStack(buf, lx);
+            addToOpStack(buf, lx, NULL);
         }
 
     } else {
-        addToOpStack(buf, lx);
-    }
+        addToOpStack(buf, lx, NULL);
+    }*/
 }
 
 token * resolveSymbol(node * n, tBuffer * buf, char * sym){
@@ -172,9 +198,11 @@ token * resolveSymbol(node * n, tBuffer * buf, char * sym){
             }
         }
         return createToken(isStored, lex, data);
+    } else {
+        //TODO get func ref
+        obj * fRef = getKwObj(lex);
+        pushOpToStack(buf, lex | LEVEL_FIVE, fRef);
     }
-
-    pushOpToStack(buf, lex | LEVEL_TWO);
 
     return NULL;
 }
@@ -186,7 +214,7 @@ void collapseEncap(tBuffer * buf, lexeme stopper)
     lexeme res = CHKTYPE(type);
 
     while (!isEncap(res) && res != lx_NA){
-        token * t = createToken(false, type, NULL);
+        token * t = createToken(false, type, LAST_POP_OBJ);
         t->type = CHKTYPE(t->type);
         appendTBuffer(buf, t, false);
         type = popOpStack(buf);
@@ -317,14 +345,14 @@ size_t pushOperator(tBuffer * buf, char * str, size_t max)
             result = lx_ENC_OBRACK | LEVEL_ONE;
         break;
         case ')':
-            if (CHKTYPE(buf->lastPushed) == lx_ENC_OPARAN)
+            if (CHKTYPE(buf->lastModified) == lx_ENC_OPARAN)
                 appendTBuffer(buf, createToken(false, lx_NULL, NULL), false);
             collapseEncap(buf, lx_ENC_OPARAN);
             return 0;
         case '}':
             result = lx_ENC_CBRACE;
             collapseEncap(buf, result);
-            pushOpToStack(buf, lx_CNT_ENDBODY | LEVEL_TWO);
+            pushOpToStack(buf, lx_CNT_ENDBODY | LEVEL_TWO, NULL);
             return 0;
         case ']':
             result = lx_ENC_CBRACK;
@@ -369,7 +397,7 @@ size_t pushOperator(tBuffer * buf, char * str, size_t max)
         result |= LEVEL_THREE;
 
     //buf->opStack[buf->oCount++] = result;
-    pushOpToStack(buf, result);
+    pushOpToStack(buf, result, NULL);
 
     return ret;
 } 

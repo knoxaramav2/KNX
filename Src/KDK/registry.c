@@ -19,6 +19,7 @@ func_reg * getKeywordRegistry(){
     return kw_registry;
 }
 
+
 void _setTypeRegistry(type_reg * reg)
 {
     type_registry = reg;

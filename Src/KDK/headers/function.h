@@ -24,6 +24,9 @@ int registerFunction(func_reg *, function, char *);
 obj * invokeFunction(func_reg *, HMODULE *, token *, unsigned long);
 obj * invokeKeyword(HMODULE *, token *, lexeme);//slightly more efficient
 
+//obj * _getKwObj(lexeme);
+obj * getKwObj(lexeme);
+
 func_reg * getKeywordRegistry();
 void _setKeywordRegistry(func_reg *);
 

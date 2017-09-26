@@ -64,10 +64,13 @@ void appendTBuffer(tBuffer * bf, token * tk, bool swapLeft)
         if (bf->head == bf->tokens)
             bf->tokens = tk;
 
+        bf->lastModified = bf->head->type;
+
         return;
     }
 
     bf->head->right = tk;
     tk->left = bf->head;
     bf->head = tk;
+    bf->lastModified = bf->head->type;
 }

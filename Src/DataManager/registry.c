@@ -67,9 +67,15 @@ obj * invokeFunction(func_reg * reg, HMODULE * module, token * arg, unsigned lon
     return NULL;
 }
 
+//DEPRECATED
 obj * invokeKeyword(HMODULE * module, token * arg, lexeme word){
     int select = word-(lx_CNT+1);
     return keyword_registry->slots[select].func(module, arg);
+}
+
+obj * getKwObj(lexeme word){
+    int select = word-(lx_CNT+1);
+    return createObject(NULL, word, keyword_registry->slots[select].func);
 }
 
 func_reg * getKeywordRegistry(){

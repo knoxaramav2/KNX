@@ -42,6 +42,7 @@ typedef struct tBuffer
 
     //operator stack
     lexeme opStack [128];
+    obj * objRefStack [128];
     unsigned oCount;
     int eCount;//encapsulation level
 
@@ -52,6 +53,7 @@ typedef struct tBuffer
 
     //states
     lexeme lastPushed;
+    lexeme lastModified;
 
     //lexer buffer
     char buffer[1024];

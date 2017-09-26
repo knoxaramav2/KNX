@@ -3,6 +3,7 @@
 #include <stdlib.h>
 
 #include "module.h"
+#include "function.h"
 
 #include "executor.h"
 
@@ -27,12 +28,13 @@ command execution procedure: 12 step program addition
 12) GOTO 1
 */
 
-token * run(HMODULE * module, token * arg, lexeme command){
+token * run(HMODULE * module, token * arg, token * command){
 
-    if (isKeyword(command)){
-        return runKeyword(module, arg, command);
+    if (isKeyword(command->type)){
+        return runKeyword(module, arg, ((function)((obj *) command->info)->data));
+        //return ((function) arg->info)(module, arg);
     } else {
-        return runOperator(arg, command);
+        return runOperator(arg, command->type);
     }
 }
 
@@ -71,9 +73,8 @@ token * execute(HMODULE * module){
             arg->left->right = NULL;
         if (itr->left)
             itr->left->right = NULL;
-        
-        free(itr);
-        itr = run(module, arg, com);
+
+        itr = run(module, arg, itr);
         
         if (itr && itr->type != lx_LIST)
             destroyTokenStrand(arg);

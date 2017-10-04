@@ -4,42 +4,50 @@ legend______
 +	well in progress
 x	finished / stable
 !	abandoned
+#	needs focus
 
 [-] UML
 [-] General Docs
 [+] Makefiles
 [ ] DevTool
 [x] KDK skeleton
-[-] RTE skeleton
+[x] RTE skeleton
 [x] ModuleManager Skeleton
-[x] DataManager Skeleton
-[x] Parser Skeleton
+[#] DataManager Skeleton
+[#] Parser Skeleton
 [x] Executor Skeleton
 [-] KDK - Structs
 [+] KDK - Interfaces
 [-] RTE - Config
-[-] RTE - Cmd parser/ options
+[+] RTE - Cmd parser/ options
 [+] RTE - Initialize components/ interfaces
-[-] RTE - Node Registration
+[+] RTE - Node Registration
 [x] RTE - Runnable Node
+[-] RTE - Children Node
 [x] Parser - Tokenization
 [-] Parser - Multi-level buffering
 [!] Parser - Context Reordering
 [x] DataManager - Type Registration
 [x] DataManager - Method Registration
-[ ] ModuleManager - Import Std. Modules
+[+] ModuleManager - Import Std. Modules
 [ ] ModuleManager - Import Ext. Modules
-[ ] ModuleManager - Reload Modules
-[ ] ModuleManager - Unload Modules
+[+] ModuleManager - Reload Modules
+[+] ModuleManager - Unload Modules
 [+] Executor - Math
 [+] Executor - Run keywords
-[ ] Executor - Run ext. methods
+[+] Executor - Run ext. methods
 
 ---------Std. Modules-----------
-IO (basic)
-Math
-Network
-Threads
-GUI
-USB
+[-] IO (basic)
+[-] Math
+[ ] Network
+[ ] Threads
+[ ] GUI
+[ ] USB
 
+
+TODO:
+-	not done
++	done
+
+[-] seperate root node local/global

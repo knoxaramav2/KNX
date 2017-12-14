@@ -10,7 +10,8 @@ OUT = KNX
 CLEANEXT = o a
 BITVRS=64
 DBGFLAG=
-SRC=main.c setup.c node.c
+SRC=main.c
+O_SRC = $(SRC:.c=.o)
 
 ifeq ($(shell uname), Linux)
 	FixPath = $1
@@ -29,8 +30,17 @@ else
 	RUNPATH=$(EXPORT_PTH)$(OUT)$(EXT)
 endif
 
-all:
-	$(CC) $(SRC) $(OSMODE) $(CFLAGS) $(VERSION) $(PLATFORM) $(LFLAGS) $(KLIB) -o $(RUNPATH)
+#all:
+#	$(CC) $(SRC) $(OSMODE) $(CFLAGS) $(VERSION) $(PLATFORM) $(LFLAGS) $(KLIB) -o $(RUNPATH)
+
+all: $(RUNPATH)
+	echo $(OUT) Done
+
+.c.o:
+	$(CC) $(OSMODE) $(CFLAGS) $(VERSION) $(PLATFORM) $(LFLAGS) $(KLIB) -c -o $@ $<
+
+$(RUNPATH) : $(O_SRC)
+	$(CC) $(OSMODE) $(CFLAGS) $(VERSION) $(PLATFORM) $(LFLAGS) $(KLIB) -o $@ $(O_SRC)
 
 .PHONY: clean
 clean:

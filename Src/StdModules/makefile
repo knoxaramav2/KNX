@@ -1,10 +1,7 @@
 #compiles std module set
 BINPATH=
 PREFIX = Src/StdModules/Std/
-SUBDIRS = \
-	2D 3D Console Data Except Format\
-	Gui IO Math Network Pattern Security\
-	Sound System Time Usb
+SUBDIRS = 
 
 P_BINPATH=$(BINPATH)/std
 

@@ -1,13 +1,13 @@
 #compiles entire KNX project
 
-SUBDIRS = Src/KDK/ Src/StdModules/ Src/ModuleManager/ Src/DataManager/ Src/Parser/ Src/Executor/ Src/RTE/ Src/CoreDepend/
+SUBDIRS = Src/KDK/ Src/StdModules/ Src/ModuleManager/ Src/DataManager/ Src/Parser/ Src/Executor/ Src/RTE/
 BITVRS=64
 BINPATH=$(shell pwd)/bin
 DEBUG=false
-COMMON= -DNULL=0 -Dtrue=1 -Dfalse=0
+COMMON= -std=c11 -Wall -g -Iheaders
 
-KLIB=-I ../../../KNX_Libraries/headers -L ../../../KNX_Libraries/_bin/$(BITVRS) -lKNX_Library
-KLIB_MOD =-I ../../../../KNX_Libraries/headers -L ../../../../KNX_Libraries/_bin/$(BITVRS) -lKNX_Library
+KLIB=-I ../../../KNX_Libraries/src/headers -L ../../../KNX_Libraries/_bin/$(BITVRS) -lKNX_Library
+KLIB_MOD =-I ../../../../KNX_Libraries/src/headers -L ../../../../KNX_Libraries/_bin/$(BITVRS) -lKNX_Library
 
 export BITVRS
 export BINPATH

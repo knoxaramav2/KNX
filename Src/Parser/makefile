@@ -8,7 +8,8 @@ VERSION = -DPRSVersion=\"0.0.1\"
 OUT = libPRS.so
 CLEANEXT = o a
 DBGFLAGS=
-SRC=parser.c lexical.c buffer.c
+SRC=parser.c
+O_SRC = $(SRC:.c=.o)
 EXPORT_PTH=../../bin/
 
 ifeq ($(shell uname), Linux)
@@ -23,8 +24,14 @@ else
 	OSMODE = -DBITMODE=$(BITVRS)
 endif
 
-all:
-	$(CC) $(CFLAGS) $(LFLAGS) $(KLIB) $(VERSION) $(SRC) -shared -o $(EXPORT_PTH)$(OUT) $(OSMODE) $(DBGFLAGS)
+.c.o:
+	$(CC) $(OSMODE) $(CFLAGS) $(PLATFORM) $(LFLAGS) $(KLIB) $(VERSION) $(DBGFLAGS) -c -o $@ $<
+
+$(EXPORT_PTH)$(OUT) : $(O_SRC)
+	$(CC) $(OSMODE) $(CFLAGS) $(PLATFORM) $(LFLAGS) $(KLIB) $(VERSION) $(DBGFLAGS) -shared -o $@ $(O_SRC)
+
+#all:
+#	$(CC) $(CFLAGS) $(LFLAGS) $(KLIB) $(VERSION) $(SRC) -shared -o $(EXPORT_PTH)$(OUT) $(OSMODE) $(DBGFLAGS)
 
 .PHONY: clean
 clean:

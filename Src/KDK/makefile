@@ -10,7 +10,8 @@ VERSION = -DKDKVersion=\"0.0.1\"
 OUT = libKDK.so
 CLEANEXT = o a
 DBGFLAGS= -d#command line debug arg
-SRC=kdk.c token.c debug.c compinfo.c config.c data.c error.c registry.c file.c
+SRC=kdk.c
+O_SRC = $(SRC:.c=.o)
 EXPORT_PTH=../../bin/
 
 ifeq ($(shell uname), Linux)

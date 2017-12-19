@@ -4,10 +4,9 @@ SUBDIRS = Src/KDK/ Src/StdModules/ Src/ModuleManager/ Src/DataManager/ Src/Parse
 BITVRS=64
 BINPATH=$(shell pwd)/bin
 DEBUG=false
-COMMON= -std=c11 -Wall -g -Iheaders
+COMMON= -std=c11 -Wall -g -Iheaders -I../KDK/headers
 
-KLIB=-I ../../../KNX_Libraries/src/headers -L ../../../KNX_Libraries/_bin/$(BITVRS) -lKNX_Library
-KLIB_MOD =-I ../../../../KNX_Libraries/src/headers -L ../../../../KNX_Libraries/_bin/$(BITVRS) -lKNX_Library
+KLIB=-I$(shell pwd)/../KNX_Libraries/src/headers -L../../../KNX_Libraries/_bin/$(BITVRS) -lKNX_Library
 
 export BITVRS
 export BINPATH

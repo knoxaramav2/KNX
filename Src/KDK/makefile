@@ -3,8 +3,8 @@
 CC = gcc
 BITVRS=64
 DEBUG=false
-CFLAGS = -std=c11 -Wall -Iheaders $(COMMON) -g
-LFLAGS = -lm -Iheaders
+CFLAGS = $(COMMON)
+LFLAGS = -lm
 DFLAGS = -DDEBUG=$(DEBUG)#build debug arg
 VERSION = -DKDKVersion=\"0.0.1\"
 OUT = libKDK.so

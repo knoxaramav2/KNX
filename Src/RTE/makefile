@@ -1,7 +1,7 @@
 #compiles RTE component
 
 CC = gcc
-CFLAGS = -std=c11 -Wall -I../KDK/headers -Iheaders -I../../../KNX_Libraries/headers $(COMMON) -g
+CFLAGS = $(COMMON) 
 LFLAGS = -lm -ldl -lpthread -L$(BINPATH) \
 -l:libKDK.so -l:libMDM.so -l:libDTM.so -l:libPRS.so -l:libEXC.so\
 -Wl,-rpath=$(BINPATH)
@@ -37,10 +37,10 @@ all: $(RUNPATH)
 	echo $(OUT) Done
 
 .c.o:
-	$(CC) $(OSMODE) $(CFLAGS) $(VERSION) $(PLATFORM) $(LFLAGS) $(KLIB) -c -o $@ $<
+	$(CC) $(OSMODE) $(CFLAGS) $(VERSION) $(PLATFORM) $(LFLAGS) -c -o $@ $< $(KLIB)
 
 $(RUNPATH) : $(O_SRC)
-	$(CC) $(OSMODE) $(CFLAGS) $(VERSION) $(PLATFORM) $(LFLAGS) $(KLIB) -o $@ $(O_SRC)
+	$(CC) $(OSMODE) $(CFLAGS) $(VERSION) $(PLATFORM) $(LFLAGS) -o $@ $(O_SRC) $(KLIB)
 
 .PHONY: clean
 clean:

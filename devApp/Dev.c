@@ -1,9 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include <termios.h>
 #include <unistd.h>
-#include <poll.h>
 
 #include "KNX_String.h"
 #include "KNX_Console.h"
@@ -11,11 +9,11 @@
 
 int main(){
 
-    //startConsoleControl();
+    startConsoleControl();
 
-    //terminal * term = createTerminal();
+    terminal * term = createTerminal();
 
-    echo_off();
+    setEcho(1);
 
     char c;
 
@@ -23,9 +21,8 @@ int main(){
         c = getKeyPress();
     } while(c != '5');
 
-    //destroyTerminal(term);
-    //endConsoleControl();
-    echo_on();
+    destroyTerminal(term);
+    endConsoleControl();
 
     return 0;
 }

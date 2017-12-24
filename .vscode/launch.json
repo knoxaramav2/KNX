@@ -1,28 +1,6 @@
 {
     "version": "0.2.0",
     "configurations": [
-        { 
-            "name": "(gdb) Attach",
-            "type": "cppdbg",
-            "request": "attach",
-            "program": "${workspaceRoot}/bin/KNX.exe",
-            "processId": "${command:pickProcess}",
-            "MIMode": "gdb",
-            "miDebuggerPath": "C:\\cygwin64\bin\\gdb.exe"
-        },
-        {
-            "name": "(gdb) Bash on Windows Attach",
-            "type": "cppdbg",
-            "request": "attach",
-            "program": "${workspaceRoot}/bin/KNX.exe",
-            "processId": "${command:pickProcess}",
-            "pipeTransport": {
-                "debuggerPath": "C:\\cygwin64\bin\\gdb.exe",
-                "pipeProgram": "C:\\Windows\\sysnative\\bash.exe",
-                "pipeArgs": [],
-                "pipeCwd": ""
-            }
-        },
         {
             "name": "(gdb) Launch",
             "type": "cppdbg",
@@ -34,7 +12,7 @@
             "environment": [],
             "externalConsole": true,
             "MIMode": "gdb",
-            "miDebuggerPath": "C:\\cygwin64\\bin\\gdb.exe",
+            "miDebuggerPath": "C:/cygwin64/bin/gdb.exe",
             "setupCommands": [
                 {
                     "description": "Enable pretty-printing for gdb",

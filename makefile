@@ -4,9 +4,12 @@ SUBDIRS = Src/KDK/ Src/StdModules/ Src/ModuleManager/ Src/DataManager/ Src/Parse
 BITVRS=64
 BINPATH=$(shell pwd)/bin
 DEBUG=false
-COMMON= -std=c11 -Wall -g -Iheaders -I../KDK/headers
+COMMON= -Iheaders -std=c11 -I../KDK/headers -Wall -g -m$(BITVRS)
 
-KLIB=-I$(shell pwd)/../KNX_Libraries/src/headers -L../../../KNX_Libraries/_bin/$(BITVRS) -lKNX_Library
+KLIB=-I$(shell pwd)/../KNX_Libraries/src/headers -L$(shell pwd)/../KNX_Libraries/_bin/$(BITVRS) -lKNX_Library
+
+KLIBBIN=-L$(shell pwd)/../KNX_Libraries/_bin/$(BITVRS) -lKNX_Library
+KLIBINC=-I$(shell pwd)/../KNX_Libraries/src/headers
 
 export BITVRS
 export BINPATH
@@ -14,6 +17,8 @@ export KLIB
 export KLIB_MOD
 export DEBUG
 export COMMON
+export KLIBBIN
+export KLIBINC
 
 subdirs:
 	for dir in $(SUBDIRS); do \
@@ -26,7 +31,7 @@ run:
 
 .PHONY: dbg
 dbg:
-	bin/KNX -d -v --nolog --test=hello
+	exec gdb bin/KNX -d -v --nolog --test=hello
 
 .PHONY: clean
 clean:

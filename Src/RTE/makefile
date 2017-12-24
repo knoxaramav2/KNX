@@ -15,7 +15,6 @@ O_SRC = $(SRC:.c=.o)
 
 ifeq ($(shell uname), Linux)
 	FixPath = $1
-	PLATFORM = -D__LINUX
 	OSMODE = -DBITMODE=$(BITVRS)
 	EXPORT_PTH=../../bin/
 	EXT=
@@ -23,7 +22,6 @@ ifeq ($(shell uname), Linux)
 else
 #Windows
 	FixPath = $(subst /,\,$1)
-	PLATFORM = -D__WINDOWS
 	OSMODE = -DBITMODE=$(BITVRS)
 	EXPORT_PTH=../../bin/
 	EXT=.exe
@@ -36,11 +34,12 @@ endif
 all: $(RUNPATH)
 	echo $(OUT) Done
 
+#TODO Re-add $(LFLAGS) $(OSMODE) 
 .c.o:
-	$(CC) $(OSMODE) $(CFLAGS) $(VERSION) $(PLATFORM) $(LFLAGS) -c -o $@ $< $(KLIB)
+	$(CC) $(CFLAGS) $(KLIBINC) -c -o $@ $<
 
 $(RUNPATH) : $(O_SRC)
-	$(CC) $(OSMODE) $(CFLAGS) $(VERSION) $(PLATFORM) $(LFLAGS) -o $@ $(O_SRC) $(KLIB)
+	$(CC) $(CFLAGS) $(KLIBINC) -o $@ $(O_SRC) $(KLIBBIN)
 
 .PHONY: clean
 clean:
@@ -48,4 +47,4 @@ clean:
 
 .PHONY: dbg
 dbg: $(OUT)
-	$(RUNPATH) $(DBGFLAGS)
+	exec gdb -x $(RUNPATH) $(DBGFLAGS)

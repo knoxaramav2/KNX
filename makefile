@@ -31,7 +31,7 @@ run:
 
 .PHONY: dbg
 dbg:
-	exec gdb bin/KNX -d -v --nolog --test=hello
+	exec gdb bin/KNX
 
 .PHONY: clean
 clean:

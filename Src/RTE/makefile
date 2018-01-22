@@ -3,8 +3,9 @@
 CC = gcc
 CFLAGS = $(COMMON) 
 LFLAGS = -lm -ldl -lpthread -L$(BINPATH) \
--l:libKDK.so -l:libMDM.so -l:libDTM.so -l:libPRS.so -l:libEXC.so\
--Wl,-rpath=$(BINPATH)
+-Wl,-rpath=$(BINPATH) \
+-l:libKDK.so -l:libMDM.so -l:libDTM.so -l:libPRS.so -l:libEXC.so
+
 VERSION=-DRTEVERSION=\"0.0.1\"
 OUT = KNX
 CLEANEXT = o a
@@ -26,7 +27,7 @@ else
 	EXPORT_PTH=../../bin/
 	EXT=.exe
 	RUNPATH=$(EXPORT_PTH)$(OUT)$(EXT)
-endif
+endif 
 
 #all:
 #	$(CC) $(SRC) $(OSMODE) $(CFLAGS) $(VERSION) $(PLATFORM) $(LFLAGS) $(KLIB) -o $(RUNPATH)
@@ -39,7 +40,7 @@ all: $(RUNPATH)
 	$(CC) $(CFLAGS) $(KLIBINC) -c -o $@ $<
 
 $(RUNPATH) : $(O_SRC)
-	$(CC) $(CFLAGS) $(KLIBINC) -o $@ $(O_SRC) $(KLIBBIN)
+	$(CC) $(CFLAGS) $(KLIBINC) -o $@ $(O_SRC) $(KLIBBIN) $(LFLAGS)
 
 .PHONY: clean
 clean:

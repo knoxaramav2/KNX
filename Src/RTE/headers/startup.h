@@ -1,11 +1,6 @@
 #ifndef RTE_CMD
 #define RTE_CMD
 
-#include "node.h"
-
-int initComponents();
-int parseCmd(int, char **, nodeArg *);
-int startRoot(nodeArg *);
-int shutdown();
+int parseCmd(int, char **);
 
 #endif

@@ -9,8 +9,11 @@
 #include "KDK.h"
 
 #include "startup.h"
+#include "globals.h"
 
-Config * config;
+int launchInterpreter();
+
+Config * _config;
 
 void printHelp(){
     printf("Help\r\n");
@@ -26,7 +29,7 @@ int parseCmd(int argc, char ** argv){
     int runnableOptionSet = 0;
     int infoOptionSet = 0;
 
-    config = getDefaultConfig();
+    _config = getDefaultConfig();
 
     for (int i = 1; i < argc; ++i){
         
@@ -54,15 +57,15 @@ int parseCmd(int argc, char ** argv){
                     break;
                     
                     case 'w':
-                        config->suppressWarning = 1;
+                        _config->suppressWarning = 1;
                         runnableOptionSet = 1;
                     break;
                     case 'f':
-                        config->fatalWarn = 1;
+                        _config->fatalWarn = 1;
                         runnableOptionSet = 1;
                     break;
                     case 'p':
-                        config->pendantic = 1;
+                        _config->pendantic = 1;
                         runnableOptionSet = 1;
                     break;
 
@@ -84,7 +87,10 @@ int main(int argc, char ** argv){
         return 0;
     }
 
-    
+    //Setup
+
+    start();
+
 
     endConsoleControl();
 

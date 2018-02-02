@@ -11,7 +11,7 @@ OUT = KNX
 CLEANEXT = o a
 BITVRS=64
 DBGFLAG=
-SRC=main.c
+SRC=main.c node.c launch.c _init.c
 O_SRC = $(SRC:.c=.o)
 
 ifeq ($(shell uname), Linux)

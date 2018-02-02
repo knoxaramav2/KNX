@@ -39,7 +39,7 @@ typedef struct Stack{
 } Stack;
 
 /*
-    Frame calling and restoration: recursive call convetion?
+    Frame calling and restoration: recursive call convention?
 */
 
 #endif

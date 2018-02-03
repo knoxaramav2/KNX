@@ -12,10 +12,9 @@ Config          * _config;
 void * _nodeProc(void * arg){
 
     Node * node = (Node *) arg;
+    char usin [256] = {0};
 
-    printf("Node %d start\r\n", node->id);
 
-    printf("Node %d end\r\n", node->id);
 
     return 0;
 }
@@ -24,8 +23,8 @@ Node * spawnNode(Node * parent, char * arg){
 
     //TODO module/stack mallocs with factories
     Node * n = malloc(sizeof(Node));
-    n->module = malloc(sizeof(Module));
-    n->stack = malloc(sizeof(Stack));
+    n->module = createModule();
+    n->stack = createStack();
     n->children = malloc(0);
     n->childCount = 0;
     n->id = -1;
@@ -58,8 +57,8 @@ int destroyNode(Node * n){
     }
 
     //TODO replace with destroyers
-    free(n->module);
-    free(n->stack);
+    destroyModule(n->module);
+    destroyStack(n->stack);
     free(n->children);
     free(n);
 

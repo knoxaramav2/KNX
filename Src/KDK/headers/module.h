@@ -5,4 +5,7 @@ typedef struct Module{
 
 } Module;
 
+Module * createModule();
+int destroyModule (Module *);
+
 #endif

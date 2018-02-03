@@ -16,13 +16,14 @@ typedef struct Instruction{
 //Holds function scope instructions and memory
 typedef struct Frame{
 
+    char * SOURCE;//for stack traces; name of script/node; pointed to, not copied during frame creation
     void * LAST_RESULT;
 
     Instruction * _instructions;
     Instruction * _instructionPointer;
 
     //object * array - local memory
-}Frame;
+} Frame;
 
 /*
     Master stack
@@ -37,6 +38,15 @@ typedef struct Stack{
     int frameCount; //current number of used framesD
 
 } Stack;
+
+//Factories
+Stack           * createStack();
+Frame           * createFrame();
+Instruction     * createInstruction();
+
+int destroyStack(Stack * stack);
+int destroyFrame(Frame * frame);
+int destroyInstruction(Instruction * inst);
 
 /*
     Frame calling and restoration: recursive call convention?

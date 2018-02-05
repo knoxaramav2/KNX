@@ -2,7 +2,7 @@
 #define KDK_MODULE
 
 typedef struct Module{
-
+    char * name;
 } Module;
 
 Module * createModule();

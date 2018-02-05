@@ -6,6 +6,8 @@
 #include "node.h"
 #include "config.h"
 
+#include "KNX_Console.h"
+
 NodeRegistry    * _nodeReg;
 Config          * _config;
 
@@ -13,6 +15,14 @@ void * _nodeProc(void * arg){
 
     Node * node = (Node *) arg;
     char usin [256] = {0};
+
+    int i = 0;
+
+    do{
+        char c = getKeyPress();
+        printf("%d %c\r\n", ++i, c);
+        if (i==5) break;
+    } while(1);
 
 
 
@@ -29,6 +39,7 @@ Node * spawnNode(Node * parent, char * arg){
     n->childCount = 0;
     n->id = -1;
     n->_handle_t = 0;
+    n->module->name = 0;
 
     return n;
 }
@@ -95,6 +106,10 @@ int registerNode(Node * n){
     //allocate id, register
     n->id = i;
     _nodeReg->registry[i] = n;
+
+    //assign name
+    n->module->name = malloc(11);
+    sprintf(n->module->name, "__node_%d", i);
 
     return 0;
 }

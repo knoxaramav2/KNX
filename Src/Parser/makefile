@@ -8,7 +8,7 @@ VERSION = -DPRSVersion=\"0.0.1\"
 OUT = libPRS.so
 CLEANEXT = o a
 DBGFLAGS=
-SRC=parser.c
+SRC=parser.c lexile.c
 O_SRC = $(SRC:.c=.o)
 EXPORT_PTH=../../bin/
 

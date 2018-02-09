@@ -1,6 +1,9 @@
 #ifndef KDK_STACK
 #define KDK_STACK
 
+#include "type.h"
+#include "module.h"
+
 //holds arguments, meta info of/for function 
 //determined after token decomposition
 typedef struct Instruction{
@@ -16,8 +19,9 @@ typedef struct Instruction{
 //Holds function scope instructions and memory
 typedef struct Frame{
 
-    char * SOURCE;//for stack traces; name of script/node; pointed to, not copied during frame creation
+    Module * SOURCE;//for stack traces; name of script/node; pointed to, not copied during frame creation
     void * LAST_RESULT;
+    T_TYPE LR_TYPE;//last result type
 
     Instruction * _instructions;
     Instruction * _instructionPointer;

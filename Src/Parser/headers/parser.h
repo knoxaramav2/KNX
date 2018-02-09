@@ -2,7 +2,6 @@
 #define PRS_PARSER
 
 #include "module.h"
-#include "token.h"
 #include "stack.h"
 
 #define TK_COMPLETE     0

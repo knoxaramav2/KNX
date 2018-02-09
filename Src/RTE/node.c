@@ -31,11 +31,15 @@ void * _nodeProc(void * arg){
                 if (usinIndex == 0){
                     continue;
                 }
+
+                printf("\r\n");
+
+                tokenize(usin, node->stack, node->module);
                 
                 usin[usinIndex] = 0;
                 strncpy(history[historyIndex++], usin, 256);
-                printf("> %s\r\n", usin);
-                memset(usin, '0', 256);
+                //printf("> %s\r\n", usin);
+                memset(usin, '\0', 256);
                 usinIndex = 0;
 
                 if (historyIndex == 255){
@@ -43,6 +47,7 @@ void * _nodeProc(void * arg){
                 }
 
                 
+
             break;
 
             //ARROW KEYS TODO: replace with KNX_LIB functionality
@@ -87,7 +92,7 @@ Node * spawnNode(Node * parent, char * arg){
 
     //TODO module/stack mallocs with factories
     Node * n = malloc(sizeof(Node));
-    n->module = createModule();
+    n->module = createModule(0);
     n->stack = createStack();
     n->children = malloc(0);
     n->childCount = 0;

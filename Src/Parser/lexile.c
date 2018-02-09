@@ -15,10 +15,10 @@ int addToken(char * l, char * r, T_TYPE type){
 
     int len = (r-l);
     char * str = malloc(len + 1);
-    strncpy(str, l, len + 1);
+    strncpy(str, l, len);
     str[len + 1] = 0;
 
-    printf("[%s %d]\r\n", str, type);
+    printf("[%s %x]\r\n", str, type);
 
     return 0;
 }
@@ -36,6 +36,8 @@ int tokenize(char * raw, Stack * stk, Module * mod){
     const int _BRK = 3;
 
     int state = _NRM;
+    int nscLen = 0;
+    T_TYPE type = C_NA;
 
     while (state != _BRK){
 
@@ -53,7 +55,7 @@ int tokenize(char * raw, Stack * stk, Module * mod){
                     ctype = C_CHAR;
                 }
 
-                addToken(prev, curr - 1, ctype);
+                addToken(prev, curr, ctype);
                 prev = curr + 1;
             }
 
@@ -63,7 +65,7 @@ int tokenize(char * raw, Stack * stk, Module * mod){
             if (*curr == '\"'){
                 state = _NRM;
 
-                addToken(prev, curr-1, C_STR);
+                addToken(prev, curr, C_STR);
                 prev = curr + 1;
             }
 
@@ -82,6 +84,10 @@ int tokenize(char * raw, Stack * stk, Module * mod){
                 prev = curr + 1;
                 goto _ordChar;
             break;
+            //OPERATORS
+            case '+':
+                type = C_ADD;
+            break;
             //MISC
 
             //BREAK
@@ -94,22 +100,33 @@ int tokenize(char * raw, Stack * stk, Module * mod){
                 state = _BRK;
             break;
             default:
+                ++nscLen;
                 goto _ordChar;
+        }
+            
+        //check for non-special characters
+        if (nscLen > 0){
+
+            addToken(prev, prev+nscLen, C_NA);
+            prev += nscLen;
+
+            nscLen = 0;
+        }
+
+        if (type == C_NA && prev == curr){
+            ++curr;
+            continue;
         }
 
         //create token
-        if (prev == curr)
-            continue;
-
-        addToken(prev, curr - 1, C_NA);
+        addToken(prev, curr + (type == C_NA ? 0 : 1), type);
+        type = C_NA;
         prev = curr + 1;
 
         //skip if ordinary character
         _ordChar:;
 
         ++curr;
-        if (*curr == 0)
-            state = _BRK;
     }
 
     return 0;

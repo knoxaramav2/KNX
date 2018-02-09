@@ -6,6 +6,8 @@
 #include "node.h"
 #include "config.h"
 
+#include "../Parser/headers/parser.h"
+
 #include "KNX_Console.h"
 
 NodeRegistry    * _nodeReg;
@@ -14,15 +16,42 @@ Config          * _config;
 void * _nodeProc(void * arg){
 
     Node * node = (Node *) arg;
-    char usin [256] = {0};
+    node->alive = 1;
 
-    int i = 0;
+    char history [32][256] = {0};
+    int historyIndex = 0;
+    char usin [256] = {0};
+    int usinIndex = 0;
 
     do{
         char c = getKeyPress();
-        printf("%d %c\r\n", ++i, c);
-        if (i==5) break;
-    } while(1);
+
+        if (c == 10){
+            if (usinIndex == 0){
+                continue;
+            }
+            
+            usin[usinIndex] = 0;
+            strncpy(history[historyIndex++], usin, 256);
+            printf("> %s\r\n", usin);
+            memset(usin, '0', 256);
+            usinIndex = 0;
+
+            if (historyIndex == 255){
+                historyIndex = 0;
+            }
+
+            //run
+        } else {
+            usin[usinIndex++] = c;
+        }
+
+        printf("%d ", c);
+
+
+        if (c=='!') return 0;
+
+    } while(node->alive);
 
 
 

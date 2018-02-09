@@ -15,6 +15,7 @@ typedef struct Node{
     size_t childCount;
 
     int id;
+    int alive;
 
     pthread_t _handle_t;
 

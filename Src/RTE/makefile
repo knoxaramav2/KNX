@@ -4,7 +4,8 @@ CC = gcc
 CFLAGS = $(COMMON) 
 LFLAGS = -lm -ldl -lpthread -L$(BINPATH) \
 -Wl,-rpath=$(BINPATH) \
--l:libKDK.so -l:libMDM.so -l:libDTM.so -l:libPRS.so -l:libEXC.so
+-l:libKDK.so -l:libMDM.so -l:libDTM.so -l:libPRS.so -l:libEXC.so \
+-I../Parser/headers/
 
 VERSION=-DRTEVERSION=\"0.0.1\"
 OUT = KNX

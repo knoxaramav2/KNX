@@ -26,28 +26,53 @@ void * _nodeProc(void * arg){
     do{
         char c = getKeyPress();
 
-        if (c == 10){
-            if (usinIndex == 0){
-                continue;
-            }
-            
-            usin[usinIndex] = 0;
-            strncpy(history[historyIndex++], usin, 256);
-            printf("> %s\r\n", usin);
-            memset(usin, '0', 256);
-            usinIndex = 0;
+        switch(c){
+            case 10://enter
+                if (usinIndex == 0){
+                    continue;
+                }
+                
+                usin[usinIndex] = 0;
+                strncpy(history[historyIndex++], usin, 256);
+                printf("> %s\r\n", usin);
+                memset(usin, '0', 256);
+                usinIndex = 0;
 
-            if (historyIndex == 255){
-                historyIndex = 0;
-            }
+                if (historyIndex == 255){
+                    historyIndex = 0;
+                }
 
-            //run
-        } else {
-            usin[usinIndex++] = c;
+                
+            break;
+
+            //ARROW KEYS TODO: replace with KNX_LIB functionality
+            case -126://left
+
+            break;
+            case -125://right
+            break;
+            case -128://up
+                {
+   
+                }
+            break;
+            case -127://down
+
+            break;
+
+            //MISC
+            case 127:
+                if (usinIndex == 0)
+                    continue;
+                usin[--usinIndex] = 0;
+                printf("%c[2K", 27);
+                printf("\r%s", usin);
+            break;
+
+            default:
+                usin[usinIndex++] = c;
+                printf("%c", c);
         }
-
-        printf("%d ", c);
-
 
         if (c=='!') return 0;
 

@@ -9,14 +9,49 @@
 
 L_QUEUE _L_QUEUE;
 
+#define _NRM  0   //Normal
+#define _SQT  1   //Single quote
+#define _DQT  2   //Double quote
+#define _SCM  3   //Single line comment
+#define _MCM  4   //Multi line comment
+#define _BRK  5   //exit parsing
+
 void addToQueue(){
 
 }
 
 char getPrecedence(T_TYPE type){
 
+    if (type >= C_ASGN_OFFSET && type < C_COMP_OFFSET){
+        return 0;
+    }
 
-    return 0;
+    if (type >= C_BOOL_OFFSET && type < C_CTL_OFFSET){
+        return 1;
+    }
+
+    if (type >= C_COMP_OFFSET && type < C_BOOL_OFFSET){
+        return 2;
+    }
+
+    if (type >= C_MATH_OFFSET && type < C_MULT){
+        return 3;
+    }
+
+    if (type >= C_MULT && type < C_POW){
+        return 4;
+    }
+
+    if (type >= C_POW && type < C_ASGN_OFFSET){
+        return 5;
+    }
+
+    if (type == C_LIST) return 7;
+    if (type == C_FLAG) return 8;
+
+    if (type >= C_O_PARAN && type <= C_C_BRACK) return 9;
+
+    return 6;
 }
 
 T_TYPE getKeyWord(unsigned long val){
@@ -24,7 +59,7 @@ T_TYPE getKeyWord(unsigned long val){
     switch (val){
         case 0x95e97e5e: return C_D_INT;
 
-        case 16378a88: return C_PRINT;
+        case 0x16378a88: return C_PRINT;
     }
 
     return C_T_NA;
@@ -52,16 +87,57 @@ T_TYPE getType(char * raw){
 
 int addToken(char * l, char * r, T_TYPE type){
 
-    int len = (r-l);
-    char * str = malloc(len + 1);
-    strncpy(str, l, len);
-    str[len + 1] = 0;
+    char * str = 0;
 
+    if (l!=0 && r!=0){
+        int len = (r-l);
+        str = malloc(len + 1);
+        strncpy(str, l, len);
+        str[len + 1] = 0;
+    }
+    
     if (type == C_T_NA){
         type = getType(str);
     }
 
-    printf("[%s %x]\r\n", str, type);
+    int prc = getPrecedence(type);
+
+    printf("[%s %d %x]\r\n", str, prc, type);
+
+    return 0;
+}
+
+//check for special characters, update state and current character pointer
+T_TYPE checkSpecialChar(char ** curr, int * state){
+
+    char c = **curr;
+
+    //Check current state
+    if (*state == _SQT){
+        if (c == '\''){
+            *state = _NRM;
+            return _SQT;
+        }
+    } else if (*state == _DQT){
+        if (c == '\"'){
+            *state = _NRM;
+            return _DQT;
+        }
+    } else if (*state == _SCM){
+        
+    } else if (*state == _MCM){
+        
+    }
+
+    //Check for operators/variants
+    switch(c){
+        case '\'': *state = _SQT; break;
+        case '\"': *state = _DQT; break;
+        case '\0':
+            *state = _BRK;
+        break;
+    }
+
 
     return 0;
 }
@@ -73,104 +149,36 @@ int tokenize(char * raw, Stack * stk, Module * mod){
     char * prev = raw;
     char * curr = raw;
 
-    const int _NRM = 0;
-    const int _SQT = 1;
-    const int _DQT = 2;
-    const int _BRK = 3;
-
     int state = _NRM;
     int nscLen = 0;
     T_TYPE type = C_T_NA;
 
     while (state != _BRK){
 
-        if (state == _SQT){
-            if (*curr == '\''){
-                state = _NRM;
+        T_TYPE op = checkSpecialChar(&curr, &state);
 
-                int len = curr-prev;
-                T_TYPE ctype;
+        if (op == 0 && state == _NRM) {
+            ++nscLen;
+        } else {
+            if (nscLen > 0){                
+                addToken(prev, prev+nscLen, C_T_NA);
+                nscLen = 0;
+                prev += nscLen;
+            }
 
-                if (len != 1){
-                    //throw warning, missized char, upgrade to string
-                    ctype = C_T_STR;
-                } else {
-                    ctype = C_T_CHAR;
+            if (state == _NRM) {
+                if (op == _SQT || op == _DQT){
+                    addToken(prev+1, curr, op == _SQT ? C_T_CHAR : C_T_STR);
+                } else if (op != _SCM && op != _MCM) {
+                    addToken(0, 0, op);
                 }
-
-                addToken(prev, curr, ctype);
                 prev = curr + 1;
             }
-
-            goto _ordChar;
-        } else if (state == _DQT) {
-
-            if (*curr == '\"'){
-                state = _NRM;
-
-                addToken(prev, curr, C_T_STR);
-                prev = curr + 1;
-            }
-
-            goto _ordChar;
         }
-
-        switch (*curr){
-            //STRING
-            case '\'':
-                state = _SQT;
-                prev = curr + 1;
-                goto _ordChar;
-            break;
-            case '\"':
-                state = _DQT;
-                prev = curr + 1;
-                goto _ordChar;
-            break;
-            //OPERATORS
-            case '+':
-                type = C_ADD;
-            break;
-            //MISC
-
-            //BREAK
-            case ' ':
-            case '\t':
-                prev = curr + 1;
-                goto _ordChar;
-            break;
-            case '\0':
-                state = _BRK;
-            break;
-            default:
-                ++nscLen;
-                goto _ordChar;
-        }
-            
-        //check for non-special characters
-        if (nscLen > 0){
-
-            addToken(prev, prev+nscLen, C_T_NA);
-            prev += nscLen;
-
-            nscLen = 0;
-        }
-
-        if (type == C_T_NA && prev == curr){
-            ++curr;
-            continue;
-        }
-
-        //create token
-        addToken(prev, curr + (type == C_T_NA ? 0 : 1), type);
-        type = C_T_NA;
-        prev = curr + 1;
-
-        //skip if ordinary character
-        _ordChar:;
 
         ++curr;
     }
 
+    
     return 0;
 }

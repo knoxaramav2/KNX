@@ -28,7 +28,7 @@ endif
 	$(CC) $(OSMODE) $(CFLAGS) $(PLATFORM) $(LFLAGS) $(KLIB) $(VERSION) $(DBGFLAGS) -c -o $@ $<
 
 $(EXPORT_PTH)$(OUT) : $(O_SRC)
-	$(CC) $(OSMODE) $(CFLAGS) $(PLATFORM) $(LFLAGS) $(KLIB) $(VERSION) $(DBGFLAGS) -shared -o $@ $(O_SRC)
+	$(CC) $(OSMODE) $(CFLAGS) $(PLATFORM) $(VERSION) $(DBGFLAGS) -shared -o $@ $(O_SRC) $(LFLAGS) $(KLIB)
 
 #all:
 #	$(CC) $(CFLAGS) $(LFLAGS) $(KLIB) $(VERSION) $(SRC) -shared -o $(EXPORT_PTH)$(OUT) $(OSMODE) $(DBGFLAGS)

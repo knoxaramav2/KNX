@@ -6,10 +6,13 @@ BINPATH=$(shell pwd)/bin
 DEBUG=false
 COMMON= -Iheaders -std=c11 -I../KDK/headers -Wall -g -m$(BITVRS)
 
-KLIB=-I$(shell pwd)/../KNX_Libraries/src/headers -L$(shell pwd)/../KNX_Libraries/_bin/$(BITVRS) -lKNX_Library
+#edit this to point to a different location for the KNX Library
+KLIB_DEFAULT = /../KNX_Libraries/
 
-KLIBBIN=-L$(shell pwd)/../KNX_Libraries/_bin/$(BITVRS) -lKNX_Library
-KLIBINC=-I$(shell pwd)/../KNX_Libraries/src/headers
+KLIB=-I$(shell pwd)$(KLIB_DEFAULT)src/headers -L$(shell pwd)/../KNX_Libraries/_bin/$(BITVRS) -lKNX_Library
+
+KLIBBIN=-L$(shell pwd)$(KLIB_DEFAULT)_bin/$(BITVRS) -lKNX_Library
+KLIBINC=-I$(shell pwd)$(KLIB_DEFAULT)src/headers
 
 export BITVRS
 export BINPATH

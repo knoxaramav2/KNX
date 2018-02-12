@@ -81,7 +81,10 @@ typedef unsigned int T_TYPE;
 #define C_ROOT_SET      0x00C8
 #define C_INC_SET       0x00C9
 #define C_DEC_SET       0x00CA
-
+#define C_INC_SET_PRE   0x00CB
+#define C_INC_SET_PST   0x00CC
+#define C_DEC_SET_PRE   0x00CD
+#define C_DEC_SET_PST   0x00CE
 
 //COMPARISON
 #define C_EQU           0x0101

@@ -22,7 +22,7 @@ typedef struct Token{
 */
 typedef struct L_QUEUE{
     
-    Token operands  [128];
+    Token operators  [128];
     Token output    [256];
 
     int opIdx, outIdx;

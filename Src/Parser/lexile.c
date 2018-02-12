@@ -15,11 +15,97 @@ L_QUEUE _L_QUEUE;
 #define _BRK    3   //Break
 #define _WSB    4   //Whitespace
 
-void addToQueue(){
+void addToOperators(T_TYPE type, int prs){
+    _L_QUEUE.operators[_L_QUEUE.opIdx].type = type;
+    _L_QUEUE.operators[_L_QUEUE.opIdx].precedence = prs;
+    _L_QUEUE.opIdx += 1;
+}
 
+void addToOutput(char * str, T_TYPE type, int prs){
+    _L_QUEUE.output[_L_QUEUE.outIdx].type = type;
+    _L_QUEUE.output[_L_QUEUE.outIdx].precedence = prs;
+    _L_QUEUE.output[_L_QUEUE.outIdx].data = str;
+    _L_QUEUE.outIdx += 1;
+}
+
+Token * popOperator(){
+    if (_L_QUEUE.opIdx == 0)
+        return 0;
+    return &_L_QUEUE.operators[--_L_QUEUE.opIdx]; 
+}
+
+Token * peekOperator(){
+    if (_L_QUEUE.opIdx == 0)
+        return 0;
+    return &_L_QUEUE.operators[_L_QUEUE.opIdx-1];
+}
+
+//collapse all if type == 0
+int collapseOperators(T_TYPE type){
+    
+    Token * t = 0;
+
+    if (type == 0){
+        do{
+            if ((t = popOperator())){
+                addToOutput(0, t->type, t->precedence);
+            }
+        } while(t);
+    } else {
+        do{
+            if ((t = popOperator())){
+                if (t->type == type){
+                    return 0;
+                }
+
+                addToOutput(0, t->type, t->precedence);
+            }
+        }while(t);
+
+        return -1;
+    }
+
+    return 0;
+}
+
+void addToQueue(char * str, T_TYPE type, int prs){
+
+    //immediately add operands
+    if (prs < 0){
+        addToOutput(str, type, prs);
+        return;
+    }
+
+    //check end closure
+    if (type == C_C_BRACK ||
+        type == C_C_BRACE ||
+        type == C_C_PARAN){
+            collapseOperators(type - 1);
+            return;
+        }
+
+    //shunting-yard
+    Token * prev = peekOperator();
+    if (prev == 0){
+        addToOperators(type, prs);
+        return;
+    }
+
+    if (prs > prev->precedence || prev->precedence == 9){
+        addToOperators(type, prs);
+    } else {
+        popOperator();
+        addToOperators(type, prs);
+        addToOutput(0, prev->type, prev->precedence);
+    }
 }
 
 char getPrecedence(T_TYPE type){
+
+    //operands
+    if (type < C_KW_OFFSET || type >= C_FNC_OFFSET){
+        return -1;
+    }
 
     if (type >= C_ASGN_OFFSET && type < C_COMP_OFFSET){
         return 0;
@@ -101,6 +187,8 @@ int addToken(char * l, char * r, T_TYPE type){
 
     int prc = getPrecedence(type);
 
+    addToQueue(str, type, prc);
+
     printf("[%s %d %x]\r\n", str, prc, type);
 
     return 0;
@@ -110,6 +198,8 @@ int addToken(char * l, char * r, T_TYPE type){
 T_TYPE checkSpecialChar(char ** curr, char ** prev, int * state){
 
     char c = **curr;
+    char c2 = *(*curr+1);
+    char c3 = *(*curr+2);
 
     //Check for non-special characters
     if ((c >= 'A' && c <= 'Z') ||
@@ -140,6 +230,40 @@ T_TYPE checkSpecialChar(char ** curr, char ** prev, int * state){
             return -1;
         } break;
 
+        //Math
+        case '+':
+            if (c2 == '=' || c2 == '+'){
+                *curr = *curr + 1;
+                return c2 == '=' ? C_ADD_SET : C_INC_SET;
+            }
+            return C_ADD;
+        break;
+        case '-':
+            if (c2 == '=' || c2 == '-'){
+                *curr = *curr + 1;
+                return c2 == '=' ? C_SUB_SET : C_DEC_SET;
+            }
+            return C_SUB;
+        break;
+        case '*':
+            if (c2 == '='){
+                *curr = *curr + 1;
+                return c2 == C_MULT_SET;
+            }
+            return C_MULT;
+        break;
+
+        //General
+        case '=': return C_SET;
+
+        //Enclosure
+        case '[': return C_O_BRACK;
+        case '(': return C_O_PARAN;
+        case '{': return C_O_BRACE;
+        case ']': return C_C_BRACK;
+        case ')': return C_C_PARAN;
+        case '}': return C_C_BRACE;
+
         //End
         case '\0':
             *state = _BRK;
@@ -159,7 +283,7 @@ int tokenize(char * raw, Stack * stk, Module * mod){
 
     int state = _NRM;
     int nscLen = 0;
-    T_TYPE type = C_T_NA;
+    //T_TYPE type = C_T_NA;
 
     while (state != _BRK){
 
@@ -202,6 +326,17 @@ int tokenize(char * raw, Stack * stk, Module * mod){
 
         ++curr;
     }
+
+    collapseOperators(0);
+
+    int i = 0;
+    for (; i < _L_QUEUE.outIdx; ++i){
+        Token * t = &_L_QUEUE.output[i];
+        printf("[%x %d %s] ", t->type, t->precedence, (char*)t->data);
+    }
+
+    printf("\r\n");
+    _L_QUEUE.outIdx = 0;
 
     
     return 0;

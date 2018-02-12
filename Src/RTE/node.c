@@ -20,7 +20,7 @@ void * _nodeProc(void * arg){
 
     char history [32][256] = {0};
     int historyIndex = 0;
-    char usin [256] = {0};
+    char usin [258] = {0};//Reserve last 3 bits for 0 TODO Check for >= 255
     int usinIndex = 0;
 
     do{

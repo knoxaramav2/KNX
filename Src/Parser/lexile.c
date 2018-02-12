@@ -9,12 +9,11 @@
 
 L_QUEUE _L_QUEUE;
 
-#define _NRM  0   //Normal
-#define _SQT  1   //Single quote
-#define _DQT  2   //Double quote
-#define _SCM  3   //Single line comment
-#define _MCM  4   //Multi line comment
-#define _BRK  5   //exit parsing
+#define _NRM    0   //Normal
+#define _SCM    1   //Comment     
+#define _MCM    2   //Comment multi line
+#define _BRK    3   //Break
+#define _WSB    4   //Whitespace
 
 void addToQueue(){
 
@@ -107,39 +106,48 @@ int addToken(char * l, char * r, T_TYPE type){
     return 0;
 }
 
-//check for special characters, update state and current character pointer
-T_TYPE checkSpecialChar(char ** curr, int * state){
+//Check for special character and set indexes accordingly
+T_TYPE checkSpecialChar(char ** curr, char ** prev, int * state){
 
     char c = **curr;
 
-    //Check current state
-    if (*state == _SQT){
-        if (c == '\''){
-            *state = _NRM;
-            return _SQT;
-        }
-    } else if (*state == _DQT){
-        if (c == '\"'){
-            *state = _NRM;
-            return _DQT;
-        }
-    } else if (*state == _SCM){
-        
-    } else if (*state == _MCM){
-        
+    //Check for non-special characters
+    if ((c >= 'A' && c <= 'Z') ||
+        (c >= 'a' && c <= 'z') ||
+        (c >= '0' && c <= '9') ||
+        (c == '.' || c== '_')){
+        return C_T_NA;
     }
 
-    //Check for operators/variants
-    switch(c){
-        case '\'': *state = _SQT; break;
-        case '\"': *state = _DQT; break;
+    switch (c){
+
+        //Ignored
+        case ' ':
+        case '\t':
+            *state = _WSB;
+        break;
+
+        //String
+        case '\'':
+        case '\"':{
+            char * idx = *curr + 1;
+            for (; *idx != 0; ++idx){
+                if (*idx == c){
+                    *curr = idx;
+                    return c == '\'' ? C_T_CHAR : C_T_STR;
+                }
+            }
+            return -1;
+        } break;
+
+        //End
         case '\0':
             *state = _BRK;
         break;
+
     }
 
-
-    return 0;
+    return C_T_NA;
 }
 
 int tokenize(char * raw, Stack * stk, Module * mod){
@@ -155,25 +163,41 @@ int tokenize(char * raw, Stack * stk, Module * mod){
 
     while (state != _BRK){
 
-        T_TYPE op = checkSpecialChar(&curr, &state);
+        T_TYPE op = checkSpecialChar(&curr, &prev, &state);
 
-        if (op == 0 && state == _NRM) {
+        //non-special characters
+        if (state == _NRM && op == C_T_NA){
             ++nscLen;
-        } else {
-            if (nscLen > 0){                
-                addToken(prev, prev+nscLen, C_T_NA);
-                nscLen = 0;
-                prev += nscLen;
-            }
+            ++curr;
+            continue;
+        }
 
-            if (state == _NRM) {
-                if (op == _SQT || op == _DQT){
-                    addToken(prev+1, curr, op == _SQT ? C_T_CHAR : C_T_STR);
-                } else if (op != _SCM && op != _MCM) {
-                    addToken(0, 0, op);
-                }
-                prev = curr + 1;
-            }
+        //append token if special found
+        if (nscLen > 0){
+            addToken(prev, prev + nscLen, 0);
+            prev += nscLen;
+            nscLen = 0;
+        }
+
+        //whitespace
+        if (state == _WSB){
+            prev = curr + 1;
+            state = _NRM;
+            ++curr;
+            continue;
+        }
+
+        if (state == _SCM || state == _BRK){
+            break;
+        }
+
+        //add
+        if (op == C_T_CHAR || op == C_T_STR){
+            addToken(prev + 1, curr, op);
+            prev = curr + 1;
+        } else {
+            addToken(0, 0, op);
+            prev = curr + 1;
         }
 
         ++curr;

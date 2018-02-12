@@ -19,6 +19,8 @@ void addToOperators(T_TYPE type, int prs){
     _L_QUEUE.operators[_L_QUEUE.opIdx].type = type;
     _L_QUEUE.operators[_L_QUEUE.opIdx].precedence = prs;
     _L_QUEUE.opIdx += 1;
+
+    _L_QUEUE._lastPushed = type;
 }
 
 void addToOutput(char * str, T_TYPE type, int prs){
@@ -26,6 +28,8 @@ void addToOutput(char * str, T_TYPE type, int prs){
     _L_QUEUE.output[_L_QUEUE.outIdx].precedence = prs;
     _L_QUEUE.output[_L_QUEUE.outIdx].data = str;
     _L_QUEUE.outIdx += 1;
+
+    _L_QUEUE._lastPushed = type;
 }
 
 Token * popOperator(){
@@ -55,6 +59,11 @@ int collapseOperators(T_TYPE type){
         do{
             if ((t = popOperator())){
                 if (t->type == type){
+                    
+                    if (_L_QUEUE._lastPushed == type){
+                        addToOutput(0, C_T_VOID, 6);
+                    }
+
                     return 0;
                 }
 

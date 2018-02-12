@@ -47,6 +47,7 @@ typedef unsigned int T_TYPE;
 #define C_T_LIST        0x0008
 #define C_T_DICT        0x0009
 #define C_T_ENUM        0x000A
+#define C_T_VOID        0x000B
 
 //OPERATORS###################
 //DECLARATION

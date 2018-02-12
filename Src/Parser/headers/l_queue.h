@@ -29,6 +29,8 @@ typedef struct L_QUEUE{
     int encapLevel;//number of open enclosures
     int cntInput;
 
+    T_TYPE _lastPushed;
+
 } L_QUEUE;
 
 extern L_QUEUE _L_QUEUE;

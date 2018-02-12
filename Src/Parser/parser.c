@@ -24,8 +24,9 @@ void shutdown()
 
 
 void initQueue(){
-    _L_QUEUE.opIdx      = 0;
-    _L_QUEUE.outIdx     = 0;
-    _L_QUEUE.encapLevel = 0;
-    _L_QUEUE.cntInput   = 0;
+    _L_QUEUE.opIdx          = 0;
+    _L_QUEUE.outIdx         = 0;
+    _L_QUEUE.encapLevel     = 0;
+    _L_QUEUE.cntInput       = 0;
+    _L_QUEUE._lastPushed    = 0;
 }

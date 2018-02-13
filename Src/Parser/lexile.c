@@ -77,11 +77,11 @@ int collapseOperators(T_TYPE type){
     return 0;
 }
 
-void addToQueue(char * str, T_TYPE type, int prs){
+void addToQueue(void * data, T_TYPE type, int prs){
 
     //immediately add operands
     if (prs < 0){
-        addToOutput(str, type, prs);
+        addToOutput(data, type, prs);
         return;
     }
 
@@ -104,8 +104,8 @@ void addToQueue(char * str, T_TYPE type, int prs){
         addToOperators(type, prs);
     } else {
         popOperator();
-        addToOperators(type, prs);
         addToOutput(0, prev->type, prev->precedence);
+        addToOperators(type, prs);
     }
 }
 
@@ -182,23 +182,39 @@ T_TYPE getType(char * raw){
 int addToken(char * l, char * r, T_TYPE type){
 
     char * str = 0;
+    void * data = 0;
 
     if (l!=0 && r!=0){
         int len = (r-l);
         str = malloc(len + 1);
         strncpy(str, l, len);
-        str[len + 1] = 0;
+        str[len] = 0;
     }
     
     if (type == C_T_NA){
         type = getType(str);
+
+        if (type == (RAW_DATA | C_T_INT)){
+            int * i = malloc(sizeof(int));
+            *i = atoi(str);
+            data = i;
+        } else if (type == (RAW_DATA | C_T_DBL)){
+            double * dbl = malloc(sizeof(double));
+            *dbl = atof(str);
+            data = dbl;
+        }
     }
 
     int prc = getPrecedence(type);
 
-    addToQueue(str, type, prc);
-
-    printf("[%s %d %x]\r\n", str, prc, type);
+    if (type == C_T_NA      ||
+        type == C_T_CHAR    ||
+        type == C_T_STR){
+        addToQueue(str, type, prc);
+    } else {
+        addToQueue(data, type, prc);
+        free(str);
+    }
 
     return 0;
 }
@@ -337,16 +353,6 @@ int tokenize(char * raw, Stack * stk, Module * mod){
     }
 
     collapseOperators(0);
-
-    int i = 0;
-    for (; i < _L_QUEUE.outIdx; ++i){
-        Token * t = &_L_QUEUE.output[i];
-        printf("[%x %d %s] ", t->type, t->precedence, (char*)t->data);
-    }
-
-    printf("\r\n");
-    _L_QUEUE.outIdx = 0;
-
     
     return 0;
 }

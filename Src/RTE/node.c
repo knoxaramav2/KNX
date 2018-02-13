@@ -35,6 +35,9 @@ void * _nodeProc(void * arg){
                 printf("\r\n");
 
                 tokenize(usin, node->stack, node->module);
+                if (!assemble()){
+                    //execute
+                }
                 
                 usin[usinIndex] = 0;
                 strncpy(history[historyIndex++], usin, 256);

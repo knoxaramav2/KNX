@@ -9,5 +9,6 @@
 #define TK_FAIL         2
 
 int tokenize(char *, Stack *, Module *);
+int assemble();
 
 #endif

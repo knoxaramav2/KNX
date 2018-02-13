@@ -10,7 +10,7 @@ VERSION = -DKDKVersion=\"0.0.1\"
 OUT = libKDK.so
 CLEANEXT = o a
 DBGFLAGS= -d#command line debug arg
-SRC=kdk.c module.c stack.c
+SRC=kdk.c module.c stack.c dbg.c
 O_SRC = $(SRC:.c=.o)
 EXPORT_PTH=../../bin/
 

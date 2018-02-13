@@ -27,7 +27,7 @@ typedef struct L_QUEUE{
 
     int opIdx, outIdx;
     int encapLevel;//number of open enclosures
-    int cntInput;
+    int cntInput;//request input again if 1
 
     T_TYPE _lastPushed;
 

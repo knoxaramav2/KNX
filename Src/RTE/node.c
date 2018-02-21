@@ -22,12 +22,20 @@ void * _nodeProc(void * arg){
     int historyIndex = 0;
     char usin [258] = {0};//Reserve last 3 bits for 0 TODO Check for >= 255
     int usinIndex = 0;
+    int printMarker = 1;
 
     do{
+        if (printMarker){
+            printMarker = 0;
+            printf("<%s> ", node->module->name);
+        }
+
         char c = getKeyPress();
 
         switch(c){
             case 10://enter
+                printMarker = 1;
+
                 if (usinIndex == 0){
                     continue;
                 }
@@ -48,8 +56,6 @@ void * _nodeProc(void * arg){
                 if (historyIndex == 255){
                     historyIndex = 0;
                 }
-
-                
 
             break;
 

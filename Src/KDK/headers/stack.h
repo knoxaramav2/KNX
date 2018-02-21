@@ -10,7 +10,8 @@ typedef struct Instruction{
 
     unsigned meta;
     //pointer to instruction
-    void * argument;
+    void * argument [2];
+    unsigned argType [2];
 
     struct Instruction * next;
 
@@ -46,7 +47,7 @@ typedef struct Stack{
 //Factories
 Stack           * createStack();
 Frame           * createFrame();
-Instruction     * createInstruction();
+Instruction     * createInstruction(unsigned, void *, T_TYPE, void *, T_TYPE);
 
 int destroyStack(Stack * stack);
 int destroyFrame(Frame * frame);

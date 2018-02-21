@@ -15,7 +15,6 @@ typedef unsigned int T_TYPE;
     TYPE DEFINITIONS                0x0AC1 - 0x12C0 (2048)
 */
 
-
 //Major partitions
 #define C_PRIM_OFFSET       0x0000   
 #define C_KW_OFFSET         0x0041
@@ -33,6 +32,9 @@ typedef unsigned int T_TYPE;
 #define C_BIT_OFFSET        0x0181
 #define C_CTL_OFFSET        0x01C1
 #define C_MISC_OFFSET       0x0201
+
+#define IS_CORE_EXEC(x) (x>=C_DECL_OFFSET && x<C_MOD_OFFSET)
+#define IS_CORE_OP(x) (x>=C_MATH_OFFSET && x<C_CTL_OFFSET)
 
 //TYPES#######################
 #define C_T_NA          0x0000

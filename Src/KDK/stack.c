@@ -26,11 +26,14 @@ Frame * createFrame(Module * module){
     return frame;
 }
 
-Instruction * createInstruction(){
+Instruction * createInstruction(unsigned meta, void * a0, T_TYPE t0, void * a1, T_TYPE t1){
     Instruction * instruction = malloc(sizeof(Instruction));
     
-    instruction->meta = 0;
-    instruction->argument = 0;
+    instruction->meta = meta;
+    instruction->argument[0]=a0;
+    instruction->argument[1]=a1;
+    instruction->argType[0]=t0;
+    instruction->argType[1]=t1;
     instruction->next = 0;
 
     return instruction;

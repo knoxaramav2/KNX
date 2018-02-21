@@ -27,6 +27,8 @@ typedef struct Frame{
     Instruction * _instructions;
     Instruction * _instructionPointer;
 
+    struct Frame * caller, * callee;
+
     //object * array - local memory
 } Frame;
 
@@ -37,21 +39,28 @@ typedef struct Frame{
 */
 typedef struct Stack{
 
-    Frame * _frames;
+    Frame * framePointer;
+    Frame * baseFrame;
 
-    int frameAlloc; //total number of frames currently allocated for
-    int frameCount; //current number of used framesD
+    Module * owner;
+
+    int frameHeight;
 
 } Stack;
 
 //Factories
-Stack           * createStack();
-Frame           * createFrame();
+Stack           * createStack(Module *);
+Frame           * createFrame(Stack * stack, Module *, Frame *);
 Instruction     * createInstruction(unsigned, void *, T_TYPE, void *, T_TYPE);
 
+//Deconstructors
 int destroyStack(Stack * stack);
 int destroyFrame(Frame * frame);
 int destroyInstruction(Instruction * inst);
+
+//Calls
+void addInstruction(Stack *, Instruction *);
+void startNewFrame(Stack *, Module *);
 
 /*
     Frame calling and restoration: recursive call convention?

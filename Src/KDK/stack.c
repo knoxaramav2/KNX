@@ -4,17 +4,19 @@
 
 //Factories
 
-Stack * createStack(){
+Stack * createStack(Module * module){
     Stack * stack = malloc(sizeof(Stack));
     
-    stack->_frames = 0;
-    stack->frameAlloc = 0;
-    stack->frameCount = 0;
+    stack->owner = module;
+    
+    stack->baseFrame = createFrame(stack, module, 0);
+    stack->framePointer = stack->baseFrame;
+    stack->frameHeight = 1;
 
     return stack;
 }
 
-Frame * createFrame(Module * module){
+Frame * createFrame(Stack * stack, Module * module, Frame * parent){
     Frame * frame = malloc(sizeof(Frame));
     
     frame->SOURCE = module;
@@ -22,6 +24,16 @@ Frame * createFrame(Module * module){
     frame->LR_TYPE = 0;
     frame->_instructions = 0;
     frame->_instructionPointer = 0;
+
+    frame->callee = 0;
+
+    if (parent){
+        frame->caller = parent;
+        parent->callee = frame;
+    }
+
+    stack->framePointer = frame;
+    ++stack->frameHeight;
 
     return frame;
 }

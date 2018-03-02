@@ -10,7 +10,8 @@ typedef struct Node{
 
     Module * module;
     Stack * stack;
-
+ 
+    struct Node * parent;
     struct Node ** children;
     size_t childCount;
 
@@ -24,7 +25,7 @@ typedef struct Node{
 Node * spawnNode(Node * parent, char * arg);
 int destroyNode(Node * n);
 void * _nodeProc(void * arg);
-int beginNode(Node * n);
+int beginNode(Node * n, int block);
 
 typedef struct NodeRegistry{
 

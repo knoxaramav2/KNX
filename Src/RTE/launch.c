@@ -17,8 +17,8 @@ int start(){
 
     Node * root = spawnNode(0, 0);
     registerNode(root);
-    beginNode(root);
-    pthread_join(root->_handle_t, 0);
+    beginNode(root, 1);
+    //pthread_join(root->_handle_t, 0);
     deregisterNode(root);
     destNodes = destroyNode(root);
 

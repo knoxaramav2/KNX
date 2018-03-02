@@ -28,6 +28,7 @@ void * _nodeProc(void * arg){
         if (printMarker){
             printMarker = 0;
             printf("<%s> ", node->module->name);
+            fflush(stdout);
         }
 
         char c = getKeyPress();
@@ -99,10 +100,13 @@ void * _nodeProc(void * arg){
 
 Node * spawnNode(Node * parent, char * arg){
 
+    //char * mName = malloc
+
     //TODO module/stack mallocs with factories
     Node * n = malloc(sizeof(Node));
+    n->parent = parent;
     n->module = createModule(0);
-    n->stack = createStack();
+    n->stack = createStack(n->module);
     n->children = malloc(0);
     n->childCount = 0;
     n->id = -1;
@@ -144,7 +148,7 @@ int destroyNode(Node * n){
     return nodesDestroyed + 1;
 }
 
-int beginNode(Node * n){
+int beginNode(Node * n, int block){
 
     if (n == 0){
         return 1;
@@ -153,6 +157,11 @@ int beginNode(Node * n){
     if (pthread_create(&n->_handle_t, 0, _nodeProc, n)){
         return 2;
     }
+
+    if (block){
+        pthread_join(n->_handle_t, 0);
+    }
+    
 
     return 0;
 }

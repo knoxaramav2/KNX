@@ -50,7 +50,6 @@ void * _nodeProc(void * arg){
                 
                 usin[usinIndex] = 0;
                 strncpy(history[historyIndex++], usin, 256);
-                //printf("> %s\r\n", usin);
                 memset(usin, '\0', 256);
                 usinIndex = 0;
 

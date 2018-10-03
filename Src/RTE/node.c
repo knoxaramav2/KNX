@@ -27,7 +27,7 @@ void * _nodeProc(void * arg){
     do{
         if (printMarker){
             printMarker = 0;
-            printf("<%s> ", node->module->name);
+            printf("\r\n<%s> ", node->module->name);
             fflush(stdout);
         }
 
@@ -80,7 +80,7 @@ void * _nodeProc(void * arg){
                     continue;
                 usin[--usinIndex] = 0;
                 printf("%c[2K", 27);
-                printf("\r%s", usin);
+                printf("\r<%s> %s", node->module->name, usin);
             break;
 
             default:

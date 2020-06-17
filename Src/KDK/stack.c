@@ -16,6 +16,7 @@ Stack * createStack(Module * module){
     return stack;
 }
 
+//Used during execution when a new frame is declared with {}
 Frame * createFrame(Stack * stack, Module * module, Frame * parent){
     Frame * frame = malloc(sizeof(Frame));
     
@@ -26,6 +27,7 @@ Frame * createFrame(Stack * stack, Module * module, Frame * parent){
     frame->_instructionPointer = 0;
 
     frame->callee = 0;
+    frame->caller = 0;
 
     if (parent){
         frame->caller = parent;
@@ -67,4 +69,30 @@ int destroyFrame(Frame * frame){
 int destroyInstruction(Instruction * inst){
 
     return 0;
+}
+
+
+//Other
+
+void addInstruction(Stack * stack, Instruction * inst){
+
+    Frame * frame = stack->framePointer;
+
+    if (frame == 0){
+        return;
+    }
+
+    if (frame->_instructions == 0){
+        frame->_instructions = inst;
+        frame->_instructionPointer = inst;
+        return;
+    }
+
+    frame->_instructionPointer->next = inst;
+    frame->_instructionPointer = inst;
+}
+
+void startNewFrame(Stack * stack, Module * module){
+    //Frame * frame = createFrame(stack, module);
+
 }

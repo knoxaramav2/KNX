@@ -35,7 +35,6 @@ typedef struct Frame{
 /*
     Master stack
     One per node
-
 */
 typedef struct Stack{
 

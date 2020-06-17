@@ -33,7 +33,9 @@ typedef unsigned int T_TYPE;
 #define C_CTL_OFFSET        0x01C1
 #define C_MISC_OFFSET       0x0201
 
+//full internal keywords
 #define IS_CORE_EXEC(x) (x>=C_DECL_OFFSET && x<C_MOD_OFFSET)
+//arithmetic and evaluation logic
 #define IS_CORE_OP(x) (x>=C_MATH_OFFSET && x<C_CTL_OFFSET)
 
 //TYPES#######################

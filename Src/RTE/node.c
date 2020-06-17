@@ -5,6 +5,7 @@
 
 #include "node.h"
 #include "config.h"
+#include "proc.h"
 
 #include "../Parser/headers/parser.h"
 
@@ -44,8 +45,8 @@ void * _nodeProc(void * arg){
                 printf("\r\n");
 
                 tokenize(usin, node->stack, node->module);
-                if (!assemble()){
-                    //execute
+                if (assemble(node->stack)){
+                    executeFrame(node->module, node->stack);
                 }
                 
                 usin[usinIndex] = 0;
